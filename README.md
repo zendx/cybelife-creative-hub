@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# Cybelife Creative Hub
+
+Cybelife Digital is a web design and digital agency based in Lagos, Nigeria, that builds business websites. Services: Website design, e-commerce development, and digital branding.
+
+This website should showcase a modern digital agency. The website color scheme can be gotten from the attached logo. The website should have a way to showcase projects that has been handled and showcase it's services as premium. There should be a get started call to action button where customers can book a meeting with the company by selecting a date from the calendar available there.
 
 This project was built with [Lovable](https://lovable.dev).
 
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/68a4784b-45f9-4bd0-8224-9feb6cf9b247).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
