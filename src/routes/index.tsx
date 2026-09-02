@@ -4,7 +4,23 @@ import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import heroImage from "@/assets/hero-studio.jpg";
 import { Button } from "@/components/ui/button";
 import { BookingDialog } from "@/components/booking-dialog";
+import { blogPosts } from "@/data/blog";
 import { projects, services, stats, process } from "@/data/site";
+
+const studioAdvantages = [
+  {
+    title: "Business before decoration",
+    body: "We connect every design decision to what customers need to understand, trust and do next.",
+  },
+  {
+    title: "Local fluency, global finish",
+    body: "The experience accounts for Nigerian customers, payments and operations without compromising craft.",
+  },
+  {
+    title: "Useful after launch",
+    body: "Your team receives a maintainable system, clear documentation and the confidence to keep it current.",
+  },
+] as const;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -35,7 +51,7 @@ function Home() {
       <section className="relative overflow-hidden">
         <img
           src={heroImage}
-          alt="Cyberlife Digital designers working in the Lagos studio"
+          alt="Creative team working in a digital studio"
           width={1600}
           height={1104}
           className="absolute inset-0 h-full w-full object-cover opacity-45"
@@ -123,6 +139,38 @@ function Home() {
         </div>
       </section>
 
+      <section className="border-t border-border/70">
+        <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="eyebrow">Why Cyberlife</p>
+            <h2 className="mt-4 max-w-md text-3xl font-semibold md:text-4xl">
+              Digital work grounded in how the business really runs.
+            </h2>
+            <p className="mt-5 max-w-md leading-relaxed text-muted-foreground">
+              We are a small, senior-led studio for teams that want rigorous thinking, direct
+              collaboration and a finished product they can own.
+            </p>
+            <Link
+              to="/about"
+              className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-brand-soft"
+            >
+              Meet the studio <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-3">
+            {studioAdvantages.map((item, index) => (
+              <article key={item.title} className="bg-card p-7">
+                <span className="font-display text-sm text-signal">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="hairline-grid border-t border-border/70">
         <div className="mx-auto max-w-7xl px-6 py-24">
           <p className="eyebrow">Selected work</p>
@@ -169,6 +217,77 @@ function Home() {
                 View the full portfolio <ArrowRight />
               </Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="hairline-grid border-t border-border/70">
+        <div className="mx-auto max-w-7xl px-6 py-24">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p className="eyebrow">Latest thinking</p>
+              <h2 className="mt-4 max-w-xl text-3xl font-semibold md:text-4xl">
+                Useful ideas for the next digital decision.
+              </h2>
+            </div>
+            <Link
+              to="/blog"
+              className="group inline-flex items-center gap-2 text-sm text-brand-soft"
+            >
+              Explore all insights
+              <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+
+          <div className="mt-12 grid gap-6 lg:grid-cols-3">
+            {blogPosts.slice(0, 3).map((post) => (
+              <article
+                key={post.slug}
+                className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card"
+              >
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: post.slug }}
+                  aria-label={`Read ${post.title}`}
+                  className="overflow-hidden"
+                >
+                  <img
+                    src={post.image}
+                    alt={post.imageAlt}
+                    loading="lazy"
+                    width={1200}
+                    height={900}
+                    className="aspect-[16/9] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
+                </Link>
+                <div className="flex flex-1 flex-col p-7">
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span className="eyebrow">{post.category}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{post.readingTime}</span>
+                  </div>
+                  <h3 className="mt-4 text-xl font-semibold leading-tight">
+                    <Link
+                      to="/blog/$slug"
+                      params={{ slug: post.slug }}
+                      className="transition-colors hover:text-brand-soft"
+                    >
+                      {post.title}
+                    </Link>
+                  </h3>
+                  <p className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">
+                    {post.excerpt}
+                  </p>
+                  <Link
+                    to="/blog/$slug"
+                    params={{ slug: post.slug }}
+                    className="mt-6 inline-flex items-center gap-2 text-sm text-brand-soft"
+                  >
+                    Read article <ArrowRight className="size-4" />
+                  </Link>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
