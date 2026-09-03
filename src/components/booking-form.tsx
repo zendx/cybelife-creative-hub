@@ -20,10 +20,16 @@ function isUnavailable(date: Date) {
   return date < today || day === 0 || day === 6;
 }
 
-export function BookingForm({ onDone }: { onDone?: () => void }) {
+export function BookingForm({
+  onDone,
+  initialService,
+}: {
+  onDone?: () => void;
+  initialService?: string;
+}) {
   const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState<string>();
-  const [service, setService] = useState<string>(services[0].title);
+  const [service, setService] = useState<string>(initialService ?? services[0].title);
   const [submitting, setSubmitting] = useState(false);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

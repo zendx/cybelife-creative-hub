@@ -10,7 +10,13 @@ import {
 } from "@/components/ui/dialog";
 import { BookingForm } from "@/components/booking-form";
 
-export function BookingDialog({ trigger }: { trigger: ReactNode }) {
+export function BookingDialog({
+  trigger,
+  initialService,
+}: {
+  trigger: ReactNode;
+  initialService?: string;
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -23,7 +29,7 @@ export function BookingDialog({ trigger }: { trigger: ReactNode }) {
             Pick a date and time that works for you. Our Lagos team will confirm by email.
           </DialogDescription>
         </DialogHeader>
-        <BookingForm onDone={() => setOpen(false)} />
+        <BookingForm onDone={() => setOpen(false)} initialService={initialService} />
       </DialogContent>
     </Dialog>
   );

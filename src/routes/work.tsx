@@ -2,12 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
 import { BookingDialog } from "@/components/booking-dialog";
+import { Reveal } from "@/components/reveal";
 import { projects } from "@/data/site";
 
 export const Route = createFileRoute("/work")({
   head: () => ({
     meta: [
-      { title: "Our Work — Projects by Cyberlife Digital, Lagos" },
+      { title: "Case Studies — Problems Solved by Cyberlife Digital" },
       {
         name: "description",
         content:
@@ -26,57 +27,63 @@ export const Route = createFileRoute("/work")({
 function WorkPage() {
   return (
     <>
-      <section className="border-b border-border/70">
-        <div className="mx-auto max-w-7xl px-6 py-20 md:py-28">
-          <p className="eyebrow">Portfolio</p>
-          <h1 className="mt-6 max-w-3xl text-4xl font-semibold leading-[1.08] md:text-5xl">
-            Projects we've handled for Nigerian businesses.
+      <section className="hero-mesh border-b border-border/70">
+        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-6 md:py-28">
+          <p className="eyebrow">Case studies</p>
+          <h1 className="mt-6 max-w-4xl text-5xl font-bold leading-[0.98] sm:text-6xl md:text-7xl">
+            Real problems. Thoughtful fixes.{" "}
+            <span className="text-gradient-brand">Measurable change.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            A selection of recent engagements across fintech, retail, logistics and hospitality,
-            each shaped around a clear business problem and a practical route to launch.
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-muted-foreground">
+            See what was getting in the way, how we approached it and what changed for businesses
+            across fintech, retail, logistics and hospitality.
           </p>
         </div>
       </section>
 
       <section>
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div className="space-y-16">
+        <div className="mx-auto max-w-7xl px-5 py-20 sm:px-6 md:py-28">
+          <div className="space-y-10">
             {projects.map((project, index) => (
-              <article
+              <Reveal
+                as="article"
                 key={project.title}
-                className={`grid items-center gap-10 lg:grid-cols-2 ${
+                className={`grid items-stretch overflow-hidden rounded-[2rem] border border-border bg-white shadow-sm lg:grid-cols-2 ${
                   index % 2 === 1 ? "lg:[&>figure]:order-2" : ""
                 }`}
               >
-                <figure className="overflow-hidden rounded-lg border border-border">
+                <figure className="min-h-[340px] overflow-hidden">
                   <img
                     src={project.image}
                     alt={`${project.title} — ${project.service} project by Cyberlife Digital`}
                     loading="lazy"
                     width={1200}
                     height={900}
-                    className="aspect-[4/3] w-full object-cover"
+                    className="h-full min-h-[340px] w-full object-cover transition-transform duration-700 hover:scale-[1.035]"
                   />
                 </figure>
-                <div>
+                <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
                   <p className="eyebrow">
                     {project.sector} · {project.year}
                   </p>
-                  <h2 className="mt-4 text-3xl font-semibold">{project.title}</h2>
+                  <h2 className="mt-4 text-3xl font-bold sm:text-4xl">{project.title}</h2>
                   <p className="mt-2 text-sm text-brand-soft">{project.service}</p>
                   <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">
                     {project.summary}
                   </p>
                   <div className="mt-7 grid gap-5 border-y border-border py-6 sm:grid-cols-2">
                     <div>
-                      <p className="eyebrow">The challenge</p>
+                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-signal">
+                        The problem
+                      </p>
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                         {project.challenge}
                       </p>
                     </div>
                     <div>
-                      <p className="eyebrow">Our response</p>
+                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-primary">
+                        How we fixed it
+                      </p>
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                         {project.response}
                       </p>
@@ -92,15 +99,20 @@ function WorkPage() {
                       </span>
                     ))}
                   </div>
-                  <p className="mt-6 inline-flex rounded-md bg-signal/15 px-4 py-2 text-sm text-foreground">
-                    {project.metric}
-                  </p>
+                  <div className="mt-6 flex items-center gap-3">
+                    <span className="text-xs font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                      Outcome
+                    </span>
+                    <p className="inline-flex rounded-full bg-primary px-4 py-2 text-sm font-bold text-white">
+                      {project.metric}
+                    </p>
+                  </div>
                 </div>
-              </article>
+              </Reveal>
             ))}
           </div>
 
-          <div className="mt-20 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-3">
+          <Reveal className="mt-20 grid gap-px overflow-hidden rounded-[1.75rem] border border-border bg-border md:grid-cols-3">
             <div className="bg-card p-8">
               <p className="eyebrow">What we look for</p>
               <h2 className="mt-4 text-2xl font-semibold">Evidence beyond the reveal.</h2>
@@ -119,13 +131,13 @@ function WorkPage() {
                 after handover?
               </p>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="mt-20 rounded-lg border border-border bg-card p-10 md:p-14">
+          <Reveal className="gradient-brand mt-20 rounded-[2rem] p-10 text-white shadow-elevated md:p-14">
             <h2 className="max-w-xl text-3xl font-semibold">
               Your project could be the next one here.
             </h2>
-            <p className="mt-4 max-w-lg text-muted-foreground">
+            <p className="mt-4 max-w-lg text-white/70">
               Book a discovery call and we'll map the fastest route to launch.
             </p>
             <div className="mt-8">
@@ -137,7 +149,7 @@ function WorkPage() {
                 }
               />
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
     </>

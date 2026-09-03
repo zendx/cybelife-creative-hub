@@ -1,110 +1,102 @@
 import { Link } from "@tanstack/react-router";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, ScanSearch } from "lucide-react";
 
-import logoAsset from "@/assets/cyberlife-logo.png.asset.json";
 import { services } from "@/data/site";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/70 bg-surface/40">
-      <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
-        <div>
-          <div className="flex items-center gap-3">
-            <img src={logoAsset.url} alt="" className="h-8 w-8 object-contain" />
-            <span className="font-display text-base font-semibold">Cyberlife Digital</span>
+    <footer className="ink-section border-t border-white/10">
+      <div className="mx-auto max-w-7xl px-5 pb-8 pt-16 sm:px-6 md:pt-20">
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.85fr]">
+          <div>
+            <Link to="/" className="inline-flex items-center gap-3">
+              <span className="grid size-11 place-items-center overflow-hidden rounded-xl bg-white">
+                <img src="/favicon.png" alt="" className="size-10 object-contain" />
+              </span>
+              <span className="font-display text-lg font-bold tracking-[-0.04em] text-white">
+                Cyberlife<span className="text-[#ff7a62]">.</span>
+              </span>
+            </Link>
+            <p className="mt-5 max-w-sm text-sm leading-7 text-white/55">
+              We build digital products and brand experiences that help ambitious businesses get
+              found, get chosen and keep growing.
+            </p>
+            <Link
+              to="/audit"
+              className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/8 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white/14"
+            >
+              <ScanSearch className="size-4 text-[#ff8a72]" /> Run a free website audit
+            </Link>
           </div>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-            A web design and digital agency in Lagos building business websites that earn attention
-            and revenue.
-          </p>
-        </div>
 
-        <div>
-          <h3 className="eyebrow">Services</h3>
-          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-            {services.map((s) => (
-              <li key={s.slug}>
-                <Link
-                  to="/services"
-                  className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                >
-                  {s.title}
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/35">
+              Services
+            </h3>
+            <ul className="mt-5 space-y-3 text-sm text-white/60">
+              {services.slice(0, 4).map((service) => (
+                <li key={service.slug}>
+                  <Link to="/services" className="transition-colors hover:text-white">
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/35">
+              Grow & care
+            </h3>
+            <ul className="mt-5 space-y-3 text-sm text-white/60">
+              {services.slice(4).map((service) => (
+                <li key={service.slug}>
+                  <Link to="/services" className="transition-colors hover:text-white">
+                    {service.title}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link to="/work" className="transition-colors hover:text-white">
+                  Case studies
                 </Link>
               </li>
-            ))}
-          </ul>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/35">
+              Talk to us
+            </h3>
+            <ul className="mt-5 space-y-4 text-sm text-white/60">
+              <li>
+                <a
+                  href="mailto:hello@cyberlifedigital.ng"
+                  className="flex items-start gap-2.5 transition-colors hover:text-white"
+                >
+                  <Mail className="mt-0.5 size-4 shrink-0 text-[#ff8a72]" />
+                  hello@cyberlifedigital.ng
+                </a>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <MapPin className="mt-0.5 size-4 shrink-0 text-[#ff8a72]" />
+                Yaba, Lagos, Nigeria
+              </li>
+              <li>
+                <Link
+                  to="/book"
+                  className="inline-flex items-center gap-2 font-bold text-white hover:text-[#ffb29f]"
+                >
+                  Start a project <ArrowUpRight className="size-4" />
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div>
-          <h3 className="eyebrow">Company</h3>
-          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-            <li>
-              <Link
-                to="/about"
-                className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                About us
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/blog"
-                className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                Blog
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/work"
-                className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                Our work
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="eyebrow">Contact</h3>
-          <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-            <li className="flex items-start gap-3">
-              <MapPin aria-hidden="true" className="mt-0.5 size-4 text-brand-soft" />
-              Yaba, Lagos, Nigeria
-            </li>
-            <li className="flex items-start gap-3">
-              <Mail aria-hidden="true" className="mt-0.5 size-4 text-brand-soft" />
-              <a
-                href="mailto:hello@cyberlifedigital.ng"
-                className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                hello@cyberlifedigital.ng
-              </a>
-            </li>
-            <li className="flex items-start gap-3">
-              <Phone aria-hidden="true" className="mt-0.5 size-4 text-brand-soft" />
-              <a
-                href="tel:+2348012345678"
-                className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-              >
-                +234 801 234 5678
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="border-t border-border/70 px-6 py-6">
-        <div className="mx-auto flex max-w-7xl flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-7 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Cyberlife Digital. All rights reserved.</p>
-          <nav aria-label="Footer navigation">
-            <Link
-              to="/book"
-              className="rounded-sm transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-            >
-              Book a meeting
-            </Link>
-          </nav>
+          <p>Strategy · Design · Development · Growth</p>
         </div>
       </div>
     </footer>

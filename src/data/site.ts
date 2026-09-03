@@ -6,32 +6,54 @@ import hospitality from "@/assets/project-hospitality.jpg";
 export const services = [
   {
     slug: "website-design",
-    title: "Website Design",
-    tagline: "Signature sites, engineered to convert",
+    title: "Websites & Web Apps",
+    tagline: "Useful digital products, built to perform",
     description:
-      "Bespoke, research-led website design and build for Nigerian businesses that want to look like the category leader — not a template.",
+      "Strategy, UX, interface design and development for polished marketing websites, portals and custom web applications.",
     bestFor:
-      "Established businesses launching, repositioning or replacing a website that no longer reflects the quality of their work.",
-    scope: "Strategy, copy direction, interface design, development and launch",
+      "Businesses launching, repositioning or replacing a website or workflow that no longer supports how they operate.",
+    scope: "Strategy, UX, interface design, development, integrations and launch",
     deliverables: [
-      "Brand-aligned UI design system",
-      "Responsive build with SEO foundations",
-      "Copy direction and content structuring",
-      "Speed, analytics and handover training",
+      "Brand-aligned responsive interface",
+      "Marketing website, portal or custom web app",
+      "CMS, forms and third-party integrations",
+      "Analytics, testing and handover training",
     ],
     outcomes: [
       "A clearer story for prospective customers",
-      "A faster route from first visit to enquiry",
-      "A flexible system your team can update",
+      "A faster route from visit to enquiry or action",
+      "A dependable product your team can manage",
     ],
     from: "₦850,000",
   },
   {
+    slug: "mobile-app-development",
+    title: "Mobile App Development",
+    tagline: "Mobile experiences people can rely on",
+    description:
+      "User-centred mobile apps designed and engineered around clear business goals, practical journeys and dependable performance.",
+    bestFor:
+      "Businesses bringing a new mobile product to market or improving an app that is difficult to use, maintain or scale.",
+    scope: "Product discovery, UX, interface design, development, testing and release support",
+    deliverables: [
+      "Product requirements and user flows",
+      "Interactive interface prototypes",
+      "iOS and Android app development",
+      "API integration, testing and release support",
+    ],
+    outcomes: [
+      "A focused product shaped around real user needs",
+      "Consistent experiences across supported devices",
+      "A maintainable foundation for future releases",
+    ],
+    from: "Custom quote",
+  },
+  {
     slug: "ecommerce-development",
-    title: "E-commerce Development",
+    title: "E-commerce Solutions",
     tagline: "Storefronts built to sell at scale",
     description:
-      "Conversion-first online stores with local payment rails, logistics integrations and inventory workflows your team can actually run.",
+      "Conversion-focused online stores with local payments, delivery integrations and inventory workflows your team can run confidently.",
     bestFor:
       "Retailers ready to make online sales a dependable channel, not a side project held together by manual work.",
     scope: "Commerce strategy, UX, storefront build, operations and launch support",
@@ -50,8 +72,8 @@ export const services = [
   },
   {
     slug: "digital-branding",
-    title: "Digital Branding",
-    tagline: "Identity systems with real presence",
+    title: "Brand Identity",
+    tagline: "Brands with clarity and a distinct presence",
     description:
       "Positioning, visual identity and social-ready asset systems that make your business unmistakable across every digital surface.",
     bestFor:
@@ -69,6 +91,108 @@ export const services = [
       "Practical tools that keep the brand consistent",
     ],
     from: "₦620,000",
+  },
+  {
+    slug: "google-business-profile",
+    title: "Google Business Profile",
+    tagline: "Help nearby customers find your business",
+    description:
+      "Google Business Profile setup and optimisation that improves how your business appears across Google Search and Maps.",
+    bestFor:
+      "Local and service businesses that need accurate listings, stronger visibility and an easier route from search to contact.",
+    scope: "Profile audit, setup, category and content optimisation, tracking and guidance",
+    deliverables: [
+      "Profile setup or optimisation",
+      "Accurate business information and categories",
+      "Photo, service and post recommendations",
+      "Review workflow and performance tracking",
+    ],
+    outcomes: [
+      "More accurate information across Search and Maps",
+      "A clearer path for customers to call or visit",
+      "A practical plan for ongoing profile activity",
+    ],
+    from: "Custom quote",
+  },
+  {
+    slug: "seo-performance",
+    title: "SEO & Page Speed",
+    tagline: "Be easier to find and faster to use",
+    description:
+      "Technical SEO, content foundations and performance improvements that help search engines understand your site and visitors use it comfortably.",
+    bestFor:
+      "Businesses with slow pages, weak search visibility, indexing issues or a site that needs a stronger technical foundation.",
+    scope: "Technical audit, search optimisation, page-speed work, measurement and recommendations",
+    deliverables: [
+      "Technical SEO and content audit",
+      "Metadata, structure and indexing fixes",
+      "Core Web Vitals and page-speed improvements",
+      "Measurement setup and prioritised roadmap",
+    ],
+    outcomes: [
+      "A faster experience across key pages",
+      "Stronger foundations for organic discovery",
+      "Clear priorities for continued improvement",
+    ],
+    from: "Custom quote",
+  },
+  {
+    slug: "website-maintenance",
+    title: "Website Maintenance & Support",
+    tagline: "Keep your website secure, current and useful",
+    description:
+      "Ongoing technical care, content updates and performance checks delivered through a support plan matched to your website.",
+    bestFor:
+      "Teams that need a reliable partner for routine updates, issue resolution and steady website improvement.",
+    scope: "Monitoring, updates, backups, fixes, content support and performance reviews",
+    deliverables: [
+      "Software, security and dependency updates",
+      "Backups and uptime monitoring",
+      "Content changes and technical fixes",
+      "Regular health and performance reporting",
+    ],
+    outcomes: [
+      "Fewer preventable website issues",
+      "A consistent route for updates and support",
+      "A site that stays healthy as the business changes",
+    ],
+    from: "Monthly quote",
+  },
+] as const;
+
+export const maintenancePlans = [
+  {
+    name: "Essential Care",
+    price: "Monthly quote",
+    bestFor: "Small business websites that need dependable routine care.",
+    features: [
+      "Core software and security updates",
+      "Scheduled backups and uptime checks",
+      "Minor content updates",
+      "Monthly website health summary",
+    ],
+  },
+  {
+    name: "Growth Care",
+    price: "Custom monthly quote",
+    bestFor: "Active marketing and e-commerce sites that change often.",
+    features: [
+      "Everything in Essential Care",
+      "Priority technical support",
+      "Regular content and product updates",
+      "SEO and performance monitoring",
+    ],
+  },
+  {
+    name: "Managed Support",
+    price: "Custom monthly quote",
+    bestFor: "Business-critical websites and web apps needing hands-on support.",
+    features: [
+      "Everything in Growth Care",
+      "Reserved development capacity",
+      "Integration and incident support",
+      "Ongoing optimisation planning",
+    ],
   },
 ] as const;
 

@@ -80,11 +80,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Cyberlife Digital — Web Design Agency in Lagos" },
+      { title: "Cyberlife Digital — Web, Mobile, E-commerce & Growth Agency" },
       {
         name: "description",
         content:
-          "Cyberlife Digital is a Lagos web design and digital agency building premium business websites, e-commerce stores and brand systems.",
+          "Cyberlife Digital builds websites, mobile apps, e-commerce platforms and brands, with SEO, Google Maps visibility, page-speed and maintenance support.",
       },
       { name: "author", content: "Cyberlife Digital" },
       { property: "og:type", content: "website" },
@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap",
       },
     ],
   }),
