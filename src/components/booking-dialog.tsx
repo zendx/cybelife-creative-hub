@@ -29,7 +29,10 @@ export function BookingDialog({
             Pick a date and time that works for you. Our Lagos team will confirm by email.
           </DialogDescription>
         </DialogHeader>
-        <BookingForm onDone={() => setOpen(false)} initialService={initialService} />
+        <BookingForm
+          onDone={() => setOpen(false)}
+          {...(initialService ? { initialService } : {})}
+        />
       </DialogContent>
     </Dialog>
   );

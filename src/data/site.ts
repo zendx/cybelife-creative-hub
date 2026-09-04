@@ -6,7 +6,7 @@ import hospitality from "@/assets/project-hospitality.jpg";
 export const services = [
   {
     slug: "website-design",
-    title: "Websites & Web Apps",
+    title: "Website & Web App Solutions",
     tagline: "Useful digital products, built to perform",
     description:
       "Strategy, UX, interface design and development for polished marketing websites, portals and custom web applications.",
@@ -46,7 +46,7 @@ export const services = [
       "Consistent experiences across supported devices",
       "A maintainable foundation for future releases",
     ],
-    from: "Custom quote",
+    from: "₦1,250,000",
   },
   {
     slug: "ecommerce-development",
@@ -112,11 +112,11 @@ export const services = [
       "A clearer path for customers to call or visit",
       "A practical plan for ongoing profile activity",
     ],
-    from: "Custom quote",
+    from: "₦250,000",
   },
   {
     slug: "seo-performance",
-    title: "SEO & Page Speed",
+    title: "SEO",
     tagline: "Be easier to find and faster to use",
     description:
       "Technical SEO, content foundations and performance improvements that help search engines understand your site and visitors use it comfortably.",
@@ -134,7 +134,7 @@ export const services = [
       "Stronger foundations for organic discovery",
       "Clear priorities for continued improvement",
     ],
-    from: "Custom quote",
+    from: "₦500,000",
   },
   {
     slug: "website-maintenance",

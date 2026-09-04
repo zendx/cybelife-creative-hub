@@ -1,9 +1,12 @@
 import { Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowRight,
   CheckCircle2,
+  CircleAlert,
   Clock3,
   ExternalLink,
+  FileSearch,
   Gauge,
   Globe2,
   LoaderCircle,
@@ -13,11 +16,18 @@ import {
   Smartphone,
   Sparkles,
   TriangleAlert,
+  XCircle,
   Zap,
 } from "lucide-react";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
+import {
+  runSiteScan,
+  type SiteScanCategory,
+  type SiteScanReport,
+  type SiteScanStatus,
+} from "@/lib/site-scan.functions";
 
 type CategoryKey = "performance" | "accessibility" | "best-practices" | "seo";
 
@@ -138,8 +148,8 @@ const loadingStages = [
 const resultBenefits = [
   {
     icon: Gauge,
-    title: "Four verified scores",
-    body: "Performance, accessibility, best practices and SEO from the same Lighthouse run.",
+    title: "Lighthouse when available",
+    body: "See Google's mobile performance, accessibility, best practices and SEO scores.",
   },
   {
     icon: Smartphone,
@@ -148,8 +158,8 @@ const resultBenefits = [
   },
   {
     icon: Sparkles,
-    title: "Prioritised next steps",
-    body: "See the opportunities Lighthouse identifies, ordered by their estimated time savings.",
+    title: "An honest fallback",
+    body: "If Lighthouse is busy, we inspect live HTML and headers without inventing a speed score.",
   },
 ] as const;
 
@@ -526,8 +536,15 @@ function MetricCard({ metric }: { metric: AuditMetric }) {
   );
 }
 
-function LoadingState({ stage }: { stage: number }) {
-  const current = loadingStages[stage] ?? loadingStages[3];
+function LoadingState({ stage, mode }: { stage: number; mode: "lighthouse" | "foundation" }) {
+  const current =
+    mode === "foundation"
+      ? {
+          title: "Running a live foundation scan",
+          detail:
+            "Google's lab service is busy, so we are checking the public page and its response headers instead.",
+        }
+      : (loadingStages[stage] ?? loadingStages[3]);
 
   return (
     <div
@@ -545,7 +562,9 @@ function LoadingState({ stage }: { stage: number }) {
           />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="eyebrow">Live audit in progress</p>
+          <p className="eyebrow">
+            {mode === "foundation" ? "Reliable fallback in progress" : "Live audit in progress"}
+          </p>
           <h2 className="mt-3 text-2xl font-semibold">{current.title}</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{current.detail}</p>
         </div>
@@ -554,17 +573,21 @@ function LoadingState({ stage }: { stage: number }) {
       <div className="mt-8 h-1.5 overflow-hidden rounded-full bg-muted">
         <div
           className="h-full rounded-full gradient-brand transition-[width] duration-700"
-          style={{ width: `${((stage + 1) / loadingStages.length) * 100}%` }}
+          style={{
+            width: mode === "foundation" ? "88%" : `${((stage + 1) / loadingStages.length) * 100}%`,
+          }}
           role="progressbar"
           aria-label="Audit progress"
           aria-valuemin={1}
           aria-valuemax={loadingStages.length}
-          aria-valuenow={stage + 1}
+          aria-valuenow={mode === "foundation" ? 3.5 : stage + 1}
         />
       </div>
       <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
         <Clock3 aria-hidden="true" className="size-3.5" />
-        Fresh Lighthouse tests commonly take 30–60 seconds.
+        {mode === "foundation"
+          ? "This scan checks live HTML and headers; it will not invent a speed score."
+          : "Fresh Lighthouse tests commonly take 30–60 seconds."}
       </div>
     </div>
   );
@@ -785,22 +808,244 @@ function AuditResults({ report, onReset }: { report: AuditReport; onReset: () =>
   );
 }
 
+const scanCategories: SiteScanCategory[] = [
+  "Search",
+  "Accessibility",
+  "Technical",
+  "Trust & security",
+];
+
+const scanStatusDetails: Record<
+  SiteScanStatus,
+  {
+    label: string;
+    icon: typeof CheckCircle2;
+    iconClass: string;
+    surfaceClass: string;
+  }
+> = {
+  pass: {
+    label: "Passed",
+    icon: CheckCircle2,
+    iconClass: "text-emerald-600",
+    surfaceClass: "border-emerald-500/20 bg-emerald-500/5",
+  },
+  warning: {
+    label: "Review",
+    icon: CircleAlert,
+    iconClass: "text-amber-600",
+    surfaceClass: "border-amber-500/20 bg-amber-500/5",
+  },
+  fail: {
+    label: "Fix",
+    icon: XCircle,
+    iconClass: "text-red-600",
+    surfaceClass: "border-red-500/20 bg-red-500/5",
+  },
+};
+
+function FoundationScanResults({
+  report,
+  onReset,
+}: {
+  report: SiteScanReport;
+  onReset: () => void;
+}) {
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    resultsRef.current?.focus();
+  }, []);
+
+  return (
+    <div
+      ref={resultsRef}
+      tabIndex={-1}
+      className="animate-in fade-in slide-in-from-bottom-4 space-y-6 duration-700 outline-none motion-reduce:animate-none"
+    >
+      <section className="overflow-hidden rounded-[2rem] border border-border bg-card shadow-elevated">
+        <div className="border-b border-border bg-surface/30 p-6 md:p-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 text-xs font-medium text-emerald-700">
+                <CheckCircle2 aria-hidden="true" className="size-4" />
+                Live page scan complete
+              </div>
+              <h2 className="mt-3 text-2xl font-semibold md:text-3xl">
+                Your website foundation report
+              </h2>
+              <a
+                href={report.finalUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex max-w-full items-center gap-2 truncate text-sm text-brand-soft hover:text-foreground"
+              >
+                <Globe2 aria-hidden="true" className="size-4 shrink-0" />
+                <span className="truncate">{report.finalUrl}</span>
+                <ExternalLink aria-hidden="true" className="size-3.5 shrink-0" />
+              </a>
+            </div>
+            <Button type="button" variant="quiet" onClick={onReset}>
+              <RotateCcw aria-hidden="true" />
+              Audit another site
+            </Button>
+          </div>
+        </div>
+
+        <div className="grid gap-3 p-4 sm:grid-cols-3 sm:p-6 lg:p-8">
+          {(["pass", "warning", "fail"] as const).map((status) => {
+            const details = scanStatusDetails[status];
+            const Icon = details.icon;
+
+            return (
+              <article
+                key={status}
+                className={`rounded-[1.5rem] border p-5 ${details.surfaceClass}`}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <Icon aria-hidden="true" className={`size-5 ${details.iconClass}`} />
+                  <span className={`text-xs font-medium ${details.iconClass}`}>
+                    {details.label}
+                  </span>
+                </div>
+                <p className="mt-7 font-display text-4xl font-semibold tracking-tight">
+                  {report.summary[status]}
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {status === "pass"
+                    ? "checks passed"
+                    : status === "warning"
+                      ? "items to review"
+                      : "issues to fix"}
+                </p>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="border-t border-border px-6 py-5 text-xs leading-relaxed text-muted-foreground lg:px-8">
+          Google Lighthouse was unavailable, so this report uses a live read of the page HTML and
+          response headers. It does not estimate loading speed or invent a performance score.
+        </div>
+      </section>
+
+      <section
+        className="rounded-[2rem] border border-border bg-card p-6 md:p-8"
+        aria-labelledby="foundation-findings-title"
+      >
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="eyebrow">What the live page revealed</p>
+            <h2 id="foundation-findings-title" className="mt-2 text-2xl font-semibold">
+              Foundation checks by area
+            </h2>
+          </div>
+          <p className="max-w-sm text-xs leading-relaxed text-muted-foreground">
+            HTTP {report.httpStatus} · {Math.max(1, Math.round(report.htmlBytes / 1024))} KB HTML ·{" "}
+            {new Date(report.fetchedAt).toLocaleString()}
+          </p>
+        </div>
+
+        <div className="mt-7 grid gap-4 lg:grid-cols-2">
+          {scanCategories.map((category) => {
+            const checks = report.checks.filter((item) => item.category === category);
+
+            return (
+              <article
+                key={category}
+                className="overflow-hidden rounded-3xl border border-border bg-background/45"
+              >
+                <div className="flex items-center gap-3 border-b border-border px-5 py-4">
+                  <span className="grid size-9 place-items-center rounded-xl bg-primary/15 text-brand-soft">
+                    <FileSearch aria-hidden="true" className="size-4" />
+                  </span>
+                  <h3 className="font-semibold">{category}</h3>
+                </div>
+                <ul className="divide-y divide-border">
+                  {checks.map((item) => {
+                    const details = scanStatusDetails[item.status];
+                    const Icon = details.icon;
+
+                    return (
+                      <li key={item.id} className="flex gap-3 p-5">
+                        <Icon
+                          aria-hidden="true"
+                          className={`mt-0.5 size-5 shrink-0 ${details.iconClass}`}
+                        />
+                        <div>
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <h4 className="text-sm font-semibold">{item.label}</h4>
+                            <span
+                              className={`text-[0.68rem] font-semibold uppercase ${details.iconClass}`}
+                            >
+                              {details.label}
+                            </span>
+                          </div>
+                          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+                            {item.detail}
+                          </p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden rounded-[2rem] border border-brand-soft/25 bg-primary/10 p-7 md:p-10">
+        <div
+          aria-hidden="true"
+          className="absolute -right-20 -top-24 size-72 rounded-full bg-signal/10 blur-3xl"
+        />
+        <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div>
+            <p className="eyebrow">A useful signal, then a clear plan.</p>
+            <h2 className="mt-3 max-w-2xl text-2xl font-semibold md:text-3xl">
+              Let us turn these findings into business improvements.
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              We can pair this technical snapshot with a human review of speed, search visibility,
+              messaging and conversion paths.
+            </p>
+          </div>
+          <Button asChild variant="signal" size="xl">
+            <Link to="/book">
+              Review this with our team
+              <ArrowRight aria-hidden="true" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export function WebsiteAudit() {
   const inputId = useId();
   const hintId = useId();
   const errorId = useId();
+  const siteScan = useServerFn(runSiteScan);
   const controllerRef = useRef<AbortController | null>(null);
+  const activeRunRef = useRef(0);
   const mountedRef = useRef(true);
   const [website, setWebsite] = useState("");
   const [fieldError, setFieldError] = useState<string | null>(null);
   const [requestError, setRequestError] = useState<AuditError | null>(null);
   const [report, setReport] = useState<AuditReport | null>(null);
+  const [siteScanReport, setSiteScanReport] = useState<SiteScanReport | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadingStage, setLoadingStage] = useState(0);
+  const [loadingMode, setLoadingMode] = useState<"lighthouse" | "foundation">("lighthouse");
 
   useEffect(() => {
+    mountedRef.current = true;
+
     return () => {
       mountedRef.current = false;
+      activeRunRef.current += 1;
       controllerRef.current?.abort();
     };
   }, []);
@@ -818,12 +1063,18 @@ export function WebsiteAudit() {
       return;
     }
 
+    const runId = activeRunRef.current + 1;
+    activeRunRef.current = runId;
+    const isCurrentRun = () => mountedRef.current && activeRunRef.current === runId;
+
     setWebsite(normalizedUrl);
     setFieldError(null);
     setRequestError(null);
     setReport(null);
+    setSiteScanReport(null);
     setLoading(true);
     setLoadingStage(0);
+    setLoadingMode("lighthouse");
 
     controllerRef.current?.abort();
     const controller = new AbortController();
@@ -838,35 +1089,50 @@ export function WebsiteAudit() {
 
     try {
       const nextReport = await requestPageSpeedAudit(normalizedUrl, controller.signal);
-      if (mountedRef.current) setReport(nextReport);
+      if (isCurrentRun()) setReport(nextReport);
     } catch (error) {
-      if (!mountedRef.current) return;
+      if (!isCurrentRun()) return;
 
-      if (error instanceof DOMException && error.name === "AbortError") {
+      const lighthouseIssue =
+        error instanceof DOMException && error.name === "AbortError"
+          ? "Google did not finish the Lighthouse test within 75 seconds."
+          : error instanceof AuditRequestError
+            ? error.message
+            : "Google's live Lighthouse test could not be completed.";
+
+      stageTimers.forEach(window.clearTimeout);
+      window.clearTimeout(timeout);
+      setLoadingMode("foundation");
+      setLoadingStage(3);
+
+      try {
+        const nextSiteScan = await siteScan({ data: { url: normalizedUrl } });
+        if (isCurrentRun()) setSiteScanReport(nextSiteScan);
+      } catch (scanError) {
+        if (!isCurrentRun()) return;
+
+        const scanDetail =
+          scanError instanceof Error && scanError.message
+            ? ` The backup scan reported: ${scanError.message}`
+            : " The backup scan could not read the public page.";
         setRequestError({
-          title: "The audit took too long",
-          message:
-            "Google did not finish this test within 75 seconds. The site or audit service may be under heavy load. Please try again shortly.",
-        });
-      } else if (error instanceof AuditRequestError) {
-        setRequestError({ title: error.title, message: error.message });
-      } else {
-        setRequestError({
-          title: "The audit could not be completed",
-          message: "An unexpected error interrupted the live test. No scores have been generated.",
+          title: "We could not complete either live check",
+          message: `${lighthouseIssue}${scanDetail} Check that the page is public, then try again or book a manual review.`,
         });
       }
     } finally {
       stageTimers.forEach(window.clearTimeout);
       window.clearTimeout(timeout);
-      if (mountedRef.current) setLoading(false);
+      if (isCurrentRun()) setLoading(false);
     }
   }
 
   function resetAudit() {
+    activeRunRef.current += 1;
     controllerRef.current?.abort();
     setLoading(false);
     setReport(null);
+    setSiteScanReport(null);
     setRequestError(null);
     setFieldError(null);
     window.requestAnimationFrame(() => document.getElementById(inputId)?.focus());
@@ -874,7 +1140,7 @@ export function WebsiteAudit() {
 
   return (
     <div className="space-y-8">
-      {!report && !loading && !requestError && (
+      {!report && !siteScanReport && !loading && !requestError && (
         <div className="grid gap-5 lg:grid-cols-[1.3fr_0.7fr]">
           <section className="relative overflow-hidden rounded-[2rem] border border-brand-soft/25 bg-card p-6 shadow-elevated sm:p-8 md:p-10">
             <div
@@ -893,8 +1159,8 @@ export function WebsiteAudit() {
                 Run a free website health check
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
-                Enter any public page. We will request a fresh mobile Lighthouse report directly
-                from Google and show you exactly what it returns.
+                Enter any public page. We will try a fresh mobile Lighthouse report first, then use
+                our live foundation scan if Google's service is busy.
               </p>
 
               <form className="mt-8" onSubmit={runAudit} noValidate>
@@ -937,8 +1203,8 @@ export function WebsiteAudit() {
                   </Button>
                 </div>
                 <p id={hintId} className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                  No protocol needed—we will add HTTPS. The URL is sent to Google PageSpeed Insights
-                  for this one-time test.
+                  No protocol needed—we will add HTTPS. The URL is used only to run this one-time
+                  public website check.
                 </p>
                 {fieldError && (
                   <p
@@ -975,11 +1241,12 @@ export function WebsiteAudit() {
         </div>
       )}
 
-      {loading && <LoadingState stage={loadingStage} />}
+      {loading && <LoadingState stage={loadingStage} mode={loadingMode} />}
       {requestError && <ErrorState error={requestError} onRetry={resetAudit} />}
       {report && <AuditResults report={report} onReset={resetAudit} />}
+      {siteScanReport && <FoundationScanResults report={siteScanReport} onReset={resetAudit} />}
 
-      {!report && (
+      {!report && !siteScanReport && (
         <div className="flex flex-col gap-4 rounded-3xl border border-border bg-surface/20 p-5 text-xs leading-relaxed text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p className="flex max-w-2xl items-start gap-2">
             <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-brand-soft" />
