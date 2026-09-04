@@ -1,8 +1,3 @@
-import fintech from "@/assets/project-fintech.jpg";
-import fashion from "@/assets/project-fashion.jpg";
-import branding from "@/assets/project-branding.jpg";
-import hospitality from "@/assets/project-hospitality.jpg";
-
 export const services = [
   {
     slug: "website-design",
@@ -198,64 +193,122 @@ export const maintenancePlans = [
 
 export const projects = [
   {
-    title: "Kobopath Financial",
-    sector: "Fintech · Lagos",
-    service: "Website Design",
-    year: "2026",
-    image: fintech,
+    slug: "martins-investments",
+    title: "Martins Investments",
+    domain: "martinsinvestments.com",
+    url: "https://www.martinsinvestments.com/",
+    sector: "Investment Group",
+    service: "Brand & Corporate Website",
+    status: "Live",
+    image: "/case-studies/martins-investments.jpg",
+    imageAlt:
+      "Martins Investments corporate website with a dark editorial layout and gold typography",
     summary:
-      "A trust-forward marketing site and client dashboard shell for a lending platform serving SMEs across Lagos and Abuja.",
+      "A premium digital flagship for an independent group building and backing businesses across fashion, experiences and hospitality.",
     challenge:
-      "Explain a complex lending offer in plain language while giving business owners enough confidence to begin an application online.",
+      "Bring the group story and three distinct holdings into one credible system without flattening the character of each brand.",
     response:
-      "We simplified the information architecture, brought eligibility and repayment expectations forward, and created a calm visual system around the application journey.",
-    scope: ["Experience strategy", "UX and interface design", "Responsive development"],
-    metric: "+184% qualified leads",
+      "We shaped an image-led corporate experience with a clear group narrative, confident portfolio pathways and a restrained editorial design language.",
+    scope: [
+      "Digital strategy",
+      "UX & interface design",
+      "Content architecture",
+      "Responsive build",
+    ],
+    highlight: "3 holdings · 1 digital flagship",
+    result:
+      "The group now has one coherent home, with clear routes into RocDizWay, Roc*Parties and Roc*Away.",
+    featured: true,
   },
   {
-    title: "Adaeze Atelier",
-    sector: "Fashion Retail · Lekki",
-    service: "E-commerce Development",
-    year: "2025",
-    image: fashion,
+    slug: "orij-power",
+    title: "Orij Power",
+    domain: "orij-power.vercel.app",
+    url: "https://orij-power.vercel.app/",
+    sector: "Industrial Power",
+    service: "Catalogue & Lead-generation Website",
+    status: "Live",
+    image: "/case-studies/orij-power.jpg",
+    imageAlt:
+      "Orij Power industrial generator catalogue website with capacity filters and product photography",
     summary:
-      "A full commerce rebuild with local payment rails, size-guide tooling and same-day Lagos delivery routing.",
+      "A technical catalogue and enquiry platform for diesel generators serving homes, businesses and industrial installations in Nigeria.",
     challenge:
-      "Translate the confidence of the in-store experience online without making product discovery or checkout feel heavy on mobile.",
+      "Make a broad 12.5–2,000 kVA inventory easy to explore while keeping expert specification at the centre of the buying journey.",
     response:
-      "We paired editorial product storytelling with clearer sizing, local checkout options and delivery logic built around the way the operations team already worked.",
-    scope: ["Commerce UX", "Storefront development", "Payment and delivery setup"],
-    metric: "3.4x online revenue",
+      "We organised equipment by capacity, paired specifications with current photography, and built direct quote, call and WhatsApp routes instead of a misleading checkout flow.",
+    scope: ["Information architecture", "Catalogue UX", "Responsive build", "Enquiry journeys"],
+    highlight: "11 capacity groups · 17 product photos",
+    result:
+      "Buyers can compare photographed units, understand the ordering process and reach an engineer from one focused experience.",
+    featured: true,
   },
   {
-    title: "Ridgeline Logistics",
-    sector: "Logistics · Apapa",
-    service: "Digital Branding",
-    year: "2025",
-    image: branding,
+    slug: "delivar",
+    title: "Delivar",
+    domain: "delivar.vercel.app",
+    url: "https://delivar.vercel.app/",
+    sector: "Email Infrastructure",
+    service: "SaaS Product Design & Development",
+    status: "Live",
+    image: "/case-studies/delivar.jpg",
+    imageAlt:
+      "Delivar email deliverability platform with a navy interface and cyan product messaging",
     summary:
-      "A complete identity system — mark, palette, print and digital templates — for a haulage firm expanding nationwide.",
+      "A SaaS experience that turns DMARC and RUA reporting into clearer email-authentication signals and prioritised remediation.",
     challenge:
-      "Create a more credible national presence without losing the practical, dependable character customers already valued.",
+      "Make dense authentication data understandable and actionable before technical failures begin to hurt inbox placement.",
     response:
-      "We built a bold identity around movement and reliability, then translated it into a usable toolkit for vehicles, documents, sales material and digital channels.",
-    scope: ["Brand strategy", "Visual identity", "Campaign and operations toolkit"],
-    metric: "Full rebrand in 6 weeks",
+      "We centred the product story on inbox focus, authentication health, policy alignment and a prioritised fix queue, then connected it to a clear free-tier entry point.",
+    scope: ["Product strategy", "SaaS UX & UI", "Responsive application", "Onboarding & pricing"],
+    highlight: "DMARC signals → prioritised fixes",
+    result:
+      "A coherent journey from product education to account access, with complex infrastructure translated into action-led language.",
+    featured: true,
   },
   {
-    title: "The Marina House",
-    sector: "Hospitality · Victoria Island",
-    service: "Website Design",
-    year: "2026",
-    image: hospitality,
+    slug: "swiftredeem",
+    title: "SwiftRedeem",
+    domain: "swiftredeem.com",
+    url: "https://swiftredeem.com/",
+    sector: "Gift-card Services",
+    service: "Conversion-focused Website",
+    status: "Live",
+    image: "/case-studies/swift-redeem.jpg",
+    imageAlt: "SwiftRedeem website showing gift cards arranged above a mobile phone",
     summary:
-      "A booking-led hotel experience with live availability, curated suite storytelling and multi-currency rates.",
+      "A responsive brand website that gives customers a direct, confidence-building path from unused gift cards to redemption support.",
     challenge:
-      "Make direct booking feel as effortless and trustworthy as a third-party platform while preserving the hotel's distinctive atmosphere.",
+      "Turn a trust-sensitive service into a journey customers can understand quickly, with reassurance at each high-intent decision point.",
     response:
-      "We designed the experience around suites, availability and useful local detail, with a shorter booking journey and richer visual storytelling.",
-    scope: ["Content strategy", "Booking experience", "Responsive website build"],
-    metric: "+61% direct bookings",
+      "We created a clear value proposition, visible trust pillars, accepted-card coverage, FAQs and direct WhatsApp actions throughout the experience.",
+    scope: ["Website strategy", "UX & interface design", "Responsive build", "Conversion journeys"],
+    highlight: "Discovery → direct redemption support",
+    result:
+      "The finished site moves visitors from service discovery to a direct support channel with less uncertainty and fewer dead ends.",
+    featured: false,
+  },
+  {
+    slug: "s-trends",
+    title: "S-Trends",
+    domain: "strends.vercel.app",
+    url: "https://strends.vercel.app/",
+    sector: "Creator Intelligence",
+    service: "SaaS Product Design & Development",
+    status: "Live",
+    image: "/case-studies/s-trends.jpg",
+    imageAlt: "S-Trends dark SaaS landing page for country-specific X trend intelligence",
+    summary:
+      "A focused trend-intelligence workspace designed to help modern X creators discover country-level signals and act on them faster.",
+    challenge:
+      "Help creators move from noisy trend research to useful publishing decisions without stitching together a fragmented workflow.",
+    response:
+      "We built a dark-mode product journey around country selection, topic views, copy and sharing actions, account access and clearly separated Free and future Pro paths.",
+    scope: ["Product UX", "SaaS interface design", "Authentication flows", "Responsive build"],
+    highlight: "Country-level X trend discovery",
+    result:
+      "The experience connects acquisition, pricing and account access to a focused workspace for faster content decisions.",
+    featured: false,
   },
 ] as const;
 

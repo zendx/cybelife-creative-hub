@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { ArrowUpRight, CheckCircle2, Globe2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { BookingDialog } from "@/components/booking-dialog";
@@ -12,12 +13,12 @@ export const Route = createFileRoute("/work")({
       {
         name: "description",
         content:
-          "Explore websites, online stores and brand systems Cyberlife Digital has delivered for fintech, fashion, logistics and hospitality clients in Nigeria.",
+          "Explore live websites and digital products Cyberlife Digital has delivered across investment, industrial power, email infrastructure, consumer services and creator technology.",
       },
       { property: "og:title", content: "Our Work | Cyberlife Digital" },
       {
         property: "og:description",
-        content: "Selected projects across fintech, retail, logistics and hospitality in Nigeria.",
+        content: "Five live digital experiences, with the challenge and thinking behind each one.",
       },
     ],
   }),
@@ -31,13 +32,23 @@ function WorkPage() {
         <div className="mx-auto max-w-7xl px-5 py-20 sm:px-6 md:py-28">
           <p className="eyebrow">Case studies</p>
           <h1 className="mt-6 max-w-4xl text-5xl font-bold leading-[0.98] sm:text-6xl md:text-7xl">
-            Real problems. Thoughtful fixes.{" "}
-            <span className="text-gradient-brand">Measurable change.</span>
+            Real products. Clear thinking. <span className="text-gradient-brand">Live work.</span>
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-muted-foreground">
-            See what was getting in the way, how we approached it and what changed for businesses
-            across fintech, retail, logistics and hospitality.
+            Five very different briefs, shaped into focused digital experiences. Explore the
+            challenge and response behind each project, then open the finished work for yourself.
           </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <span className="rounded-full border border-primary/15 bg-white/75 px-4 py-2 text-xs font-semibold text-primary shadow-sm backdrop-blur">
+              05 selected launches
+            </span>
+            <span className="rounded-full border border-primary/15 bg-white/75 px-4 py-2 text-xs font-semibold text-foreground shadow-sm backdrop-blur">
+              Websites + SaaS products
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white/75 px-4 py-2 text-xs font-semibold text-foreground shadow-sm backdrop-blur">
+              <span className="size-1.5 rounded-full bg-[#34b26f]" /> Every project is live
+            </span>
+          </div>
         </div>
       </section>
 
@@ -48,26 +59,51 @@ function WorkPage() {
               <Reveal
                 as="article"
                 key={project.title}
-                className={`grid items-stretch overflow-hidden rounded-[2rem] border border-border bg-white shadow-sm lg:grid-cols-2 ${
+                id={project.slug}
+                className={`scroll-mt-28 grid items-stretch overflow-hidden rounded-[2rem] border border-border bg-white shadow-sm lg:grid-cols-2 ${
                   index % 2 === 1 ? "lg:[&>figure]:order-2" : ""
                 }`}
               >
-                <figure className="min-h-[340px] overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={`${project.title} — ${project.service} project by Cyberlife Digital`}
-                    loading="lazy"
-                    width={1200}
-                    height={900}
-                    className="h-full min-h-[340px] w-full object-cover transition-transform duration-700 hover:scale-[1.035]"
-                  />
+                <figure className="relative flex min-h-[360px] items-center overflow-hidden bg-[#12182c] p-4 sm:p-7 lg:min-h-full lg:p-9">
+                  <div className="pointer-events-none absolute -left-16 top-8 size-64 rounded-full bg-primary/25 blur-3xl" />
+                  <div className="pointer-events-none absolute -bottom-20 right-0 size-64 rounded-full bg-signal/15 blur-3xl" />
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Open ${project.title} live website`}
+                    className="group relative z-10 w-full overflow-hidden rounded-xl border border-white/15 bg-white shadow-2xl transition-transform duration-500 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                  >
+                    <div className="flex h-10 items-center gap-3 border-b border-black/8 bg-white px-4">
+                      <div className="flex gap-1.5" aria-hidden="true">
+                        <span className="size-2 rounded-full bg-[#ff6a53]" />
+                        <span className="size-2 rounded-full bg-[#ffd85c]" />
+                        <span className="size-2 rounded-full bg-[#68c978]" />
+                      </div>
+                      <span className="min-w-0 flex-1 truncate text-center text-[10px] font-semibold text-slate-500">
+                        {project.domain}
+                      </span>
+                      <ArrowUpRight className="size-3.5 text-slate-400 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </div>
+                    <img
+                      src={project.image}
+                      alt={project.imageAlt}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      width={1440}
+                      height={1000}
+                      className="aspect-[16/10] w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.018]"
+                    />
+                  </a>
+                  <figcaption className="sr-only">
+                    Live homepage preview for {project.title}
+                  </figcaption>
                 </figure>
                 <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
                   <p className="eyebrow">
-                    {project.sector} · {project.year}
+                    {project.sector} · {project.status}
                   </p>
                   <h2 className="mt-4 text-3xl font-bold sm:text-4xl">{project.title}</h2>
-                  <p className="mt-2 text-sm text-brand-soft">{project.service}</p>
+                  <p className="mt-2 text-sm font-semibold text-brand-soft">{project.service}</p>
                   <p className="mt-5 max-w-lg leading-relaxed text-muted-foreground">
                     {project.summary}
                   </p>
@@ -99,13 +135,28 @@ function WorkPage() {
                       </span>
                     ))}
                   </div>
-                  <div className="mt-6 flex items-center gap-3">
-                    <span className="text-xs font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                      Outcome
+                  <div className="mt-7 rounded-2xl border border-primary/10 bg-[#f2f4ff] p-5">
+                    <div className="flex gap-3">
+                      <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.12em] text-primary">
+                          Delivered outcome
+                        </p>
+                        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                          {project.result}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-7 flex flex-wrap items-center gap-4">
+                    <Button asChild>
+                      <a href={project.url} target="_blank" rel="noopener noreferrer">
+                        Visit live project <ArrowUpRight />
+                      </a>
+                    </Button>
+                    <span className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+                      <Globe2 className="size-4 text-brand-soft" /> {project.highlight}
                     </span>
-                    <p className="inline-flex rounded-full bg-primary px-4 py-2 text-sm font-bold text-white">
-                      {project.metric}
-                    </p>
                   </div>
                 </div>
               </Reveal>
@@ -115,7 +166,7 @@ function WorkPage() {
           <Reveal className="mt-20 grid gap-px overflow-hidden rounded-[1.75rem] border border-border bg-border md:grid-cols-3">
             <div className="bg-card p-8">
               <p className="eyebrow">What we look for</p>
-              <h2 className="mt-4 text-2xl font-semibold">Evidence beyond the reveal.</h2>
+              <h2 className="mt-4 text-2xl font-semibold">Useful beyond the reveal.</h2>
             </div>
             <div className="bg-card p-8">
               <h3 className="text-lg font-semibold">Customer movement</h3>

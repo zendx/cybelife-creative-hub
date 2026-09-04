@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
   ArrowUpRight,
-  BadgeCheck,
   Check,
   Gauge,
   Globe2,
@@ -62,6 +61,8 @@ const cardStyles = [
   "bg-[#ece8ff]",
   "bg-[#fff0b8]",
 ] as const;
+
+const featuredProject = projects.find((project) => project.featured) ?? projects[0];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -147,41 +148,48 @@ function Home() {
                   <span className="size-2 rounded-full bg-[#ffd85c]" />
                   <span className="size-2 rounded-full bg-[#7edc86]" />
                 </div>
-                <span className="rounded-full bg-white/8 px-4 py-1">cyberlife.digital / work</span>
+                <span className="rounded-full bg-white/8 px-4 py-1">{featuredProject.domain}</span>
                 <Sparkles className="size-3.5 text-[#ffd85c]" />
               </div>
-              <div className="relative overflow-hidden rounded-[1.35rem] bg-[#f1f3ff]">
+              <Link
+                to="/work"
+                hash={featuredProject.slug}
+                aria-label={`Read the ${featuredProject.title} case study`}
+                className="group relative block overflow-hidden rounded-[1.35rem] bg-[#f1f3ff] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
                 <img
-                  src={projects[1].image}
-                  alt="Responsive e-commerce website and mobile experience"
-                  width={1200}
-                  height={900}
-                  className="aspect-[5/4] w-full object-cover"
+                  src={featuredProject.image}
+                  alt={featuredProject.imageAlt}
+                  width={1440}
+                  height={1000}
+                  className="aspect-[5/4] w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#11162b] via-[#11162b]/80 to-transparent px-6 pb-6 pt-20 text-white sm:px-8 sm:pb-8">
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">
-                    E-commerce experience
+                    Featured live project · {featuredProject.service}
                   </p>
                   <div className="mt-2 flex items-end justify-between gap-4">
-                    <p className="font-display text-xl font-semibold sm:text-2xl">Adaeze Atelier</p>
+                    <p className="font-display text-xl font-semibold sm:text-2xl">
+                      {featuredProject.title}
+                    </p>
                     <span className="rounded-full bg-white px-3 py-1.5 text-xs font-bold text-[#171d33]">
-                      3.4× revenue
+                      View case study
                     </span>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
 
             <div className="animate-float-card absolute -left-3 top-14 rounded-2xl border border-white/80 bg-white/95 p-3.5 shadow-xl backdrop-blur sm:-left-14 sm:p-4">
               <div className="flex items-center gap-3">
                 <span className="grid size-10 place-items-center rounded-xl bg-[#e6f7d2] text-[#27651f]">
-                  <Gauge className="size-5" />
+                  <Globe2 className="size-5" />
                 </span>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                    Page speed
+                    Project status
                   </p>
-                  <p className="font-display text-lg font-bold">92 / 100</p>
+                  <p className="font-display text-lg font-bold">Live & responsive</p>
                 </div>
               </div>
             </div>
@@ -189,13 +197,13 @@ function Home() {
             <div className="animate-float-card absolute -bottom-7 right-2 rounded-2xl border border-white/80 bg-white/95 p-3.5 shadow-xl backdrop-blur [animation-delay:-2.5s] sm:-right-8 sm:p-4">
               <div className="flex items-center gap-3">
                 <span className="grid size-10 place-items-center rounded-xl bg-[#ffe1d8] text-[#c43e26]">
-                  <MapPin className="size-5" />
+                  <MonitorSmartphone className="size-5" />
                 </span>
                 <div>
-                  <div className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
-                    Google profile <BadgeCheck className="size-3 text-primary" />
-                  </div>
-                  <p className="font-display text-sm font-bold">Ready to be discovered</p>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                    Selected work
+                  </p>
+                  <p className="font-display text-sm font-bold">5 real-world launches</p>
                 </div>
               </div>
             </div>
@@ -386,57 +394,86 @@ function Home() {
         </Reveal>
 
         <div className="mt-14 space-y-6">
-          {projects.slice(0, 3).map((project, index) => (
-            <Reveal
-              as="article"
-              key={project.title}
-              className="group grid overflow-hidden rounded-[2rem] border border-border bg-white shadow-sm lg:grid-cols-[0.95fr_1.05fr]"
-            >
-              <div
-                className={`relative min-h-[320px] overflow-hidden ${index % 2 === 1 ? "lg:order-2" : ""}`}
+          {projects
+            .filter((project) => project.featured)
+            .map((project, index) => (
+              <Reveal
+                as="article"
+                key={project.title}
+                className="group grid overflow-hidden rounded-[2rem] border border-border bg-white shadow-sm lg:grid-cols-[0.95fr_1.05fr]"
               >
-                <img
-                  src={project.image}
-                  alt={`${project.title} ${project.service} case study`}
-                  loading="lazy"
-                  width={1200}
-                  height={900}
-                  className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
-                />
-                <div className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold shadow-sm backdrop-blur">
-                  {project.sector}
-                </div>
-              </div>
-              <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
-                <div className="flex items-center justify-between gap-4">
-                  <p className="eyebrow">{project.service}</p>
-                  <span className="rounded-full bg-surface px-3 py-1.5 text-xs font-bold text-primary">
-                    {project.metric}
-                  </span>
-                </div>
-                <h3 className="mt-5 text-3xl font-bold sm:text-4xl">{project.title}</h3>
-                <p className="mt-4 text-sm leading-6 text-muted-foreground">{project.summary}</p>
-                <div className="mt-7 grid gap-5 border-t border-border pt-6 sm:grid-cols-2">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-signal">
-                      The problem
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                      {project.challenge}
-                    </p>
+                <Link
+                  to="/work"
+                  hash={project.slug}
+                  aria-label={`Read the ${project.title} case study`}
+                  className={`relative min-h-[320px] overflow-hidden ${index % 2 === 1 ? "lg:order-2" : ""}`}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.imageAlt}
+                    loading="lazy"
+                    width={1440}
+                    height={1000}
+                    className="absolute inset-0 size-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.025]"
+                  />
+                  <div className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold shadow-sm backdrop-blur">
+                    {project.sector}
                   </div>
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.12em] text-primary">
-                      What we changed
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                      {project.response}
-                    </p>
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-[#11162b]/90 to-transparent px-5 pb-5 pt-20 text-white">
+                    <span className="text-xs font-semibold">{project.domain}</span>
+                    <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+                </Link>
+                <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-12">
+                  <div className="flex items-center justify-between gap-4">
+                    <p className="eyebrow">{project.service}</p>
+                    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#e8f7ee] px-3 py-1.5 text-xs font-bold text-[#237547]">
+                      <span className="size-1.5 rounded-full bg-[#34b26f]" /> {project.status}
+                    </span>
+                  </div>
+                  <h3 className="mt-5 text-3xl font-bold sm:text-4xl">{project.title}</h3>
+                  <p className="mt-4 text-sm leading-6 text-muted-foreground">{project.summary}</p>
+                  <div className="mt-7 grid gap-5 border-t border-border pt-6 sm:grid-cols-2">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-signal">
+                        The problem
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                        {project.challenge}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-primary">
+                        What we changed
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                        {project.response}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="mt-6 inline-flex w-fit rounded-full bg-surface px-3.5 py-2 text-xs font-semibold text-primary">
+                    {project.highlight}
+                  </p>
+                  <div className="mt-7 flex flex-wrap items-center gap-5">
+                    <Link
+                      to="/work"
+                      hash={project.slug}
+                      className="inline-flex items-center gap-2 text-sm font-bold text-primary"
+                    >
+                      Read case study <ArrowRight className="size-4" />
+                    </Link>
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      Visit live site <ArrowUpRight className="size-4" />
+                    </a>
                   </div>
                 </div>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            ))}
         </div>
       </section>
 
