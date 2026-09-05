@@ -1,3 +1,4 @@
+import { CarePlans } from "@/components/care-plans";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -18,7 +19,7 @@ import {
 import { BookingDialog } from "@/components/booking-dialog";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
-import { maintenancePlans, services } from "@/data/site";
+import { services } from "@/data/site";
 
 const serviceIcons: Record<string, LucideIcon> = {
   "website-design": MonitorSmartphone,
@@ -44,7 +45,7 @@ const serviceFaqs = [
   {
     question: "How are maintenance plans priced?",
     answer:
-      "We quote around the platform, update frequency, response time and level of development support you need. That keeps the plan useful instead of padding it with services you will not use.",
+      "Basic is ₦300,000 per month, Standard is ₦850,000 per month, and Premium is ₦1,550,000 per month. Annual billing saves 15% on all three plans. Visit our website maintenance page to compare features and submit your requirements.",
   },
   {
     question: "What happens after launch?",
@@ -212,17 +213,27 @@ function ServicesPage() {
                         {service.from}
                       </p>
                     </div>
-                    <BookingDialog
-                      initialService={service.title}
-                      trigger={
-                        <button
-                          className={`grid size-11 place-items-center rounded-full transition-transform hover:-translate-y-0.5 ${index === 0 ? "bg-white text-primary" : "bg-foreground text-white"}`}
-                          aria-label={`Ask about ${service.title}`}
-                        >
-                          <ArrowUpRight className="size-4" />
-                        </button>
-                      }
-                    />
+                    {service.slug === "website-maintenance" ? (
+                      <Link
+                        to="/website-maintenance"
+                        className="grid size-11 place-items-center rounded-full bg-foreground text-white"
+                        aria-label="Explore website maintenance plans"
+                      >
+                        <ArrowUpRight className="size-4" />
+                      </Link>
+                    ) : (
+                      <BookingDialog
+                        initialService={service.title}
+                        trigger={
+                          <button
+                            className={`grid size-11 place-items-center rounded-full transition-transform hover:-translate-y-0.5 ${index === 0 ? "bg-white text-primary" : "bg-foreground text-white"}`}
+                            aria-label={`Ask about ${service.title}`}
+                          >
+                            <ArrowUpRight className="size-4" />
+                          </button>
+                        }
+                      />
+                    )}
                   </div>
                 </div>
               </Reveal>
@@ -299,72 +310,12 @@ function ServicesPage() {
             The right level of care for the website you run.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl leading-7 text-muted-foreground">
-            Pricing is quoted after a short website review, so the plan reflects your platform,
-            update volume and response requirements.
+            Compare Basic, Standard and Premium plans, starting at ₦300,000 per month. Save 15% when
+            you choose annual billing.
           </p>
         </Reveal>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-3">
-          {maintenancePlans.map((plan, index) => (
-            <Reveal
-              as="article"
-              delay={index * 80}
-              key={plan.name}
-              className={`flex flex-col rounded-[1.75rem] border p-7 sm:p-8 ${
-                index === 1
-                  ? "border-primary bg-primary text-white shadow-elevated lg:-translate-y-3"
-                  : "border-border bg-white"
-              }`}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p
-                    className={`text-xs font-bold uppercase tracking-[0.14em] ${index === 1 ? "text-white/50" : "text-muted-foreground"}`}
-                  >
-                    Care level 0{index + 1}
-                  </p>
-                  <h3 className="mt-4 text-2xl font-bold">{plan.name}</h3>
-                </div>
-                {index === 1 && (
-                  <span className="rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em]">
-                    Popular
-                  </span>
-                )}
-              </div>
-              <p
-                className={`mt-4 text-sm leading-6 ${index === 1 ? "text-white/65" : "text-muted-foreground"}`}
-              >
-                {plan.bestFor}
-              </p>
-              <ul className="mt-7 flex-1 space-y-3">
-                {plan.features.map((feature) => (
-                  <li
-                    key={feature}
-                    className={`flex items-start gap-3 text-sm ${index === 1 ? "text-white/80" : "text-muted-foreground"}`}
-                  >
-                    <Check
-                      className={`mt-0.5 size-4 shrink-0 ${index === 1 ? "text-[#ffb29f]" : "text-primary"}`}
-                    />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <div
-                className={`mt-8 border-t pt-6 ${index === 1 ? "border-white/15" : "border-border"}`}
-              >
-                <p className="font-display text-lg font-bold">{plan.price}</p>
-                <BookingDialog
-                  initialService="Website Maintenance & Support"
-                  trigger={
-                    <Button variant={index === 1 ? "signal" : "quiet"} className="mt-5 w-full">
-                      Request this quote <ArrowUpRight />
-                    </Button>
-                  }
-                />
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <CarePlans />
       </section>
 
       <section className="border-t border-border bg-white">

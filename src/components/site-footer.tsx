@@ -30,13 +30,18 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/35">
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/60">
               Services
             </h3>
             <ul className="mt-5 space-y-3 text-sm text-white/60">
               {services.slice(0, 4).map((service) => (
                 <li key={service.slug}>
-                  <Link to="/services" className="transition-colors hover:text-white">
+                  <Link
+                    to={
+                      service.slug === "website-maintenance" ? "/website-maintenance" : "/services"
+                    }
+                    className="transition-colors hover:text-white"
+                  >
                     {service.title}
                   </Link>
                 </li>
@@ -45,13 +50,18 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/35">
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/60">
               Grow & care
             </h3>
             <ul className="mt-5 space-y-3 text-sm text-white/60">
               {services.slice(4).map((service) => (
                 <li key={service.slug}>
-                  <Link to="/services" className="transition-colors hover:text-white">
+                  <Link
+                    to={
+                      service.slug === "website-maintenance" ? "/website-maintenance" : "/services"
+                    }
+                    className="transition-colors hover:text-white"
+                  >
                     {service.title}
                   </Link>
                 </li>
@@ -65,17 +75,22 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/35">
+            <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-white/60">
               Talk to us
             </h3>
             <ul className="mt-5 space-y-4 text-sm text-white/60">
               <li>
                 <a
-                  href="mailto:hello@cyberlifedigital.ng"
+                  href="mailto:hello@cyberlifedigital.com"
                   className="flex items-start gap-2.5 transition-colors hover:text-white"
                 >
                   <Mail className="mt-0.5 size-4 shrink-0 text-[#ff8a72]" />
-                  hello@cyberlifedigital.ng
+                  hello@cyberlifedigital.com
+                </a>
+              </li>
+              <li>
+                <a href="tel:+2348031975415" className="transition-colors hover:text-white">
+                  +234 803 197 5415
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
@@ -94,7 +109,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-7 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-3 border-t border-white/10 pt-7 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Cyberlife Digital. All rights reserved.</p>
           <p>Strategy · Design · Development · Growth</p>
         </div>

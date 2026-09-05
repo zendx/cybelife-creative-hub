@@ -2,9 +2,14 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { handleEnquiry } from "./lib/enquiries.server";
+import { secureResponse } from "./lib/security.server";
 
 type ServerEntry = {
-  fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
+  fetch: (
+    request: Request,
+    options: { context: { nonce: string } },
+  ) => Promise<Response> | Response;
 };
 
 let serverEntryPromise: Promise<ServerEntry> | undefined;
@@ -46,16 +51,36 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const nonce = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(24))));
+    const protect = (response: Response) => secureResponse(response, request, nonce);
     try {
+      const url = new URL(request.url);
+      if (
+        ["cyberlifedigital.ng", "www.cyberlifedigital.ng", "www.cyberlifedigital.com"].includes(
+          url.hostname,
+        ) ||
+        (url.hostname === "cyberlifedigital.com" && url.protocol === "http:")
+      ) {
+        url.protocol = "https:";
+        url.host = "cyberlifedigital.com";
+        return protect(Response.redirect(url, 308));
+      }
+      if (url.pathname === "/api/enquiries") return protect(await handleEnquiry(request, env));
       const handler = await getServerEntry();
-      const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const requestHeaders = new Headers(request.headers);
+      requestHeaders.set("x-cyberlife-csp-nonce", nonce);
+      const response = await handler.fetch(new Request(request, { headers: requestHeaders }), {
+        context: { nonce },
+      });
+      return protect(await normalizeCatastrophicSsrResponse(response));
     } catch (error) {
       console.error(error);
-      return new Response(renderErrorPage(), {
-        status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
-      });
+      return protect(
+        new Response(renderErrorPage(), {
+          status: 500,
+          headers: { "content-type": "text/html; charset=utf-8" },
+        }),
+      );
     }
   },
 };

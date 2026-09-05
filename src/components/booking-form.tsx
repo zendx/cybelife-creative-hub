@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 import { format } from "date-fns";
 import { CalendarCheck2, Clock } from "lucide-react";
 import { toast } from "sonner";
@@ -10,8 +10,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { services } from "@/data/site";
+import { contactMethods, meetingTimes } from "@/lib/enquiry-schema";
+import { submitEnquiry } from "@/lib/submit-enquiry";
+import { Link } from "@tanstack/react-router";
 
-const times = ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00"];
+const times = meetingTimes;
 
 function isUnavailable(date: Date) {
   const today = new Date();
@@ -27,13 +30,19 @@ export function BookingForm({
   onDone?: () => void;
   initialService?: string;
 }) {
+  const fieldId = useId();
   const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState<string>();
   const [service, setService] = useState<string>(initialService ?? services[0].title);
   const [submitting, setSubmitting] = useState(false);
+  const [methods, setMethods] = useState<string[]>(["Email"]);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting) return;
+    setError("");
+    const formElement = event.currentTarget;
     const form = new FormData(event.currentTarget);
     const name = String(form.get("name") ?? "").trim();
     const email = String(form.get("email") ?? "").trim();
@@ -48,17 +57,42 @@ export function BookingForm({
     }
 
     setSubmitting(true);
-    window.setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await submitEnquiry({
+        ...Object.fromEntries(form),
+        kind: "project",
+        name,
+        email,
+        service,
+        date: format(date, "yyyy-MM-dd"),
+        time,
+        contactMethods: methods,
+      });
       toast.success(`Meeting requested for ${format(date, "EEEE, d MMM yyyy")} at ${time} WAT`, {
         description: "We'll confirm by email within one business day.",
       });
+      formElement.reset();
+      setDate(undefined);
+      setTime(undefined);
+      setMethods(["Email"]);
       onDone?.();
-    }, 600);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Please try again or email cyberlifeng@gmail.com.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="grid gap-8 lg:grid-cols-[auto_1fr]">
+      <div className="hidden" aria-hidden="true">
+        <label>
+          Leave this empty
+          <input name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
       <div className="rounded-lg border border-border bg-surface/60 p-4">
         <p className="eyebrow mb-3">Choose a date</p>
         <Calendar
@@ -82,6 +116,7 @@ export function BookingForm({
                 key={t}
                 type="button"
                 onClick={() => setTime(t)}
+                aria-pressed={time === t}
                 className={cn(
                   "rounded-md border px-3.5 py-2 text-sm transition-colors",
                   time === t
@@ -98,52 +133,138 @@ export function BookingForm({
         <div>
           <p className="eyebrow mb-3">What do you need?</p>
           <div className="flex flex-wrap gap-2">
-            {services.map((s) => (
-              <button
-                key={s.slug}
-                type="button"
-                onClick={() => setService(s.title)}
-                className={cn(
-                  "rounded-md border px-3.5 py-2 text-sm transition-colors",
-                  service === s.title
-                    ? "border-brand-soft bg-primary/25 text-foreground"
-                    : "border-border bg-surface/50 text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {s.title}
-              </button>
-            ))}
+            {services
+              .filter((s) => s.slug !== "website-maintenance")
+              .map((s) => (
+                <button
+                  key={s.slug}
+                  type="button"
+                  onClick={() => setService(s.title)}
+                  aria-pressed={service === s.title}
+                  className={cn(
+                    "rounded-md border px-3.5 py-2 text-sm transition-colors",
+                    service === s.title
+                      ? "border-brand-soft bg-primary/25 text-foreground"
+                      : "border-border bg-surface/50 text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {s.title}
+                </button>
+              ))}
           </div>
+          <Link
+            to="/website-maintenance"
+            className="mt-3 inline-block text-sm font-semibold text-primary"
+          >
+            Looking for ongoing website care? Explore maintenance plans.
+          </Link>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="name">Full name</Label>
-            <Input id="name" name="name" placeholder="Amara Okafor" />
+            <Label htmlFor={`${fieldId}-name`}>Full name</Label>
+            <Input
+              id={`${fieldId}-name`}
+              name="name"
+              placeholder="Amara Okafor"
+              autoComplete="name"
+              required
+              maxLength={150}
+            />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Work email</Label>
-            <Input id="email" name="email" type="email" placeholder="you@company.com" />
+            <Label htmlFor={`${fieldId}-email`}>Work email</Label>
+            <Input
+              id={`${fieldId}-email`}
+              name="email"
+              type="email"
+              placeholder="you@company.com"
+              autoComplete="email"
+              required
+              maxLength={254}
+            />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="company">Company</Label>
-            <Input id="company" name="company" placeholder="Company name" />
+            <Label htmlFor={`${fieldId}-company`}>Company</Label>
+            <Input
+              id={`${fieldId}-company`}
+              name="company"
+              placeholder="Company name"
+              autoComplete="organization"
+              required
+              maxLength={150}
+            />
           </div>
           <div className="space-y-2 sm:col-span-2">
-            <Label htmlFor="brief">Project brief</Label>
+            <Label htmlFor={`${fieldId}-brief`}>Project brief</Label>
             <Textarea
-              id="brief"
+              id={`${fieldId}-brief`}
               name="brief"
               rows={3}
+              required
+              minLength={10}
+              maxLength={5000}
               placeholder="Tell us about your business and what you want to launch."
             />
           </div>
         </div>
 
+        <fieldset>
+          <legend className="text-sm font-semibold">How would you like us to contact you?</legend>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Choose all that work for you. Meeting links will be arranged after confirmation.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            {contactMethods.map((method) => (
+              <label
+                key={method}
+                className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-sm ${methods.includes(method) ? "border-primary bg-primary/5" : "border-border"}`}
+              >
+                <input
+                  type="checkbox"
+                  name="contactMethods"
+                  value={method}
+                  className="size-4 accent-primary"
+                  checked={methods.includes(method)}
+                  onChange={(event) =>
+                    setMethods((current) =>
+                      event.target.checked
+                        ? [...current, method]
+                        : current.filter((item) => item !== method),
+                    )
+                  }
+                />
+                {method}
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        {methods.some((method) => method === "Call" || method === "WhatsApp") && (
+          <div className="space-y-2">
+            <Label htmlFor={`${fieldId}-project-phone`}>Phone / WhatsApp number</Label>
+            <Input
+              id={`${fieldId}-project-phone`}
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              placeholder="+234…"
+              required
+              maxLength={40}
+            />
+          </div>
+        )}
+        {error && (
+          <p
+            role="alert"
+            className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive"
+          >
+            {error}
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-4">
           <Button type="submit" variant="signal" size="lg" disabled={submitting}>
             <CalendarCheck2 />
-            {submitting ? "Booking…" : "Confirm meeting"}
+            {submitting ? "Sending…" : "Request meeting"}
           </Button>
           <p className="text-xs text-muted-foreground">
             {date && time

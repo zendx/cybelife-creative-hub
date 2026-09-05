@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -14,6 +15,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Toaster } from "@/components/ui/sonner";
+import socialImage from "@/assets/hero-studio.jpg";
 
 function NotFoundComponent() {
   return (
@@ -88,7 +90,44 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "Cyberlife Digital" },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Cyberlife Digital" },
+      { property: "og:locale", content: "en_NG" },
+      { property: "og:image", content: `https://cyberlifedigital.com${socialImage}` },
+      { property: "og:image:alt", content: "Cyberlife Digital creative studio" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `https://cyberlifedigital.com${socialImage}` },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://cyberlifedigital.com/#organization",
+              name: "Cyberlife Digital",
+              url: "https://cyberlifedigital.com",
+              logo: "https://cyberlifedigital.com/favicon.png",
+              email: "hello@cyberlifedigital.com",
+              telephone: "+2348031975415",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Yaba",
+                addressRegion: "Lagos",
+                addressCountry: "NG",
+              },
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://cyberlifedigital.com/#website",
+              name: "Cyberlife Digital",
+              url: "https://cyberlifedigital.com",
+              publisher: { "@id": "https://cyberlifedigital.com/#organization" },
+            },
+          ],
+        }),
+      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -108,10 +147,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const router = useRouter();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const canonical = `https://cyberlifedigital.com${pathname === "/" ? "/" : pathname.replace(/\/$/, "")}`;
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        {router.options.ssr?.nonce && (
+          <meta property="csp-nonce" content={router.options.ssr.nonce} />
+        )}
+        <link rel="canonical" href={canonical} />
+        <meta property="og:url" content={canonical} />
       </head>
       <body>
         {children}
@@ -127,8 +174,14 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:p-4 focus:text-primary"
+        >
+          Skip to main content
+        </a>
         <SiteHeader />
-        <main className="flex-1">
+        <main id="main-content" className="flex-1" tabIndex={-1}>
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>

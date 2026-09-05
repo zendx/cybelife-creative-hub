@@ -1,3 +1,4 @@
+import { CarePlans } from "@/components/care-plans";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -20,7 +21,7 @@ import { BookingDialog } from "@/components/booking-dialog";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/data/blog";
-import { maintenancePlans, process, projects, services, stats } from "@/data/site";
+import { process, projects, services, stats } from "@/data/site";
 
 const serviceIcons: Record<string, LucideIcon> = {
   "website-design": MonitorSmartphone,
@@ -487,62 +488,15 @@ function Home() {
               </h2>
             </div>
             <p className="max-w-xl text-lg leading-8 text-muted-foreground lg:justify-self-end">
-              Choose a maintenance level that fits how important and active your website is. Every
-              plan is quoted around your platform, update volume and response needs.
+              Give your website dependable care with Basic, Standard or Premium support. Choose
+              monthly billing or save 15% with an annual plan.
             </p>
           </Reveal>
 
-          <div className="mt-12 grid gap-4 lg:grid-cols-3">
-            {maintenancePlans.map((plan, index) => (
-              <Reveal
-                as="article"
-                delay={index * 80}
-                key={plan.name}
-                className={`relative rounded-[1.75rem] border p-7 sm:p-8 ${
-                  index === 1
-                    ? "border-primary bg-primary text-white shadow-xl"
-                    : "border-border bg-white"
-                }`}
-              >
-                {index === 1 && (
-                  <span className="absolute right-5 top-5 rounded-full bg-white/15 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em]">
-                    Most flexible
-                  </span>
-                )}
-                <p
-                  className={`text-xs font-bold uppercase tracking-[0.14em] ${index === 1 ? "text-white/55" : "text-muted-foreground"}`}
-                >
-                  Plan 0{index + 1}
-                </p>
-                <h3 className="mt-5 text-2xl font-bold">{plan.name}</h3>
-                <p
-                  className={`mt-3 text-sm leading-6 ${index === 1 ? "text-white/65" : "text-muted-foreground"}`}
-                >
-                  {plan.bestFor}
-                </p>
-                <ul className="mt-7 space-y-3">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3 text-sm">
-                      <Check
-                        className={`mt-0.5 size-4 shrink-0 ${index === 1 ? "text-[#ffb29f]" : "text-primary"}`}
-                      />
-                      <span className={index === 1 ? "text-white/80" : "text-muted-foreground"}>
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <div
-                  className={`mt-8 border-t pt-6 ${index === 1 ? "border-white/15" : "border-border"}`}
-                >
-                  <p className="font-display text-lg font-bold">{plan.price}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <CarePlans />
           <Reveal className="mt-9 flex justify-center">
             <Button size="lg" asChild>
-              <Link to="/services">
+              <Link to="/website-maintenance">
                 Compare support options <ArrowRight />
               </Link>
             </Button>

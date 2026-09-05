@@ -7,6 +7,7 @@ import { BookingDialog } from "@/components/booking-dialog";
 
 const nav = [
   { to: "/services", label: "Services" },
+  { to: "/website-maintenance", label: "Website care" },
   { to: "/work", label: "Case studies" },
   { to: "/about", label: "About" },
   { to: "/blog", label: "Insights" },
@@ -31,7 +32,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav aria-label="Primary navigation" className="hidden items-center gap-7 lg:flex">
+        <nav aria-label="Primary navigation" className="hidden items-center gap-5 xl:gap-7 lg:flex">
           {nav.map((item) => (
             <Link
               key={item.to}

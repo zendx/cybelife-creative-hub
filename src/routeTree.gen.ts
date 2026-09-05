@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as BookRouteImport } from './routes/book'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as WebsiteMaintenanceRouteImport } from './routes/website-maintenance'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
@@ -43,6 +44,11 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WebsiteMaintenanceRoute = WebsiteMaintenanceRouteImport.update({
+  id: '/website-maintenance',
+  path: '/website-maintenance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
   path: '/work',
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/audit': typeof AuditRoute
   '/book': typeof BookRoute
   '/services': typeof ServicesRoute
+  '/website-maintenance': typeof WebsiteMaintenanceRoute
   '/work': typeof WorkRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/audit': typeof AuditRoute
   '/book': typeof BookRoute
   '/services': typeof ServicesRoute
+  '/website-maintenance': typeof WebsiteMaintenanceRoute
   '/work': typeof WorkRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/audit': typeof AuditRoute
   '/book': typeof BookRoute
   '/services': typeof ServicesRoute
+  '/website-maintenance': typeof WebsiteMaintenanceRoute
   '/work': typeof WorkRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/book'
     | '/services'
+    | '/website-maintenance'
     | '/work'
     | '/blog/$slug'
     | '/blog/'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/book'
     | '/services'
+    | '/website-maintenance'
     | '/work'
     | '/blog/$slug'
     | '/blog'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/audit'
     | '/book'
     | '/services'
+    | '/website-maintenance'
     | '/work'
     | '/blog/$slug'
     | '/blog/'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   AuditRoute: typeof AuditRoute
   BookRoute: typeof BookRoute
   ServicesRoute: typeof ServicesRoute
+  WebsiteMaintenanceRoute: typeof WebsiteMaintenanceRoute
   WorkRoute: typeof WorkRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -171,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/website-maintenance': {
+      id: '/website-maintenance'
+      path: '/website-maintenance'
+      fullPath: '/website-maintenance'
+      preLoaderRoute: typeof WebsiteMaintenanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/work': {
       id: '/work'
       path: '/work'
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuditRoute: AuditRoute,
   BookRoute: BookRoute,
   ServicesRoute: ServicesRoute,
+  WebsiteMaintenanceRoute: WebsiteMaintenanceRoute,
   WorkRoute: WorkRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,

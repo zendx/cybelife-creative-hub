@@ -105,16 +105,16 @@ function BookPage() {
           <li className="flex items-start gap-3">
             <Mail className="mt-0.5 size-4 text-brand-soft" />
             <a
-              href="mailto:hello@cyberlifedigital.ng"
+              href="mailto:hello@cyberlifedigital.com"
               className="transition-colors hover:text-foreground"
             >
-              hello@cyberlifedigital.ng
+              hello@cyberlifedigital.com
             </a>
           </li>
           <li className="flex items-start gap-3">
             <Phone className="mt-0.5 size-4 text-brand-soft" />
-            <a href="tel:+2348012345678" className="transition-colors hover:text-foreground">
-              +234 801 234 5678
+            <a href="tel:+2348031975415" className="transition-colors hover:text-foreground">
+              +234 803 197 5415
             </a>
           </li>
         </ul>

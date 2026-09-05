@@ -151,42 +151,54 @@ export const services = [
       "A consistent route for updates and support",
       "A site that stays healthy as the business changes",
     ],
-    from: "Monthly quote",
+    from: "₦300,000 / month",
   },
 ] as const;
 
 export const maintenancePlans = [
   {
-    name: "Essential Care",
-    price: "Monthly quote",
-    bestFor: "Small business websites that need dependable routine care.",
+    name: "Basic",
+    monthlyPrice: 300000,
+    bestFor:
+      "Reliable website care for startups and small businesses, freeing your team to focus on running and growing the business.",
     features: [
-      "Core software and security updates",
-      "Scheduled backups and uptime checks",
-      "Minor content updates",
-      "Monthly website health summary",
+      "15+ website change requests each month",
+      "Plugin and core software updates",
+      "Ongoing security monitoring",
+      "Response within 48 hours (SLA)",
+      "Daily website backups",
+      "Uptime and performance monitoring",
+      "Monthly maintenance report",
     ],
   },
   {
-    name: "Growth Care",
-    price: "Custom monthly quote",
-    bestFor: "Active marketing and e-commerce sites that change often.",
+    name: "Standard",
+    monthlyPrice: 850000,
+    bestFor:
+      "Proactive support for teams publishing regularly and investing in stronger organic visibility and sustainable growth.",
     features: [
-      "Everything in Essential Care",
+      "Everything included in Basic",
+      "40+ website change requests each month",
+      "Response within 24 hours (SLA)",
+      "Comprehensive SEO and speed improvements",
+      "CMS and content management",
+      "Core Web Vitals monitoring",
+      "Design refinements and visual refreshes",
+    ],
+  },
+  {
+    name: "Premium",
+    monthlyPrice: 1550000,
+    bestFor:
+      "A dedicated technical partnership for companies that need direct access to our team and comprehensive, ongoing website support.",
+    features: [
+      "Everything included in Standard",
+      "Unlimited website change requests",
+      "Priority response within 4 hours (SLA)",
       "Priority technical support",
-      "Regular content and product updates",
-      "SEO and performance monitoring",
-    ],
-  },
-  {
-    name: "Managed Support",
-    price: "Custom monthly quote",
-    bestFor: "Business-critical websites and web apps needing hands-on support.",
-    features: [
-      "Everything in Growth Care",
-      "Reserved development capacity",
-      "Integration and incident support",
-      "Ongoing optimisation planning",
+      "Ongoing design refinements and refreshes",
+      "One complete website rebuild each year",
+      "Priority access to our team through Slack",
     ],
   },
 ] as const;
