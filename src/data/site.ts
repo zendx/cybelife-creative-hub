@@ -238,7 +238,7 @@ export const projects = [
     domain: "orij-power.vercel.app",
     url: "https://orij-power.vercel.app/",
     sector: "Power Generation Equipment ",
-    service: "Catalogue & Lead-generation Website",
+    service: "E-CommerceCatalogue &  Website",
     status: "Live",
     image: "/case-studies/orij-power.jpg",
     imageAlt:
