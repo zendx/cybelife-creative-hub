@@ -325,8 +325,8 @@ export const projects = [
 ] as const;
 
 export const stats = [
-  { value: "120+", label: "Projects delivered" },
-  { value: "9 yrs", label: "Building for Nigerian brands" },
+  { value: "300+", label: "Projects delivered" },
+  { value: "18 yrs", label: "Building for Nigerian brands" },
   { value: "4.9/5", label: "Average client rating" },
   { value: "14 days", label: "Typical launch runway" },
 ] as const;

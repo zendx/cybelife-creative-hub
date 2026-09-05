@@ -101,9 +101,9 @@ function AboutPage() {
               className="aspect-[4/3] w-full object-cover opacity-80"
             />
             <div className="veil absolute inset-0" />
-            <figcaption className="absolute inset-x-0 bottom-0 p-7">
-              <p className="eyebrow">Lagos, Nigeria</p>
-              <p className="mt-3 max-w-sm font-display text-xl font-semibold">
+            <figcaption className="absolute inset-x-0 bottom-0 p-7 text-white">
+              <p className="eyebrow text-white">Lagos, Nigeria</p>
+              <p className="mt-3 max-w-sm font-display text-xl font-semibold text-white">
                 Local market understanding, delivered to a global standard.
               </p>
             </figcaption>
