@@ -237,20 +237,20 @@ export const projects = [
     title: "Orij Power",
     domain: "orij-power.vercel.app",
     url: "https://orij-power.vercel.app/",
-    sector: "Industrial Power",
+    sector: "Power Generation Equipment ",
     service: "Catalogue & Lead-generation Website",
     status: "Live",
     image: "/case-studies/orij-power.jpg",
     imageAlt:
-      "Orij Power industrial generator catalogue website with capacity filters and product photography",
+      "Orij Power industrial and residential generator catalogue website with capacity filters and product photography",
     summary:
       "A technical catalogue and enquiry platform for diesel generators serving homes, businesses and industrial installations in Nigeria.",
     challenge:
       "Make a broad 12.5–2,000 kVA inventory easy to explore while keeping expert specification at the centre of the buying journey.",
     response:
       "We organised equipment by capacity, paired specifications with current photography, and built direct quote, call and WhatsApp routes instead of a misleading checkout flow.",
-    scope: ["Information architecture", "Catalogue UX", "Responsive build", "Enquiry journeys"],
-    highlight: "11 capacity groups · 17 product photos",
+    scope: [ "E-commerce", "Information architecture", "Catalogue UX", "Responsive build", "Enquiry journeys"],
+    highlight: "E-commerce · Product Specifications",
     result:
       "Buyers can compare photographed units, understand the ordering process and reach an engineer from one focused experience.",
     featured: true,
