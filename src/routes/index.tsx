@@ -68,7 +68,7 @@ const featuredProject = projects.find((project) => project.featured) ?? projects
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cyberlife Digital — Digital products that move businesses forward" },
+      { title: "Cyberlife Digital — Digital Agency" },
       {
         name: "description",
         content:
