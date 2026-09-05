@@ -218,9 +218,9 @@ export const projects = [
     summary:
       "A premium digital flagship for an independent group building and backing businesses across fashion, experiences and hospitality.",
     challenge:
-      "Bring the group story and three distinct holdings into one credible system without flattening the character of each brand.",
+      "Create a cohesive digital presence for Martins Investments that establishes the parent entity as an authoritative holding company, while providing a clear, scalable framework to showcase its founder and growing portfolio of distinct subsidiary brands without overshadowing their individual brand identities.",
     response:
-      "We shaped an image-led corporate experience with a clear group narrative, confident portfolio pathways and a restrained editorial design language.",
+      "To resolve this, we engineered a headless architecture utilizing Next.js for the frontend and WordPress as a flexible headless CMS. This approach delivered a unified, high-performance platform that seamlessly balances corporate governance with brand storytelling.",
     scope: [
       "Digital strategy",
       "UX & interface design",
