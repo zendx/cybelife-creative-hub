@@ -1,6 +1,19 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test("homepage loads the booking form only when the dialog opens", async ({ page }) => {
+  const requests: string[] = [];
+  const errors: string[] = [];
+  page.on("request", (request) => requests.push(request.url()));
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/");
+  expect(requests.filter((url) => /\/assets\/booking-form-.*\.js/.test(url))).toEqual([]);
+  await page.getByRole("banner").getByRole("button", { name: "Start a project" }).click();
+  await expect(page.getByRole("dialog").getByLabel("Full name")).toBeVisible();
+  expect(requests.some((url) => /\/assets\/booking-form-.*\.js/.test(url))).toBe(true);
+  expect(errors).toEqual([]);
+});
+
 test("maintenance page is accessible on desktop and mobile", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/website-maintenance");

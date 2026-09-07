@@ -69,7 +69,17 @@ export default {
       const handler = await getServerEntry();
       const requestHeaders = new Headers(request.headers);
       requestHeaders.set("x-cyberlife-csp-nonce", nonce);
-      const response = await handler.fetch(new Request(request, { headers: requestHeaders }), {
+      // Vite supplies a proxied Request; passing it directly to Undici's
+      // constructor fails its private-field checks. Copy the public fields.
+      const requestInit: RequestInit & { duplex?: "half" } = {
+        method: request.method,
+        headers: requestHeaders,
+        signal: request.signal,
+        ...(request.method !== "GET" && request.method !== "HEAD"
+          ? { body: request.body, duplex: "half" as const }
+          : {}),
+      };
+      const response = await handler.fetch(new Request(request.url, requestInit), {
         context: { nonce },
       });
       return protect(await normalizeCatastrophicSsrResponse(response));

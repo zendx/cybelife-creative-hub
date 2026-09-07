@@ -1,0 +1,36 @@
+import { cva } from "class-variance-authority";
+
+export const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  {
+    variants: {
+      variant: {
+        default:
+          "bg-primary text-primary-foreground shadow-sm hover:-translate-y-0.5 hover:bg-primary/92 hover:shadow-lg",
+        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+        signal:
+          "bg-signal text-signal-foreground shadow-signal hover:-translate-y-0.5 hover:brightness-105",
+        hero: "gradient-brand text-primary-foreground shadow-elevated hover:-translate-y-0.5 hover:brightness-105",
+        quiet:
+          "border border-border bg-white/75 text-foreground shadow-sm backdrop-blur hover:-translate-y-0.5 hover:border-brand-soft/40 hover:bg-white hover:shadow-md",
+      },
+      size: {
+        default: "h-9 px-4 py-2",
+        sm: "h-8 px-3 text-xs",
+        lg: "h-11 px-7",
+        xl: "h-13 px-8 text-sm sm:text-base",
+        icon: "h-9 w-9",
+      },
+    },
+
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  },
+);

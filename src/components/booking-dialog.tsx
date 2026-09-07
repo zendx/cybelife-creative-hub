@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { lazy, Suspense, useState, type ReactNode } from "react";
 
 import {
   Dialog,
@@ -8,7 +8,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { BookingForm } from "@/components/booking-form";
+const BookingForm = lazy(() =>
+  import("@/components/booking-form").then((module) => ({ default: module.BookingForm })),
+);
 
 export function BookingDialog({
   trigger,
@@ -29,10 +31,20 @@ export function BookingDialog({
             Pick a date and time that works for you. Our Lagos team will confirm by email.
           </DialogDescription>
         </DialogHeader>
-        <BookingForm
-          onDone={() => setOpen(false)}
-          {...(initialService ? { initialService } : {})}
-        />
+        {open && (
+          <Suspense
+            fallback={
+              <p role="status" className="py-8 text-sm text-muted-foreground">
+                Loading the enquiry form…
+              </p>
+            }
+          >
+            <BookingForm
+              onDone={() => setOpen(false)}
+              {...(initialService ? { initialService } : {})}
+            />
+          </Suspense>
+        )}
       </DialogContent>
     </Dialog>
   );

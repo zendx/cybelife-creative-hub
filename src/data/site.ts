@@ -249,7 +249,13 @@ export const projects = [
       "Make a broad 12.5–2,000 kVA inventory easy to explore while keeping expert specification at the centre of the buying journey.",
     response:
       "We organised equipment by capacity, paired specifications with current photography, and built direct quote, call and WhatsApp routes instead of a misleading checkout flow.",
-    scope: [ "E-commerce", "Information architecture", "Catalogue UX", "Responsive build", "Enquiry journeys"],
+    scope: [
+      "E-commerce",
+      "Information architecture",
+      "Catalogue UX",
+      "Responsive build",
+      "Enquiry journeys",
+    ],
     highlight: "E-commerce · Product Specifications",
     result:
       "Buyers can compare photographed units, understand the ordering process and reach an engineer from one focused experience.",
