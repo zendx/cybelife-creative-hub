@@ -4,6 +4,7 @@ import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { handleEnquiry } from "./lib/enquiries.server";
 import { secureResponse } from "./lib/security.server";
+import { visitorLocation } from "./lib/visitor-location.server";
 
 type ServerEntry = {
   fetch: (
@@ -66,6 +67,7 @@ export default {
         return protect(Response.redirect(url, 308));
       }
       if (url.pathname === "/api/enquiries") return protect(await handleEnquiry(request, env));
+      if (url.pathname === "/api/visitor-location") return protect(visitorLocation(request));
       const handler = await getServerEntry();
       const requestHeaders = new Headers(request.headers);
       requestHeaders.set("x-cyberlife-csp-nonce", nonce);

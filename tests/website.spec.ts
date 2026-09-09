@@ -1,6 +1,10 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
+test.beforeEach(async ({ context }) => {
+  await context.addInitScript(() => localStorage.setItem("cyberlife-currency", "NGN"));
+});
+
 test("homepage loads the booking form only when the dialog opens", async ({ page }) => {
   const requests: string[] = [];
   const errors: string[] = [];
@@ -117,6 +121,7 @@ test("maintenance form submits all selections and preserves data after a deliver
   await page.getByLabel("First name", { exact: true }).fill("Ada");
   await page.getByLabel("Last name", { exact: true }).fill("Obi");
   await page.getByLabel("Company email").fill("ada@example.com");
+  await page.getByLabel("Phone number", { exact: true }).fill("+44 7700 900123");
   await page.getByLabel("Website URL").fill("https://example.com");
   await page.getByLabel("CMS or website platform").selectOption("Other");
   await page.getByLabel("Which platform do you use?").fill("Custom CMS");

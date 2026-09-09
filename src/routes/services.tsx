@@ -1,3 +1,5 @@
+import { useCurrency } from "@/hooks/use-currency";
+import { CurrencySelector, CurrencyNote } from "@/components/currency-selector";
 import { CarePlans } from "@/components/care-plans";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
@@ -45,7 +47,7 @@ const serviceFaqs = [
   {
     question: "How are maintenance plans priced?",
     answer:
-      "Basic is ₦300,000 per month, Standard is ₦850,000 per month, and Premium is ₦1,550,000 per month. Annual billing saves 15% on all three plans. Visit our website maintenance page to compare features and submit your requirements.",
+      "Compare Basic, Standard and Premium prices in your preferred currency above. Annual billing saves 15% on all three plans. Visit our website maintenance page to compare features and submit your requirements.",
   },
   {
     question: "What happens after launch?",
@@ -75,12 +77,17 @@ export const Route = createFileRoute("/services")({
 });
 
 function ServicesPage() {
+  const { format } = useCurrency();
   return (
     <>
       <section className="hero-mesh overflow-hidden border-b border-border">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 py-20 sm:px-6 md:py-28 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
           <div>
             <p className="eyebrow">Services</p>
+            <div className="mt-5">
+              <CurrencySelector />
+              <CurrencyNote />
+            </div>
             <h1 className="mt-6 max-w-4xl text-5xl font-bold leading-[0.98] sm:text-6xl md:text-7xl">
               From first idea to <span className="text-gradient-brand">daily growth.</span>
             </h1>
@@ -210,7 +217,8 @@ function ServicesPage() {
                       <p
                         className={`mt-1 font-display text-lg font-bold ${index === 0 ? "text-white" : ""}`}
                       >
-                        {service.from}
+                        {format(service.from)}
+                        {service.slug === "website-maintenance" ? " / month" : ""}
                       </p>
                     </div>
                     {service.slug === "website-maintenance" ? (
@@ -310,8 +318,8 @@ function ServicesPage() {
             The right level of care for the website you run.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl leading-7 text-muted-foreground">
-            Compare Basic, Standard and Premium plans, starting at ₦300,000 per month. Save 15% when
-            you choose annual billing.
+            Compare Basic, Standard and Premium plans, starting at {format(300000)} per month. Save
+            15% when you choose annual billing.
           </p>
         </Reveal>
 

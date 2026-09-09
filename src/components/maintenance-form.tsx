@@ -7,8 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { BillingSwitch } from "@/components/care-plans";
 import { maintenancePlans } from "@/data/site";
 import { platforms, websiteTypes } from "@/lib/enquiry-schema";
-import { formatNaira, planPricing, type BillingCycle, type PlanName } from "@/lib/maintenance";
+import { planPricing, type BillingCycle, type PlanName } from "@/lib/maintenance";
 import { submitEnquiry } from "@/lib/submit-enquiry";
+import { useCurrency } from "@/hooks/use-currency";
+import { CurrencySelector, CurrencyNote } from "@/components/currency-selector";
 
 const selectClass =
   "h-11 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
@@ -25,6 +27,7 @@ export function MaintenanceForm({
   onBillingChange: (cycle: BillingCycle) => void;
 }) {
   const [platform, setPlatform] = useState("");
+  const { currency, format } = useCurrency();
   const [types, setTypes] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
@@ -41,6 +44,7 @@ export function MaintenanceForm({
       await submitEnquiry({
         ...Object.fromEntries(form),
         kind: "maintenance",
+        currency,
         plan,
         billing,
         platform,
@@ -84,6 +88,7 @@ export function MaintenanceForm({
               id="care-first-name"
               name="firstName"
               autoComplete="given-name"
+              placeholder="Your first name"
               required
               maxLength={150}
             />
@@ -94,6 +99,7 @@ export function MaintenanceForm({
               id="care-last-name"
               name="lastName"
               autoComplete="family-name"
+              placeholder="Your last name"
               required
               maxLength={150}
             />
@@ -123,6 +129,22 @@ export function MaintenanceForm({
             />
           </div>
           <div className="space-y-2 sm:col-span-2">
+            <Label htmlFor="care-phone">Phone number</Label>
+            <Input
+              id="care-phone"
+              name="phone"
+              type="tel"
+              autoComplete="tel"
+              placeholder="e.g. +234 803 197 5415 or +44 7700 900123"
+              required
+              maxLength={40}
+              aria-describedby="care-phone-help"
+            />
+            <p id="care-phone-help" className="text-xs text-muted-foreground">
+              Include your country code so we can reach you.
+            </p>
+          </div>
+          <div className="space-y-2 sm:col-span-2">
             <Label htmlFor="care-platform">CMS or website platform</Label>
             <select
               id="care-platform"
@@ -143,7 +165,13 @@ export function MaintenanceForm({
           {platform === "Other" && (
             <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="care-other-platform">Which platform do you use?</Label>
-              <Input id="care-other-platform" name="otherPlatform" required maxLength={150} />
+              <Input
+                id="care-other-platform"
+                name="otherPlatform"
+                placeholder="e.g. Wix, Squarespace or a custom-built website"
+                required
+                maxLength={150}
+              />
             </div>
           )}
         </div>
@@ -182,7 +210,13 @@ export function MaintenanceForm({
           {types.includes("Other") && (
             <div className="mt-4 space-y-2">
               <Label htmlFor="care-other-type">Describe your website type</Label>
-              <Input id="care-other-type" name="otherWebsiteType" required maxLength={150} />
+              <Input
+                id="care-other-type"
+                name="otherWebsiteType"
+                placeholder="e.g. Membership community or booking platform"
+                required
+                maxLength={150}
+              />
             </div>
           )}
         </fieldset>
@@ -202,16 +236,18 @@ export function MaintenanceForm({
             </select>
           </div>
           <BillingSwitch value={billing} onChange={onBillingChange} />
+          <CurrencySelector />
+          <CurrencyNote />
           <div aria-live="polite" aria-atomic="true" className="border-t border-border pt-5">
             <p className="text-xl font-bold">
-              {formatNaira(pricing.total)}{" "}
+              {format(pricing.total)}{" "}
               <span className="text-sm font-normal text-muted-foreground">
                 / {billing === "annually" ? "year" : "month"}
               </span>
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
               {billing === "annually"
-                ? `${formatNaira(pricing.monthlyEquivalent)} per month, billed annually. You save ${formatNaira(pricing.savings)} per year (15%).`
+                ? `${format(pricing.monthlyEquivalent)} per month, billed annually. You save ${format(pricing.savings)} per year (15%).`
                 : "Monthly billing. Switch to annual billing to save 15%."}
             </p>
           </div>

@@ -24,6 +24,12 @@ See [Resend sender verification](https://resend.com/docs/knowledge-base/how-do-I
 
 SEO implementation follows [Google's sitemap guidance](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap); header configuration follows [MDN CSP guidance](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP).
 
-## Local verification
+## International pricing
+
+All service and care prices retain their NGN base amounts. USD estimates use the dated reference conversion in `src/data/pricing.ts` (NGN 1322.012964 per USD, sourced from ExchangeRate-API on 2026-09-09). This is a fixed reference, not a live FX feed: review and update the value and date there as needed. Prices disclose the reference date, attribution and that the final quote is confirmed before work begins. Annual billing applies the same 15% discount before conversion. No payment is taken by these forms.
+
+On Cloudflare, enable IP geolocation so `/api/visitor-location` receives the platform's `CF-IPCountry` header. Nigeria defaults to NGN and other known countries to USD. The endpoint uses private/no-store responses. When country information is unavailable (including local preview), browser timezone is a best-effort fallback; it is not proof of location. The visible currency selector always takes precedence and remembers a manual choice in local storage. No external visitor-location service or precise location permission is used. Currency changes apply across service listings, care cards and the care enquiry summary, and enquiry emails include the preferred currency and phone number. The server derives amounts itself using the same reference conversion.
+
+## Running checks
 
 Run `npm run build`, `npx tsc --noEmit`, `npm run lint` and `npm test`. The browser tests use installed Google Chrome, run the compiled SSR application locally, and mock email delivery so test runs do not send messages. `npm run preview` serves that same production application at `http://127.0.0.1:4173`; deploy the generated platform entry for actual hosting.

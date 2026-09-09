@@ -19,7 +19,7 @@ export const services = [
       "A faster route from visit to enquiry or action",
       "A dependable product your team can manage",
     ],
-    from: "₦850,000",
+    from: 850000,
   },
   {
     slug: "mobile-app-development",
@@ -41,7 +41,7 @@ export const services = [
       "Consistent experiences across supported devices",
       "A maintainable foundation for future releases",
     ],
-    from: "₦1,250,000",
+    from: 1250000,
   },
   {
     slug: "ecommerce-development",
@@ -63,7 +63,7 @@ export const services = [
       "Less manual work behind every order",
       "A storefront designed to support repeat sales",
     ],
-    from: "₦1,650,000",
+    from: 1650000,
   },
   {
     slug: "digital-branding",
@@ -85,7 +85,7 @@ export const services = [
       "A recognisable system across every touchpoint",
       "Practical tools that keep the brand consistent",
     ],
-    from: "₦620,000",
+    from: 620000,
   },
   {
     slug: "google-business-profile",
@@ -107,7 +107,7 @@ export const services = [
       "A clearer path for customers to call or visit",
       "A practical plan for ongoing profile activity",
     ],
-    from: "₦250,000",
+    from: 250000,
   },
   {
     slug: "seo-performance",
@@ -129,7 +129,7 @@ export const services = [
       "Stronger foundations for organic discovery",
       "Clear priorities for continued improvement",
     ],
-    from: "₦500,000",
+    from: 500000,
   },
   {
     slug: "website-maintenance",
@@ -151,7 +151,7 @@ export const services = [
       "A consistent route for updates and support",
       "A site that stays healthy as the business changes",
     ],
-    from: "₦300,000 / month",
+    from: 300000,
   },
 ] as const;
 

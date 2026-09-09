@@ -13,6 +13,7 @@ import { services } from "@/data/site";
 import { contactMethods, meetingTimes } from "@/lib/enquiry-schema";
 import { submitEnquiry } from "@/lib/submit-enquiry";
 import { Link } from "@tanstack/react-router";
+import { useCurrency } from "@/hooks/use-currency";
 
 const times = meetingTimes;
 
@@ -31,6 +32,7 @@ export function BookingForm({
   initialService?: string;
 }) {
   const fieldId = useId();
+  const { currency } = useCurrency();
   const [date, setDate] = useState<Date | undefined>();
   const [time, setTime] = useState<string>();
   const [service, setService] = useState<string>(initialService ?? services[0].title);
@@ -61,6 +63,7 @@ export function BookingForm({
       await submitEnquiry({
         ...Object.fromEntries(form),
         kind: "project",
+        currency,
         name,
         email,
         service,
@@ -239,20 +242,21 @@ export function BookingForm({
             ))}
           </div>
         </fieldset>
-        {methods.some((method) => method === "Call" || method === "WhatsApp") && (
-          <div className="space-y-2">
-            <Label htmlFor={`${fieldId}-project-phone`}>Phone / WhatsApp number</Label>
-            <Input
-              id={`${fieldId}-project-phone`}
-              name="phone"
-              type="tel"
-              autoComplete="tel"
-              placeholder="+234…"
-              required
-              maxLength={40}
-            />
-          </div>
-        )}
+        <div className="space-y-2">
+          <Label htmlFor={`${fieldId}-project-phone`}>Phone / WhatsApp number</Label>
+          <Input
+            id={`${fieldId}-project-phone`}
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            placeholder="e.g. +234 803 197 5415 or +44 7700 900123"
+            required
+            maxLength={40}
+          />
+          <p className="text-xs text-muted-foreground">
+            Include your country code so we can reach you.
+          </p>
+        </div>
         {error && (
           <p
             role="alert"

@@ -1,4 +1,5 @@
 import { maintenancePlans } from "../data/site";
+import { formatPrice } from "../data/pricing";
 
 export type PlanName = (typeof maintenancePlans)[number]["name"];
 export type BillingCycle = "monthly" | "annually";
@@ -15,5 +16,5 @@ export function planPricing(plan: PlanName, billing: BillingCycle) {
 }
 
 export function formatNaira(amount: number) {
-  return `₦${new Intl.NumberFormat("en-NG", { maximumFractionDigits: 0 }).format(amount)}`;
+  return formatPrice(amount, "NGN");
 }

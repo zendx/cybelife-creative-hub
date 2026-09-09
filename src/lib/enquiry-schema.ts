@@ -24,6 +24,19 @@ export const meetingTimes = ["09:00", "10:30", "12:00", "14:00", "15:30", "17:00
 const shortText = z.string().trim().min(1).max(150);
 const common = {
   email: z.string().trim().email().max(254),
+  phone: z
+    .string()
+    .trim()
+    .min(1, "Please enter your phone number.")
+    .max(40)
+    .refine(
+      (value) =>
+        /^\+?[\d\s()-]+$/.test(value) &&
+        value.replace(/\D/g, "").length >= 7 &&
+        value.replace(/\D/g, "").length <= 15,
+      "Enter a valid phone number with your country code.",
+    ),
+  currency: z.enum(["NGN", "USD"]).default("NGN"),
   brief: z
     .string()
     .trim()
@@ -72,7 +85,6 @@ export const enquirySchema = z
           "Choose a service.",
         ),
       contactMethods: z.array(z.enum(contactMethods)).min(1).max(contactMethods.length),
-      phone: z.string().trim().max(40).optional(),
       date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
       time: z.enum(meetingTimes),
     }),
@@ -86,11 +98,6 @@ export const enquirySchema = z
       if (data.websiteTypes.includes("Other") && !data.otherWebsiteType)
         issue("otherWebsiteType", "Please describe your website type.");
     } else {
-      if (
-        data.contactMethods.some((method) => method === "Call" || method === "WhatsApp") &&
-        !/^\+?[\d\s()-]{7,40}$/.test(data.phone ?? "")
-      )
-        issue("phone", "Add a phone number for calls or WhatsApp.");
       const date = new Date(`${data.date}T${data.time}:00+01:00`);
       if (
         !Number.isFinite(date.getTime()) ||

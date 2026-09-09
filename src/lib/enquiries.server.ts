@@ -1,5 +1,6 @@
 import { enquirySchema, type Enquiry } from "./enquiry-schema";
 import { formatNaira, planPricing } from "./maintenance";
+import { formatPrice, usdReferenceRate } from "../data/pricing";
 
 const RECIPIENT = "cyberlifeng@gmail.com";
 const attempts = new Map<string, { count: number; expires: number }>();
@@ -16,11 +17,19 @@ export function enquiryMessage(data: Enquiry) {
       "Website maintenance enquiry",
       `Name: ${data.firstName} ${data.lastName}`,
       `Company email: ${data.email}`,
+      `Phone: ${data.phone}`,
       `Website: ${data.websiteUrl}`,
       `Platform: ${data.platform}${data.otherPlatform ? ` (${data.otherPlatform})` : ""}`,
       `Website types: ${data.websiteTypes.join(", ")}${data.otherWebsiteType ? ` (${data.otherWebsiteType})` : ""}`,
       `Plan: ${data.plan}`,
       `Billing: ${data.billing}`,
+      `Preferred currency: ${data.currency}`,
+      ...(data.currency === "USD"
+        ? [
+            `USD estimate: ${formatPrice(pricing.total, "USD")} ${data.billing === "annually" ? "per year" : "per month"}`,
+            `Reference: NGN ${usdReferenceRate.ngnPerUsd} per USD, dated ${usdReferenceRate.asOf}; final quote to be confirmed.`,
+          ]
+        : []),
       `Amount: ${formatNaira(pricing.total)} ${data.billing === "annually" ? "per year (15% discount applied)" : "per month"}`,
       `Monthly equivalent: ${formatNaira(pricing.monthlyEquivalent)}`,
       "",
@@ -34,6 +43,7 @@ export function enquiryMessage(data: Enquiry) {
     `Email: ${data.email}`,
     `Company: ${data.company}`,
     `Service: ${data.service}`,
+    `Preferred currency: ${data.currency}`,
     `Contact preferences: ${data.contactMethods.join(", ")}`,
     `Phone: ${data.phone || "Not supplied"}`,
     `Preferred meeting: ${data.date} at ${data.time} WAT (UTC+1)`,

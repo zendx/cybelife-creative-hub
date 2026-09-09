@@ -4,7 +4,9 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { maintenancePlans } from "@/data/site";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { formatNaira, planPricing, type BillingCycle, type PlanName } from "@/lib/maintenance";
+import { planPricing, type BillingCycle, type PlanName } from "@/lib/maintenance";
+import { useCurrency } from "@/hooks/use-currency";
+import { CurrencySelector, CurrencyNote } from "@/components/currency-selector";
 
 export function BillingSwitch({
   value,
@@ -41,10 +43,15 @@ export function CarePlans({
   onSelect?: (plan: PlanName) => void;
 }) {
   const [localBilling, setLocalBilling] = useState<BillingCycle>("monthly");
+  const { format } = useCurrency();
   const cycle = billing ?? localBilling;
   return (
     <div className="mt-10">
-      <BillingSwitch value={cycle} onChange={onBillingChange ?? setLocalBilling} />
+      <div className="flex flex-wrap items-center justify-center gap-5">
+        <BillingSwitch value={cycle} onChange={onBillingChange ?? setLocalBilling} />
+        <CurrencySelector />
+      </div>
+      <CurrencyNote />
       <div className="mt-8 grid gap-5 lg:grid-cols-3">
         {maintenancePlans.map((plan, index) => {
           const pricing = planPricing(plan.name, cycle);
@@ -72,25 +79,25 @@ export function CarePlans({
                   <p
                     className={`mb-1 text-sm ${featured ? "text-white/95" : "text-muted-foreground"}`}
                   >
-                    <s>{formatNaira(plan.monthlyPrice)}</s> / month
+                    <s>{format(plan.monthlyPrice)}</s> / month
                   </p>
                 )}
                 <p className="font-display text-3xl font-bold tracking-tight">
-                  {formatNaira(pricing.monthlyEquivalent)}
+                  {format(pricing.monthlyEquivalent)}
                   <span className="text-sm font-normal"> / month</span>
                 </p>
                 <p
                   className={`mt-2 text-sm ${featured ? "text-white/95" : "text-muted-foreground"}`}
                 >
                   {cycle === "annually"
-                    ? `${formatNaira(pricing.total)} billed annually`
+                    ? `${format(pricing.total)} billed annually`
                     : "Billed monthly"}
                 </p>
                 {cycle === "annually" && (
                   <p
                     className={`mt-2 text-sm font-semibold ${featured ? "text-white" : "text-primary"}`}
                   >
-                    Save {formatNaira(pricing.savings)} per year
+                    Save {format(pricing.savings)} per year
                   </p>
                 )}
               </div>

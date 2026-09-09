@@ -1,3 +1,4 @@
+import { useCurrency } from "@/hooks/use-currency";
 import { CarePlans } from "@/components/care-plans";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
@@ -89,6 +90,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const { format } = useCurrency();
   return (
     <>
       <section className="hero-mesh relative isolate overflow-hidden border-b border-border/60">
@@ -282,7 +284,8 @@ function Home() {
                   <span
                     className={`text-xs font-semibold ${isDark ? "text-white/55" : "text-muted-foreground"}`}
                   >
-                    From {service.from}
+                    From {format(service.from)}
+                    {service.slug === "website-maintenance" ? " / month" : ""}
                   </span>
                   <ArrowUpRight
                     className={`size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${isDark ? "text-white" : "text-primary"}`}

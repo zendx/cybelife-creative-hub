@@ -6,6 +6,7 @@ const maintenance = {
   firstName: "Ada",
   lastName: "Obi",
   email: "ada@example.com",
+  phone: "+44 7700 900123",
   websiteUrl: "https://example.com",
   platform: "WordPress",
   websiteTypes: ["E-commerce", "Blog"],
@@ -33,6 +34,8 @@ test("rejects cross-origin, invalid methods, malformed data, honeypots and overs
   expect((await handleEnquiry(request(maintenance, { method: "GET" }), {})).status).toBe(405);
   for (const change of [
     { email: "invalid" },
+    { phone: "" },
+    { phone: "---()---" },
     { websiteUrl: "javascript:alert(1)" },
     { websiteTypes: [] },
     { plan: "Forged" },
@@ -61,6 +64,7 @@ test("derives annual price on the server and sends all fields to the fixed recip
     expect(response.status).toBe(200);
     expect(sent["to"]).toEqual(["cyberlifeng@gmail.com"]);
     expect(sent["reply_to"]).toBe("ada@example.com");
+    expect(sent["text"]).toContain("Phone: +44 7700 900123");
     expect(sent["text"]).toContain("₦8,670,000 per year (15% discount applied)");
     expect(sent["text"]).toContain("E-commerce, Blog");
     expect(sent["text"]).toContain("WordPress");
