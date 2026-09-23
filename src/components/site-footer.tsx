@@ -2,16 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Mail, MapPin, ScanSearch } from "lucide-react";
 
 import { services } from "@/data/site";
-import { CurrencySelector, CurrencyNote } from "@/components/currency-selector";
 
 export function SiteFooter() {
   return (
     <footer className="ink-section border-t border-white/10">
       <div className="mx-auto max-w-7xl px-5 pb-8 pt-16 sm:px-6 md:pt-20">
-        <div className="mb-10 text-white/80">
-          <CurrencySelector />
-          <CurrencyNote />
-        </div>
         <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.85fr]">
           <div>
             <Link to="/" className="inline-flex items-center gap-3">
