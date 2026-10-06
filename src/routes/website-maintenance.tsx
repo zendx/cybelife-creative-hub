@@ -174,10 +174,10 @@ function MaintenancePage() {
               +234 803 197 5415
             </a>
             <a
-              href="mailto:hello@cyberlifedigital.com"
+              href="mailto:cyberlifeng@gmail.com"
               className="mt-3 block break-all text-sm text-muted-foreground"
             >
-              hello@cyberlifedigital.com
+              cyberlifeng@gmail.com
             </a>
           </div>
           <div className="rounded-[1.75rem] border border-border bg-white p-5 sm:p-8">

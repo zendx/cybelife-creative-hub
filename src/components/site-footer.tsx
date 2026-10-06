@@ -81,11 +81,11 @@ export function SiteFooter() {
             <ul className="mt-5 space-y-4 text-sm text-white/60">
               <li>
                 <a
-                  href="mailto:hello@cyberlifedigital.com"
+                  href="mailto:cyberlifeng@gmail.com"
                   className="flex items-start gap-2.5 transition-colors hover:text-white"
                 >
                   <Mail className="mt-0.5 size-4 shrink-0 text-[#ff8a72]" />
-                  hello@cyberlifedigital.com
+                  cyberlifeng@gmail.com
                 </a>
               </li>
               <li>

@@ -116,7 +116,7 @@ export async function handleEnquiry(request: Request, env: unknown) {
   const from =
     bindings["ENQUIRY_FROM_EMAIL"] ??
     process.env["ENQUIRY_FROM_EMAIL"] ??
-    "Cyberlife Digital <hello@cyberlifedigital.com>";
+    "Cyberlife Digital <enquiries@cyberlifedigital.com>";
   if (!apiKey)
     return json(
       {

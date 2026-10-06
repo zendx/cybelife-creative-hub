@@ -229,6 +229,28 @@
   animation: orbit-pulse 5s ease-in-out infinite;
 }
 
+.whatsapp-assistance-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid #128c4a;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: whatsapp-assistance-pulse 3s ease-out infinite;
+}
+
+@keyframes whatsapp-assistance-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70%,
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -105,10 +105,10 @@ function BookPage() {
           <li className="flex items-start gap-3">
             <Mail className="mt-0.5 size-4 text-brand-soft" />
             <a
-              href="mailto:hello@cyberlifedigital.com"
+              href="mailto:cyberlifeng@gmail.com"
               className="transition-colors hover:text-foreground"
             >
-              hello@cyberlifedigital.com
+              cyberlifeng@gmail.com
             </a>
           </li>
           <li className="flex items-start gap-3">

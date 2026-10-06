@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { WhatsAppAssistance } from "@/components/whatsapp-assistance";
 import { Toaster } from "@/components/ui/sonner";
 import socialImage from "@/assets/hero-studio.jpg";
 import { CurrencyProvider } from "@/components/currency-provider";
@@ -110,7 +111,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
               name: "Cyberlife Digital",
               url: "https://cyberlife.digital",
               logo: "https://cyberlife.digital/favicon.png",
-              email: "hello@cyberlifedigital.com",
+              email: "cyberlifeng@gmail.com",
               telephone: "+2348031975415",
               address: {
                 "@type": "PostalAddress",
@@ -190,6 +191,7 @@ function RootComponent() {
           <SiteFooter />
         </div>
         <Toaster />
+        <WhatsAppAssistance />
       </CurrencyProvider>
     </QueryClientProvider>
   );

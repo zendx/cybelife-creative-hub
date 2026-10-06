@@ -1,12 +1,12 @@
 # Website care and enquiry delivery
 
-Both enquiry forms POST to `/api/enquiries`. The server validates the fields, derives plan prices itself and sends plain-text mail to **cyberlifeng@gmail.com**. The public contact address remains **hello@cyberlifedigital.com**. Submission success means the email provider accepted the message; it does not confirm a booking or payment.
+Both enquiry forms POST to `/api/enquiries`. The server validates the fields, derives plan prices itself and sends plain-text mail to **cyberlifeng@gmail.com**. The public contact address is **cyberlifeng@gmail.com**. Submission success means the email provider accepted the message; it does not confirm a booking or payment.
 
 ## Email setup
 
 1. Create a Resend account and verify `cyberlifedigital.com` using the DNS records supplied by Resend.
 2. Add `RESEND_API_KEY` as a private runtime secret in the deployment environment. Never use a `VITE_` prefix. For local Vite development use an ignored `.env.local`; for Cloudflare use an ignored `.dev.vars` or deployed Worker secrets.
-3. Set `ENQUIRY_FROM_EMAIL` to `Cyberlife Digital <hello@cyberlifedigital.com>` or another sender on your verified domain.
+3. Set `ENQUIRY_FROM_EMAIL` to `Cyberlife Digital <enquiries@cyberlifedigital.com>` or another sender on your verified domain. The public Gmail address is the contact and recipient address; Resend requires a verified-domain sender.
 4. Submit one enquiry of each type from the deployed site and check receipt at `cyberlifeng@gmail.com`, including replies, all selected contact methods and annual pricing.
 
 No mail provider was configured during implementation. Missing configuration returns a visible delivery error and direct contact details; the application never simulates success. Provider failures preserve form values.
