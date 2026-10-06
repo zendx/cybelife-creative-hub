@@ -93,10 +93,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Cyberlife Digital" },
       { property: "og:locale", content: "en_NG" },
-      { property: "og:image", content: `https://cyberlifedigital.com${socialImage}` },
+      { property: "og:image", content: `https://cyberlife.digital${socialImage}` },
       { property: "og:image:alt", content: "Cyberlife Digital creative studio" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: `https://cyberlifedigital.com${socialImage}` },
+      { name: "twitter:image", content: `https://cyberlife.digital${socialImage}` },
     ],
     scripts: [
       {
@@ -106,10 +106,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@graph": [
             {
               "@type": "Organization",
-              "@id": "https://cyberlifedigital.com/#organization",
+              "@id": "https://cyberlife.digital/#organization",
               name: "Cyberlife Digital",
-              url: "https://cyberlifedigital.com",
-              logo: "https://cyberlifedigital.com/favicon.png",
+              url: "https://cyberlife.digital",
+              logo: "https://cyberlife.digital/favicon.png",
               email: "hello@cyberlifedigital.com",
               telephone: "+2348031975415",
               address: {
@@ -121,10 +121,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             },
             {
               "@type": "WebSite",
-              "@id": "https://cyberlifedigital.com/#website",
+              "@id": "https://cyberlife.digital/#website",
               name: "Cyberlife Digital",
-              url: "https://cyberlifedigital.com",
-              publisher: { "@id": "https://cyberlifedigital.com/#organization" },
+              url: "https://cyberlife.digital",
+              publisher: { "@id": "https://cyberlife.digital/#organization" },
             },
           ],
         }),
@@ -150,7 +150,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
-  const canonical = `https://cyberlifedigital.com${pathname === "/" ? "/" : pathname.replace(/\/$/, "")}`;
+  const canonical = `https://cyberlife.digital${pathname === "/" ? "/" : pathname.replace(/\/$/, "")}`;
   return (
     <html lang="en">
       <head>

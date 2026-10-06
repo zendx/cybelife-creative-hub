@@ -84,7 +84,7 @@ test("production page hydrates under CSP and updates annual pricing and enquiry 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your website, cared for.");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    "https://cyberlifedigital.com/website-maintenance",
+    "https://cyberlife.digital/website-maintenance",
   );
   await page
     .getByRole("switch", { name: /Annual billing/ })
@@ -181,7 +181,7 @@ test("public routes expose crawlable metadata, a sitemap and real 404 responses"
   const sitemap = await request.get("/sitemap.xml");
   expect(sitemap.ok()).toBeTruthy();
   const xml = await sitemap.text();
-  const urls = [...xml.matchAll(/<loc>https:\/\/cyberlifedigital.com([^<]*)<\/loc>/g)].map(
+  const urls = [...xml.matchAll(/<loc>https:\/\/cyberlife\.digital([^<]*)<\/loc>/g)].map(
     (match) => match[1],
   );
   expect(urls).toContain("/website-maintenance");

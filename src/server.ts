@@ -57,13 +57,17 @@ export default {
     try {
       const url = new URL(request.url);
       if (
-        ["cyberlifedigital.ng", "www.cyberlifedigital.ng", "www.cyberlifedigital.com"].includes(
-          url.hostname,
-        ) ||
-        (url.hostname === "cyberlifedigital.com" && url.protocol === "http:")
+        [
+          "cyberlifedigital.ng",
+          "www.cyberlifedigital.ng",
+          "cyberlifedigital.com",
+          "www.cyberlifedigital.com",
+          "www.cyberlife.digital",
+        ].includes(url.hostname) ||
+        (url.hostname === "cyberlife.digital" && url.protocol === "http:")
       ) {
         url.protocol = "https:";
-        url.host = "cyberlifedigital.com";
+        url.host = "cyberlife.digital";
         return protect(Response.redirect(url, 308));
       }
       if (url.pathname === "/api/enquiries") return protect(await handleEnquiry(request, env));

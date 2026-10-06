@@ -39,11 +39,11 @@ export const Route = createFileRoute("/website-maintenance")({
           "@context": "https://schema.org",
           "@type": "Service",
           name: "Website Maintenance & Support",
-          url: "https://cyberlifedigital.com/website-maintenance",
+          url: "https://cyberlife.digital/website-maintenance",
           serviceType: "Website maintenance",
           provider: {
             "@type": "Organization",
-            "@id": "https://cyberlifedigital.com/#organization",
+            "@id": "https://cyberlife.digital/#organization",
             name: "Cyberlife Digital",
           },
           hasOfferCatalog: {

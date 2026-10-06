@@ -14,5 +14,5 @@ const paths = [
 ];
 writeFileSync(
   new URL("../public/sitemap.xml", import.meta.url),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map((path) => `  <url><loc>https://cyberlifedigital.com${path}</loc></url>`).join("\n")}\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${paths.map((path) => `  <url><loc>https://cyberlife.digital${path}</loc></url>`).join("\n")}\n</urlset>\n`,
 );

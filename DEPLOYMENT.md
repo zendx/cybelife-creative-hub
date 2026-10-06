@@ -15,7 +15,7 @@ See [Resend sender verification](https://resend.com/docs/knowledge-base/how-do-I
 
 ## Hosting and launch verification
 
-- Serve the server build with HTTPS at `cyberlifedigital.com`. Configure DNS and TLS for the primary domain. Route old `.ng` and `www` hosts to this application or configure equivalent permanent redirects at the edge. Application redirects preserve paths and query strings.
+- Serve the server build with HTTPS at `cyberlife.digital`. Configure DNS and TLS for the primary domain. Route old `cyberlifedigital.com`, `.ng` and `www` hosts to this application or configure equivalent permanent redirects at the edge. Application redirects preserve paths and query strings.
 - Deploy the server entry; static-only hosting cannot process these forms. Keep request origins intact through the proxy so same-origin validation works.
 - Server responses set CSP with a unique script nonce, MIME-sniffing protection, referrer policy, permissions restrictions, framing restrictions and HSTS on HTTPS. Mirror applicable headers for static assets at the host/CDN. Lovable preview framing is permitted by CSP.
 - Apply a managed rate limit at the edge to `/api/enquiries` (for example, five submissions per visitor per ten minutes). Built-in rate limits are per running instance, not distributed; Cloudflare's trusted client IP is used when available, and other runtimes share a fallback bucket. Ensure the ingress strips forged client-IP headers. Configure a trusted per-client key for a different host before launch.

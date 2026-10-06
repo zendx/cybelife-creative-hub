@@ -14,7 +14,7 @@ test("location defaults distinguish Nigeria, overseas visitors and unknown count
     ["", null],
   ]) {
     const response = visitorLocation(
-      new Request("https://cyberlifedigital.com/api/visitor-location", {
+      new Request("https://cyberlife.digital/api/visitor-location", {
         headers: { "cf-ipcountry": country ?? "" },
       }),
     );
