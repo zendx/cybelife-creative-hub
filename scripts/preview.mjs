@@ -4,7 +4,13 @@ import { createServer } from "node:http";
 import { Readable } from "node:stream";
 import { readFile, stat } from "node:fs/promises";
 import { resolve, extname, sep } from "node:path";
-import app from "../.output/server/_ssr/ssr.mjs";
+import * as serverModule from "../.output/server/_ssr/ssr.mjs";
+
+// Nitro may wrap the server entry in a namespace when bundling shared exports.
+const app =
+  serverModule.default ??
+  Object.values(serverModule).find((entry) => typeof entry?.default?.fetch === "function")?.default;
+if (typeof app?.fetch !== "function") throw new Error("Compiled SSR entry not found");
 
 const publicRoot = resolve(".output/public");
 const mime = {
