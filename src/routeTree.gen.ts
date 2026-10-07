@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuditRouteImport } from './routes/audit'
 import { Route as BookRouteImport } from './routes/book'
+import { Route as CarePaymentRouteImport } from './routes/care-payment'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as WebsiteMaintenanceRouteImport } from './routes/website-maintenance'
 import { Route as WorkRouteImport } from './routes/work'
@@ -37,6 +38,11 @@ const AuditRoute = AuditRouteImport.update({
 const BookRoute = BookRouteImport.update({
   id: '/book',
   path: '/book',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CarePaymentRoute = CarePaymentRouteImport.update({
+  id: '/care-payment',
+  path: '/care-payment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/audit': typeof AuditRoute
   '/book': typeof BookRoute
+  '/care-payment': typeof CarePaymentRoute
   '/services': typeof ServicesRoute
   '/website-maintenance': typeof WebsiteMaintenanceRoute
   '/work': typeof WorkRoute
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/audit': typeof AuditRoute
   '/book': typeof BookRoute
+  '/care-payment': typeof CarePaymentRoute
   '/services': typeof ServicesRoute
   '/website-maintenance': typeof WebsiteMaintenanceRoute
   '/work': typeof WorkRoute
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/audit': typeof AuditRoute
   '/book': typeof BookRoute
+  '/care-payment': typeof CarePaymentRoute
   '/services': typeof ServicesRoute
   '/website-maintenance': typeof WebsiteMaintenanceRoute
   '/work': typeof WorkRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/audit'
     | '/book'
+    | '/care-payment'
     | '/services'
     | '/website-maintenance'
     | '/work'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/audit'
     | '/book'
+    | '/care-payment'
     | '/services'
     | '/website-maintenance'
     | '/work'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/audit'
     | '/book'
+    | '/care-payment'
     | '/services'
     | '/website-maintenance'
     | '/work'
@@ -140,6 +152,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AuditRoute: typeof AuditRoute
   BookRoute: typeof BookRoute
+  CarePaymentRoute: typeof CarePaymentRoute
   ServicesRoute: typeof ServicesRoute
   WebsiteMaintenanceRoute: typeof WebsiteMaintenanceRoute
   WorkRoute: typeof WorkRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/book'
       fullPath: '/book'
       preLoaderRoute: typeof BookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/care-payment': {
+      id: '/care-payment'
+      path: '/care-payment'
+      fullPath: '/care-payment'
+      preLoaderRoute: typeof CarePaymentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -220,6 +240,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AuditRoute: AuditRoute,
   BookRoute: BookRoute,
+  CarePaymentRoute: CarePaymentRoute,
   ServicesRoute: ServicesRoute,
   WebsiteMaintenanceRoute: WebsiteMaintenanceRoute,
   WorkRoute: WorkRoute,

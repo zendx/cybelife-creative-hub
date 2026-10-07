@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +8,7 @@ import { BillingSwitch } from "@/components/care-plans";
 import { maintenancePlans } from "@/data/site";
 import { platforms, websiteTypes } from "@/lib/enquiry-schema";
 import { planPricing, type BillingCycle, type PlanName } from "@/lib/maintenance";
+import { formatPrice } from "@/data/pricing";
 import { submitEnquiry } from "@/lib/submit-enquiry";
 import { useCurrency } from "@/hooks/use-currency";
 import { CurrencySelector, CurrencyNote } from "@/components/currency-selector";
@@ -30,7 +31,6 @@ export function MaintenanceForm({
   const { currency, format } = useCurrency();
   const [types, setTypes] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
-  const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const pricing = planPricing(plan, billing);
 
@@ -41,16 +41,19 @@ export function MaintenanceForm({
     const form = new FormData(event.currentTarget);
     setSubmitting(true);
     try {
-      await submitEnquiry({
-        ...Object.fromEntries(form),
-        kind: "maintenance",
-        currency,
-        plan,
-        billing,
-        platform,
-        websiteTypes: types,
-      });
-      setSent(true);
+      const checkoutUrl = await submitEnquiry(
+        {
+          ...Object.fromEntries(form),
+          kind: "maintenance",
+          currency,
+          plan,
+          billing,
+          platform,
+          websiteTypes: types,
+        },
+        true,
+      );
+      if (checkoutUrl) window.location.assign(checkoutUrl);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Please try again or email cyberlifeng@gmail.com.",
@@ -59,18 +62,6 @@ export function MaintenanceForm({
       setSubmitting(false);
     }
   }
-
-  if (sent)
-    return (
-      <div role="status" className="rounded-2xl border border-primary/20 bg-primary/5 p-8">
-        <CheckCircle2 className="size-8 text-primary" />
-        <h3 className="mt-4 text-2xl font-bold">Your care request is on its way.</h3>
-        <p className="mt-3 leading-7 text-muted-foreground">
-          Thank you. Our team will review your website and contact you at the company email you
-          provided to discuss your priorities and next steps.
-        </p>
-      </div>
-    );
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8" aria-label="Website maintenance enquiry">
@@ -277,12 +268,14 @@ export function MaintenanceForm({
         )}
         <div>
           <Button type="submit" size="lg" disabled={submitting}>
-            {submitting ? "Sending request…" : "Request website care"}
+            {submitting ? "Opening checkout…" : "Continue to Paystack"}
             <ArrowUpRight />
           </Button>
           <p className="mt-3 text-xs leading-5 text-muted-foreground">
-            This is an enquiry. No payment is collected here. We will review your website and
-            confirm the scope with you before your plan begins.
+            Pay {formatPrice(pricing.total, "NGN")} securely on Paystack for one{" "}
+            {billing === "annually" ? "year" : "month"} of website care. This is a single payment;
+            it does not renew automatically. Your form details are shared with Paystack to process
+            your payment.
           </p>
         </div>
       </fieldset>

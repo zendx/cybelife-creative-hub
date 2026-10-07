@@ -1,6 +1,7 @@
 import { enquirySchema, type Enquiry } from "./enquiry-schema";
 import { formatNaira, planPricing } from "./maintenance";
 import { formatPrice, usdReferenceRate } from "../data/pricing";
+import { initializeCarePayment } from "./paystack.server";
 
 const RECIPIENT = "cyberlifeng@gmail.com";
 const attempts = new Map<string, { count: number; expires: number }>();
@@ -53,7 +54,7 @@ export function enquiryMessage(data: Enquiry) {
   ].join("\n");
 }
 
-export async function handleEnquiry(request: Request, env: unknown) {
+export async function handleEnquiry(request: Request, env: unknown, checkout = false) {
   if (request.method !== "POST")
     return json({ error: "Method not allowed." }, 405, { Allow: "POST" });
   const origin = request.headers.get("origin");
@@ -110,6 +111,12 @@ export async function handleEnquiry(request: Request, env: unknown) {
       400,
     );
   if (parsed.data.website) return json({ error: "Unable to submit this request." }, 400);
+
+  if (checkout) {
+    if (parsed.data.kind !== "maintenance")
+      return json({ error: "Choose a website care plan." }, 400);
+    return initializeCarePayment(parsed.data, request, env);
+  }
 
   const bindings = (env ?? {}) as Record<string, string | undefined>;
   const apiKey = bindings["RESEND_API_KEY"] ?? process.env["RESEND_API_KEY"];

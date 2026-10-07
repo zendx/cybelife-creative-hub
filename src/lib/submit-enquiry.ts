@@ -1,10 +1,10 @@
 import { enquirySchema } from "./enquiry-schema";
 
-export async function submitEnquiry(input: unknown) {
+export async function submitEnquiry(input: unknown, checkout = false) {
   const parsed = enquirySchema.safeParse(input);
   if (!parsed.success)
     throw new Error(parsed.error.issues[0]?.message ?? "Please check your enquiry details.");
-  const response = await fetch("/api/enquiries", {
+  const response = await fetch(checkout ? "/api/care-checkout" : "/api/enquiries", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(parsed.data),
@@ -17,4 +17,11 @@ export async function submitEnquiry(input: unknown) {
         "We couldn’t send your request. Please try again or email cyberlifeng@gmail.com.",
     );
   }
+  if (checkout) {
+    const url = new URL(result.authorizationUrl);
+    if (url.protocol !== "https:" || url.hostname !== "checkout.paystack.com")
+      throw new Error("Unable to open secure checkout. Please try again.");
+    return url.href;
+  }
+  return undefined;
 }

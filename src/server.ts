@@ -5,6 +5,7 @@ import { renderErrorPage } from "./lib/error-page";
 import { handleEnquiry } from "./lib/enquiries.server";
 import { secureResponse } from "./lib/security.server";
 import { visitorLocation } from "./lib/visitor-location.server";
+import { handleCarePayment, handlePaystackWebhook } from "./lib/paystack.server";
 
 type ServerEntry = {
   fetch: (
@@ -70,6 +71,12 @@ export default {
         return protect(Response.redirect(url, 308));
       }
       if (url.pathname === "/api/enquiries") return protect(await handleEnquiry(request, env));
+      if (url.pathname === "/api/care-checkout")
+        return protect(await handleEnquiry(request, env, true));
+      if (url.pathname === "/api/care-payment")
+        return protect(await handleCarePayment(request, env));
+      if (url.pathname === "/api/paystack-webhook")
+        return protect(await handlePaystackWebhook(request, env));
       if (url.pathname === "/api/visitor-location") return protect(visitorLocation(request));
       const handler = await getServerEntry();
       const requestHeaders = new Headers(request.headers);

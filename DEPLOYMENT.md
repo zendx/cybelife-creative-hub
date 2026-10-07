@@ -1,6 +1,6 @@
 # Website care and enquiry delivery
 
-Both enquiry forms POST to `/api/enquiries`. The server validates the fields, derives plan prices itself and sends plain-text mail to **cyberlifeng@gmail.com**. The public contact address is **cyberlifeng@gmail.com**. Submission success means the email provider accepted the message; it does not confirm a booking or payment.
+Project enquiries POST to `/api/enquiries`. Website care uses `/api/care-checkout` to open Paystack checkout. The server validates the fields, derives plan prices itself and sends plain-text mail to **cyberlifeng@gmail.com**. The public contact address is **cyberlifeng@gmail.com**. Submission success means the email provider accepted the message; it does not confirm a booking or payment.
 
 ## Email setup
 
@@ -26,10 +26,18 @@ SEO implementation follows [Google's sitemap guidance](https://developers.google
 
 ## International pricing
 
-All service and care prices retain their NGN base amounts. USD estimates use the dated reference conversion in `src/data/pricing.ts` (NGN 1322.012964 per USD, sourced from ExchangeRate-API on 2026-09-09). This is a fixed reference, not a live FX feed: review and update the value and date there as needed. Prices disclose the reference date, attribution and that the final quote is confirmed before work begins. Annual billing applies the same 15% discount before conversion. No payment is taken by these forms.
+All service and care prices retain their NGN base amounts. USD estimates use the dated reference conversion in `src/data/pricing.ts` (NGN 1322.012964 per USD, sourced from ExchangeRate-API on 2026-09-09). This is a fixed reference, not a live FX feed: review and update the value and date there as needed. Prices disclose the reference date, attribution and that the final quote is confirmed before work begins. Annual billing applies the same 15% discount before conversion. Project enquiry forms do not collect payment. Website care checkout charges the selected period in NGN.
 
 On Cloudflare, enable IP geolocation so `/api/visitor-location` receives the platform's `CF-IPCountry` header. Nigeria defaults to NGN and other known countries to USD. The endpoint uses private/no-store responses. When country information is unavailable (including local preview), browser timezone is a best-effort fallback; it is not proof of location. The visible currency selector always takes precedence and remembers a manual choice in local storage. No external visitor-location service or precise location permission is used. Currency changes apply across service listings, care cards and the care enquiry summary, and enquiry emails include the preferred currency and phone number. The server derives amounts itself using the same reference conversion.
 
 ## Running checks
 
 Run `npm run build`, `npx tsc --noEmit`, `npm run lint` and `npm test`. The browser tests use installed Google Chrome, run the compiled SSR application locally, and mock email delivery so test runs do not send messages. `npm run preview` serves that same production application at `http://127.0.0.1:4173`; deploy the generated platform entry for actual hosting.
+
+## Website care payments (Paystack)
+
+- Set private `PAYSTACK_SECRET_KEY` in Vercel's production environment and redeploy. Use `sk_test_` credentials for testing and `sk_live_` credentials for live payments; never expose the secret as a `VITE_` variable or commit it.
+- Set the Paystack dashboard webhook URL to `https://www.cyberlife.digital/api/paystack-webhook`. Configure Resend as above so verified payments email the form details and reference to `cyberlifeng@gmail.com`. Paystack retries failed webhook deliveries; Resend's idempotency key deduplicates retries within its retention window.
+- Checkout takes a single NGN payment for one month or one year of the chosen plan. Annual checkout applies the existing 15% discount. USD remains an estimate; the form discloses the actual NGN charge. Automatic renewals are not enabled.
+- The server calculates the amount, signs the form metadata, and initializes the transaction. `/care-payment` verifies the reference with Paystack before showing confirmation. The webhook verifies its HMAC signature and independently verifies the transaction, currency, amount, signed metadata and customer before emailing. Test transactions are clearly marked.
+- Check a test payment, cancellation, a provider error, callback verification and webhook/email delivery before enabling live payments. Payment records and enquiry details remain in your Paystack dashboard even if email delivery is delayed. Live payment configuration has not been verified by local tests.

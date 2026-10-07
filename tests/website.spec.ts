@@ -114,7 +114,7 @@ test("production page hydrates under CSP and updates annual pricing and enquiry 
   expect(errors).toEqual([]);
 });
 
-test("maintenance form submits all selections and preserves data after a delivery error", async ({
+test("maintenance form submits all selections and preserves data after a checkout error", async ({
   page,
 }) => {
   await page.goto("/website-maintenance?plan=Standard&billing=annually#care-enquiry");
@@ -131,15 +131,15 @@ test("maintenance form submits all selections and preserves data after a deliver
     .getByLabel("Where would you like our support?")
     .fill("Improve our checkout and keep our content updated.");
   let payload: Record<string, unknown> = {};
-  await page.route("**/api/enquiries", async (route) => {
+  await page.route("**/api/care-checkout", async (route) => {
     payload = route.request().postDataJSON();
     await route.fulfill({
       status: 502,
-      json: { error: "Email delivery is unavailable. Please try again." },
+      json: { error: "Checkout is unavailable. Please try again." },
     });
   });
-  await page.getByRole("button", { name: "Request website care" }).click();
-  await expect(page.getByRole("alert")).toContainText("Email delivery is unavailable");
+  await page.getByRole("button", { name: "Continue to Paystack" }).click();
+  await expect(page.getByRole("alert")).toContainText("Checkout is unavailable");
   await expect(page.getByLabel("First name", { exact: true })).toHaveValue("Ada");
   expect(payload).toMatchObject({
     kind: "maintenance",
@@ -148,12 +148,17 @@ test("maintenance form submits all selections and preserves data after a deliver
     otherPlatform: "Custom CMS",
     websiteTypes: ["E-commerce", "Blog"],
   });
-  await page.unroute("**/api/enquiries");
-  await page.route("**/api/enquiries", (route) => route.fulfill({ json: { ok: true } }));
-  await page.getByRole("button", { name: "Request website care" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Your care request is on its way." }),
-  ).toBeVisible();
+  await page.unroute("**/api/care-checkout");
+  await page.route("**/api/care-checkout", (route) =>
+    route.fulfill({
+      json: { ok: true, authorizationUrl: "https://checkout.paystack.com/test-checkout" },
+    }),
+  );
+  await page.route("https://checkout.paystack.com/**", (route) =>
+    route.fulfill({ contentType: "text/html", body: "<h1>Paystack checkout</h1>" }),
+  );
+  await page.getByRole("button", { name: "Continue to Paystack" }).click();
+  await expect(page).toHaveURL("https://checkout.paystack.com/test-checkout");
 });
 
 test("mobile navigation, project contact preferences and care cards work", async ({ page }) => {
