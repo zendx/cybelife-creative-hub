@@ -62,7 +62,6 @@ export default {
           "www.cyberlifedigital.ng",
           "cyberlifedigital.com",
           "www.cyberlifedigital.com",
-          "www.cyberlife.digital",
         ].includes(url.hostname) ||
         (url.hostname === "cyberlife.digital" && url.protocol === "http:")
       ) {

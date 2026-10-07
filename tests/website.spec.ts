@@ -175,6 +175,15 @@ test("mobile navigation, project contact preferences and care cards work", async
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
+test("www domain serves the page without redirecting back to the bare domain", async ({ request }) => {
+  const response = await request.get("/", {
+    headers: { host: "www.cyberlife.digital" },
+    maxRedirects: 0,
+  });
+  expect(response.status()).toBe(200);
+  expect(response.headers()["location"]).toBeUndefined();
+});
+
 test("public routes expose crawlable metadata, a sitemap and real 404 responses", async ({
   request,
 }) => {
