@@ -175,7 +175,9 @@ test("mobile navigation, project contact preferences and care cards work", async
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("www domain serves the page without redirecting back to the bare domain", async ({ request }) => {
+test("www domain serves the page without redirecting back to the bare domain", async ({
+  request,
+}) => {
   const response = await request.get("/", {
     headers: { host: "www.cyberlife.digital" },
     maxRedirects: 0,
