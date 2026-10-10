@@ -205,6 +205,28 @@ export const maintenancePlans = [
 
 export const projects = [
   {
+    slug: "smpis",
+    title: "SMPIS",
+    domain: "smpis.digital",
+    url: "https://smpis.digital/",
+    sector: "Education Technology",
+    service: "School Management Platform",
+    status: "Live",
+    image: "/case-studies/smpis.jpg",
+    imageAlt: "SMPIS school management website with a school overview dashboard",
+    summary:
+      "A School Management, Performance and Intelligence System that brings students, staff, finances and academics into one connected workspace.",
+    challenge:
+      "Bring disconnected school records and everyday workflows into a clearer experience for administrators, teachers, parents and school leaders.",
+    response:
+      "We shaped a connected platform around student records, attendance, fees, academics and school operations, with role-based access and a dedicated portal for each school.",
+    scope: ["Product UX", "School management", "Role-based portals", "Dashboards & reporting"],
+    highlight: "One school. One connected workspace.",
+    result:
+      "Schools have a shared place to manage daily operations, while dashboards and reports help leaders see where attention is needed.",
+    featured: true,
+  },
+  {
     slug: "martins-investments",
     title: "Martins Investments",
     domain: "martinsinvestments.com",
@@ -326,28 +348,6 @@ export const projects = [
     highlight: "Country-level X trend discovery",
     result:
       "The experience connects acquisition, pricing and account access to a focused workspace for faster content decisions.",
-    featured: false,
-  },
-  {
-    slug: "smpis",
-    title: "SMPIS",
-    domain: "smpis.digital",
-    url: "https://smpis.digital/",
-    sector: "Education Technology",
-    service: "School Management Platform",
-    status: "Live",
-    image: "/case-studies/smpis.jpg",
-    imageAlt: "SMPIS school management website with a school overview dashboard",
-    summary:
-      "A School Management, Performance and Intelligence System that brings students, staff, finances and academics into one connected workspace.",
-    challenge:
-      "Bring disconnected school records and everyday workflows into a clearer experience for administrators, teachers, parents and school leaders.",
-    response:
-      "We shaped a connected platform around student records, attendance, fees, academics and school operations, with role-based access and a dedicated portal for each school.",
-    scope: ["Product UX", "School management", "Role-based portals", "Dashboards & reporting"],
-    highlight: "One school. One connected workspace.",
-    result:
-      "Schools have a shared place to manage daily operations, while dashboards and reports help leaders see where attention is needed.",
     featured: false,
   },
   {
