@@ -13,12 +13,12 @@ export const Route = createFileRoute("/work")({
       {
         name: "description",
         content:
-          "Explore live websites and digital products Cyberlife Digital has delivered across investment, industrial power, email infrastructure, consumer services and creator technology.",
+          "Explore live websites and digital products Cyberlife Digital has delivered across investment, industrial power, email infrastructure, consumer services, creator technology, education and football pools.",
       },
       { property: "og:title", content: "Our Work | Cyberlife Digital" },
       {
         property: "og:description",
-        content: "Five live digital experiences, with the challenge and thinking behind each one.",
+        content: `Explore ${projects.length} live digital experiences, with the challenge and thinking behind each one.`,
       },
     ],
   }),
@@ -35,12 +35,12 @@ function WorkPage() {
             Real products. Clear thinking. <span className="text-gradient-brand">Live work.</span>
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-muted-foreground">
-            Five very different briefs, shaped into focused digital experiences. Explore the
-            challenge and response behind each project, then open the finished work for yourself.
+            Different briefs, shaped into focused digital experiences. Explore the challenge and
+            response behind each project, then open the finished work for yourself.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <span className="rounded-full border border-primary/15 bg-white/75 px-4 py-2 text-xs font-semibold text-primary shadow-sm backdrop-blur">
-              05 selected launches
+              {String(projects.length).padStart(2, "0")} selected launches
             </span>
             <span className="rounded-full border border-primary/15 bg-white/75 px-4 py-2 text-xs font-semibold text-foreground shadow-sm backdrop-blur">
               Websites + SaaS products

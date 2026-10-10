@@ -19,7 +19,7 @@ export const services = [
       "A faster route from visit to enquiry or action",
       "A dependable product your team can manage",
     ],
-    from: 850000,
+    from: 350000,
   },
   {
     slug: "mobile-app-development",
@@ -63,7 +63,7 @@ export const services = [
       "Less manual work behind every order",
       "A storefront designed to support repeat sales",
     ],
-    from: 1650000,
+    from: 750000,
   },
   {
     slug: "digital-branding",
@@ -85,7 +85,7 @@ export const services = [
       "A recognisable system across every touchpoint",
       "Practical tools that keep the brand consistent",
     ],
-    from: 620000,
+    from: 100000,
   },
   {
     slug: "google-business-profile",
@@ -326,6 +326,56 @@ export const projects = [
     highlight: "Country-level X trend discovery",
     result:
       "The experience connects acquisition, pricing and account access to a focused workspace for faster content decisions.",
+    featured: false,
+  },
+  {
+    slug: "smpis",
+    title: "SMPIS",
+    domain: "smpis.digital",
+    url: "https://smpis.digital/",
+    sector: "Education Technology",
+    service: "School Management Platform",
+    status: "Live",
+    image: "/case-studies/smpis.jpg",
+    imageAlt: "SMPIS school management website with a school overview dashboard",
+    summary:
+      "A School Management, Performance and Intelligence System that brings students, staff, finances and academics into one connected workspace.",
+    challenge:
+      "Bring disconnected school records and everyday workflows into a clearer experience for administrators, teachers, parents and school leaders.",
+    response:
+      "We shaped a connected platform around student records, attendance, fees, academics and school operations, with role-based access and a dedicated portal for each school.",
+    scope: ["Product UX", "School management", "Role-based portals", "Dashboards & reporting"],
+    highlight: "One school. One connected workspace.",
+    result:
+      "Schools have a shared place to manage daily operations, while dashboards and reports help leaders see where attention is needed.",
+    featured: false,
+  },
+  {
+    slug: "ablefast",
+    title: "Able Fast",
+    domain: "ablefast.com",
+    url: "https://ablefast.com/",
+    sector: "Football Pools & Live Scores",
+    service: "Website & System Integration",
+    status: "Live",
+    image: "/case-studies/ablefast.jpg",
+    imageAlt:
+      "Able Fast football pools website showing fixtures, results and live update filters in one interface",
+    summary:
+      "A unified football pools experience that brings results and live scores together for customers and simplifies the owner's publishing workflow.",
+    challenge:
+      "The website ran on two separate technologies, forcing customers to switch between tabs to follow pool results. The owner also had to manually copy live scores into one system to keep visitors informed and avoid losing traffic.",
+    response:
+      "Cyberlife Digital unified the systems, bringing pool results and live-score updates into one connected website and simplifying the workflow for the owner.",
+    scope: [
+      "System integration",
+      "Results & live scores",
+      "Customer experience",
+      "Publishing workflow",
+    ],
+    highlight: "Two separate systems. One connected experience.",
+    result:
+      "Customers can follow pool results and live scores in one place, while the owner has a simpler workflow with less manual duplication.",
     featured: false,
   },
 ] as const;
