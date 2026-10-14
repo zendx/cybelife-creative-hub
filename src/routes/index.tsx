@@ -21,6 +21,7 @@ import {
 import { BookingDialog } from "@/components/booking-dialog";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
+import socialImage from "@/assets/hero-studio.jpg";
 import { blogPosts } from "@/data/blog";
 import { process, projects, services, stats } from "@/data/site";
 
@@ -84,6 +85,17 @@ export const Route = createFileRoute("/")({
         content:
           "Web, mobile, e-commerce, branding and digital growth support from a Lagos-based agency.",
       },
+      { property: "og:image", content: `https://cyberlife.digital${socialImage}` },
+      {
+        name: "twitter:title",
+        content: "Cyberlife Digital — Build. Get found. Keep growing.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Web, mobile, e-commerce, branding and digital growth support from a Lagos-based agency.",
+      },
+      { name: "twitter:image", content: `https://cyberlife.digital${socialImage}` },
     ],
   }),
   component: Home,
