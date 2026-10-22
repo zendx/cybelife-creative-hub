@@ -59,15 +59,16 @@ export default {
       const url = new URL(request.url);
       if (
         [
+          "cyberlife.digital",
           "cyberlifedigital.ng",
           "www.cyberlifedigital.ng",
           "cyberlifedigital.com",
           "www.cyberlifedigital.com",
         ].includes(url.hostname) ||
-        (url.hostname === "cyberlife.digital" && url.protocol === "http:")
+        (url.hostname === "www.cyberlife.digital" && url.protocol === "http:")
       ) {
         url.protocol = "https:";
-        url.host = "cyberlife.digital";
+        url.host = "www.cyberlife.digital";
         return protect(Response.redirect(url, 308));
       }
       if (url.pathname === "/api/enquiries") return protect(await handleEnquiry(request, env));

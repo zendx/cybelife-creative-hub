@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://cyberlife.digital/sitemap.xml
+Sitemap: https://www.cyberlife.digital/sitemap.xml

@@ -84,7 +84,7 @@ test("production page hydrates under CSP and updates annual pricing and enquiry 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Your website, cared for.");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
     "href",
-    "https://cyberlife.digital/website-maintenance",
+    "https://www.cyberlife.digital/website-maintenance",
   );
   await page
     .getByRole("switch", { name: /Annual billing/ })

@@ -85,7 +85,7 @@ export const Route = createFileRoute("/")({
         content:
           "Web, mobile, e-commerce, branding and digital growth support from a Lagos-based agency.",
       },
-      { property: "og:image", content: `https://cyberlife.digital${socialImage}` },
+      { property: "og:image", content: `https://www.cyberlife.digital${socialImage}` },
       {
         name: "twitter:title",
         content: "Cyberlife Digital — Build. Get found. Keep growing.",
@@ -95,7 +95,7 @@ export const Route = createFileRoute("/")({
         content:
           "Web, mobile, e-commerce, branding and digital growth support from a Lagos-based agency.",
       },
-      { name: "twitter:image", content: `https://cyberlife.digital${socialImage}` },
+      { name: "twitter:image", content: `https://www.cyberlife.digital${socialImage}` },
     ],
   }),
   component: Home,

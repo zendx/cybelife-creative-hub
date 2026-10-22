@@ -16,10 +16,10 @@ const maintenance = {
 };
 let client = 0;
 function request(body: unknown, options: { origin?: string; method?: string } = {}) {
-  return new Request("https://cyberlife.digital/api/enquiries", {
+  return new Request("https://www.cyberlife.digital/api/enquiries", {
     method: options.method ?? "POST",
     headers: {
-      origin: options.origin ?? "https://cyberlife.digital",
+      origin: options.origin ?? "https://www.cyberlife.digital",
       "content-type": "application/json",
       "cf-connecting-ip": `test-${++client}`,
     },
