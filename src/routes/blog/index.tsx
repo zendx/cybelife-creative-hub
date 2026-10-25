@@ -68,7 +68,7 @@ function BlogPage() {
                   alt={featuredPost.imageAlt}
                   width={1200}
                   height={900}
-                  className="aspect-[4/3] h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  className="aspect-[4/3] h-full w-full object-contain bg-[#102b4c] transition-transform duration-700 group-hover:scale-[1.03]"
                 />
               </Link>
               <div className="flex flex-col justify-center p-8 md:p-12">

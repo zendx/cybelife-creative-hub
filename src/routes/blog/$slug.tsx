@@ -28,7 +28,77 @@ export const Route = createFileRoute("/blog/$slug")({
       { property: "og:title", content: loaderData?.title ?? "Cyberlife Digital Insights" },
       { property: "og:description", content: loaderData?.excerpt ?? "" },
       { property: "article:published_time", content: loaderData?.publishedAt ?? "" },
+      {
+        property: "article:modified_time",
+        content: loaderData?.modifiedAt ?? loaderData?.publishedAt ?? "",
+      },
+      { property: "article:section", content: loaderData?.category ?? "" },
+      {
+        property: "og:image",
+        content: loaderData ? `https://www.cyberlife.digital${loaderData.image}` : "",
+      },
+      {
+        property: "og:image:secure_url",
+        content: loaderData ? `https://www.cyberlife.digital${loaderData.image}` : "",
+      },
+      { property: "og:image:alt", content: loaderData?.imageAlt ?? "" },
+      { name: "twitter:title", content: loaderData?.title ?? "Cyberlife Digital Insights" },
+      { name: "twitter:description", content: loaderData?.excerpt ?? "" },
+      {
+        name: "twitter:image",
+        content: loaderData ? `https://www.cyberlife.digital${loaderData.image}` : "",
+      },
+      { name: "twitter:image:alt", content: loaderData?.imageAlt ?? "" },
     ],
+    scripts: loaderData
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "BlogPosting",
+                  "@id": `https://www.cyberlife.digital/blog/${loaderData.slug}#article`,
+                  mainEntityOfPage: `https://www.cyberlife.digital/blog/${loaderData.slug}`,
+                  headline: loaderData.title,
+                  description: loaderData.excerpt,
+                  image: `https://www.cyberlife.digital${loaderData.image}`,
+                  datePublished: loaderData.publishedAt,
+                  dateModified: loaderData.modifiedAt ?? loaderData.publishedAt,
+                  author: { "@id": "https://www.cyberlife.digital/#organization" },
+                  publisher: { "@id": "https://www.cyberlife.digital/#organization" },
+                  articleSection: loaderData.category,
+                  inLanguage: "en-NG",
+                },
+                {
+                  "@type": "BreadcrumbList",
+                  itemListElement: [
+                    {
+                      "@type": "ListItem",
+                      position: 1,
+                      name: "Home",
+                      item: "https://www.cyberlife.digital/",
+                    },
+                    {
+                      "@type": "ListItem",
+                      position: 2,
+                      name: "Insights",
+                      item: "https://www.cyberlife.digital/blog",
+                    },
+                    {
+                      "@type": "ListItem",
+                      position: 3,
+                      name: loaderData.title,
+                      item: `https://www.cyberlife.digital/blog/${loaderData.slug}`,
+                    },
+                  ],
+                },
+              ],
+            }).replace(/</g, "\\u003c"),
+          },
+        ]
+      : [],
   }),
   component: BlogArticlePage,
 });
@@ -42,7 +112,10 @@ function toSectionId(heading: string) {
 
 function BlogArticlePage() {
   const post = Route.useLoaderData();
-  const relatedPosts = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 2);
+  const relatedPosts = blogPosts
+    .filter((item) => item.slug !== post.slug)
+    .sort((a, b) => Number(b.category === post.category) - Number(a.category === post.category))
+    .slice(0, 2);
 
   return (
     <>
@@ -62,6 +135,20 @@ function BlogArticlePage() {
               <time dateTime={post.publishedAt}>{post.publishedDate}</time>
               <span aria-hidden="true">·</span>
               <span>{post.readingTime}</span>
+              <span>By Cyberlife Digital</span>
+              {post.modifiedAt && (
+                <span>
+                  Updated{" "}
+                  <time dateTime={post.modifiedAt}>
+                    {new Date(`${post.modifiedAt}T12:00:00Z`).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                      timeZone: "Africa/Lagos",
+                    })}
+                  </time>
+                </span>
+              )}
             </div>
             <h1 className="mt-6 max-w-4xl text-4xl font-semibold leading-[1.08] md:text-6xl">
               {post.title}
@@ -79,7 +166,7 @@ function BlogArticlePage() {
               alt={post.imageAlt}
               width={1600}
               height={900}
-              className="aspect-[16/8] w-full object-cover"
+              className="aspect-video w-full object-cover"
             />
           </figure>
         </div>
@@ -116,6 +203,20 @@ function BlogArticlePage() {
                       <p key={paragraph}>{paragraph}</p>
                     ))}
                   </div>
+                  {section.links && (
+                    <ul className="mt-5 space-y-3" aria-label={`Resources for ${section.heading}`}>
+                      {section.links.map((link) => (
+                        <li key={link.href}>
+                          <a
+                            href={link.href}
+                            className="text-brand-soft underline underline-offset-4 hover:text-foreground"
+                          >
+                            {link.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   {section.bullets && (
                     <ul className="mt-6 space-y-3 rounded-lg border border-border bg-card p-6">
                       {section.bullets.map((bullet) => (

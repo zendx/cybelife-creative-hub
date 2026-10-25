@@ -10,6 +10,7 @@ export interface BlogSection {
   heading: string;
   paragraphs: readonly string[];
   bullets?: readonly string[];
+  links?: readonly { label: string; href: string }[];
 }
 
 export interface BlogPost {
@@ -20,6 +21,7 @@ export interface BlogPost {
   readingTime: string;
   publishedDate: string;
   publishedAt: string;
+  modifiedAt?: string;
   image: string;
   imageAlt: string;
   intro: string;
@@ -29,6 +31,107 @@ export interface BlogPost {
 
 export const blogPosts: readonly BlogPost[] = [
   {
+    slug: "importance-of-web-maintenance",
+    title: "Why website maintenance matters for your business",
+    category: "Web Strategy",
+    excerpt:
+      "Protect your domain, customer enquiries and search visibility with website maintenance, SEO audits and ongoing support from Cyberlife Digital in Lagos, Nigeria.",
+    readingTime: "7 min read",
+    publishedDate: "25 October 2026",
+    publishedAt: "2026-10-25",
+    image: "/blog/website-maintenance-cyberlife.webp",
+    imageAlt:
+      "Cyberlife Digital branded website maintenance cover with a laptop, security shield and backup symbols",
+    intro:
+      "When did you last check your business website? If a prospective customer searches for your company today, will they find a working website with accurate information and a reliable way to contact you? Or will an expired domain, broken page or failed enquiry form interrupt that first impression? Website maintenance protects the investment you made at launch and keeps your digital presence useful as your business grows.",
+    sections: [
+      {
+        heading: "Your website is a business asset that needs ongoing care",
+        paragraphs: [
+          "Entrepreneurs, business owners and professionals often invest heavily in social media while website upkeep slips down the priority list. The neglect is rarely intentional: operations become busy, renewal reminders go unanswered and small technical problems accumulate.",
+          "Your website is more than a link in a social media bio or on corporate stationery. It is your own online property: a place to explain your services, demonstrate credibility and turn interest into enquiries. Domain registration, hosting and software all need attention to keep that property accessible and relevant.",
+        ],
+      },
+      {
+        heading: "Domain renewal and hosting keep your front door open",
+        paragraphs: [
+          "Domain registration and website hosting are separate services, and either can interrupt access if it expires. A domain lapse can also disrupt email connected to that domain. Record renewal dates, keep billing details current and make sure a responsible person receives the reminders.",
+          "Retain access to the registrar, hosting account and recovery email. Agree with your maintenance partner who handles each renewal and which charges are included in your plan. A clear ownership record makes a future handover much simpler.",
+        ],
+        bullets: [
+          "Review domain and hosting renewal dates and payment methods.",
+          "Check HTTPS certificates and confirm important pages load correctly.",
+          "Keep account recovery details and authorised contacts current.",
+        ],
+        links: [
+          {
+            label: "Explore Cyberlife website maintenance and care plans",
+            href: "/website-maintenance",
+          },
+        ],
+      },
+      {
+        heading: "Security, backups and working forms protect customer trust",
+        paragraphs: [
+          "A maintenance routine should cover software updates where applicable, access reviews, backups and checks of important customer journeys. Backups should be recoverable, with restoration tested at an agreed interval; simply having a backup file does not establish that recovery will work.",
+          "Test enquiry forms, booking links, checkout flows and confirmation messages after relevant changes. A page can appear healthy while its form fails to deliver a lead. Accurate contact details, current service descriptions and functional mobile navigation deserve the same attention as technical updates.",
+        ],
+      },
+      {
+        heading: "How website maintenance supports SEO and conversions",
+        paragraphs: [
+          "Search visibility depends on useful content and pages that search engines can access and understand. Maintenance helps identify broken links, accidental indexing restrictions, missing page titles, outdated information and unnecessary obstacles in the customer journey.",
+          "Descriptive headings, relevant internal links, clear service pages and appropriately sized images make a website easier to navigate. Review search queries and enquiries alongside technical findings so improvements answer real customer questions. SEO is ongoing work; a maintenance plan supports that work without guaranteeing a particular ranking.",
+        ],
+        links: [
+          {
+            label: "Read the seven signs your website may be losing leads",
+            href: "/blog/signs-your-business-website-is-costing-you-leads",
+          },
+        ],
+      },
+      {
+        heading: "Start with a website audit, then prioritise the fixes",
+        paragraphs: [
+          "Cyberlife's website audit tool gives new and existing customers a starting point for improvement. It inspects the returned page HTML and response for foundations such as page titles, descriptions, heading structure, mobile viewport settings, image alternative attributes, canonical links, indexing directives and HTTPS signals.",
+          "These automated checks flag issues for investigation; they are not a full-site crawl, a keyword ranking report or a substitute for human review. Our team of digital professionals puts the findings in context, reviews content and customer journeys, and helps prioritise technical SEO and usability improvements around business goals.",
+          "For a new website, an audit helps establish a baseline. For an existing website, it can expose gaps that appeared as content, services or technology changed. After fixes, repeat the relevant checks and review search and enquiry data to understand what needs attention next.",
+        ],
+        links: [
+          { label: "Run your free website audit", href: "/audit" },
+          { label: "Explore our digital services", href: "/services" },
+        ],
+      },
+      {
+        heading: "Choosing digital partners in Lagos, Nigeria",
+        paragraphs: [
+          "If you are searching for the best web development agency in Lagos or the best web development agency in Nigeria, look beyond a launch-day portfolio. Ask who will own your domain, how maintenance is scoped, how backups are tested and how the team will respond when a customer-facing feature stops working.",
+          "A digital agency in Lagos, Nigeria should understand local customer journeys while supporting businesses serving wider markets. Premium web development services should include clear content architecture, responsive design, accessible interactions and an agreed plan for support after launch. Effective digital partners connect these decisions to the way your business actually operates.",
+        ],
+        links: [
+          { label: "Meet the team behind Cyberlife Digital", href: "/about" },
+          { label: "Explore our website and web app services", href: "/services#website-design" },
+        ],
+      },
+      {
+        heading: "How Cyberlife supports businesses in Nigeria and beyond",
+        paragraphs: [
+          "Cyberlife Digital helps businesses in Nigeria and outside Nigeria build and care for their digital presence. Our work includes Martins Investments (martinsinvestments.com), alongside the other businesses showcased in our portfolio. We bring website development, digital service expertise and ongoing care together so clients have a team to discuss improvements with as their needs change.",
+          "Our Martins Investments project demonstrates how a corporate website can bring a parent company's story and portfolio together. Explore that project and our other case studies to see the type of work we deliver, then speak with us about the maintenance, content and SEO support your own website needs.",
+          "Whether your domain needs attention, your existing site needs a technical review or you are planning a new platform, start with an audit and a conversation. We will help define the priorities, responsibilities and scope of support before work begins.",
+        ],
+        links: [
+          { label: "View the Martins Investments case study", href: "/work#martins-investments" },
+          { label: "Visit Martins Investments", href: "https://www.martinsinvestments.com/" },
+          { label: "Review website care options", href: "/website-maintenance" },
+          { label: "Book a conversation with Cyberlife", href: "/book" },
+        ],
+      },
+    ],
+    takeaway:
+      "Your website should remain a dependable route from discovery to enquiry. Keep renewals, security, content and customer journeys under review, and use an audit to turn overlooked issues into a practical improvement plan.",
+  },
+  {
     slug: "signs-your-business-website-is-costing-you-leads",
     title: "7 signs your business website is costing you leads",
     category: "Web Strategy",
@@ -37,6 +140,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingTime: "6 min read",
     publishedDate: "22 August 2026",
     publishedAt: "2026-08-22",
+    modifiedAt: "2026-10-25",
     image: projectFintech,
     imageAlt: "Business dashboard displayed on a laptop against a deep blue background",
     intro:
@@ -91,6 +195,19 @@ export const blogPosts: readonly BlogPost[] = [
           "The goal is not a redesign for its own sake. It is a clearer route from first impression to informed action, supported by content and technology your team can maintain.",
         ],
       },
+      {
+        heading: "Turn website friction into an improvement plan",
+        paragraphs: [
+          "For a business in Lagos or elsewhere in Nigeria, start by testing the route from a service page to a delivered enquiry. Cyberlife Digital can help review that journey alongside technical SEO foundations, then scope changes around the problems customers actually encounter.",
+        ],
+        links: [
+          { label: "Run a free website audit", href: "/audit" },
+          {
+            label: "Keep your website reliable after improvements",
+            href: "/blog/importance-of-web-maintenance",
+          },
+        ],
+      },
     ],
     takeaway:
       "If visitors cannot understand the offer, trust the business and take the next step without friction, visual polish alone will not recover the opportunity.",
@@ -104,6 +221,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingTime: "7 min read",
     publishedDate: "14 August 2026",
     publishedAt: "2026-08-14",
+    modifiedAt: "2026-10-25",
     image: heroStudio,
     imageAlt: "Digital designers working together in a dark creative studio",
     intro:
@@ -155,6 +273,16 @@ export const blogPosts: readonly BlogPost[] = [
           "How the team will judge whether the project worked",
         ],
       },
+      {
+        heading: "Include SEO and website care in your brief",
+        paragraphs: [
+          "When comparing web development agencies in Nigeria, ask each team to explain content ownership, search-friendly page structure, launch checks and ongoing support. Include your service locations, customer questions and domain renewal responsibilities in the brief so premium web development services have a clear scope.",
+        ],
+        links: [
+          { label: "Explore website development services", href: "/services#website-design" },
+          { label: "Plan ongoing website maintenance", href: "/website-maintenance" },
+        ],
+      },
     ],
     takeaway:
       "The best brief gives a team a clear problem and honest constraints, then leaves enough room for strategy and design to find the right solution.",
@@ -168,6 +296,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingTime: "7 min read",
     publishedDate: "6 August 2026",
     publishedAt: "2026-08-06",
+    modifiedAt: "2026-10-25",
     image: projectFashion,
     imageAlt: "Fashion storefront shown across desktop and mobile screens",
     intro:
@@ -219,6 +348,19 @@ export const blogPosts: readonly BlogPost[] = [
           "Confirm who responds when an order needs manual attention.",
         ],
       },
+      {
+        heading: "Prepare your Nigerian store for search and ongoing care",
+        paragraphs: [
+          "For an e-commerce business in Nigeria, useful category descriptions, clear product information and reliable mobile checkout deserve attention before launch. Afterwards, keep prices, stock, delivery rules and payment journeys under review. Cyberlife Digital can help connect the storefront to those operational needs.",
+        ],
+        links: [
+          { label: "Discuss your e-commerce project", href: "/services" },
+          {
+            label: "Learn why website maintenance matters",
+            href: "/blog/importance-of-web-maintenance",
+          },
+        ],
+      },
     ],
     takeaway:
       "A strong storefront reflects a clear operation. Prepare the product data, policies and fulfillment workflow with the same care as the visual design.",
@@ -232,6 +374,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingTime: "6 min read",
     publishedDate: "28 July 2026",
     publishedAt: "2026-07-28",
+    modifiedAt: "2026-10-25",
     image: projectBranding,
     imageAlt: "Red and blue brand identity materials arranged on a dark surface",
     intro:
@@ -281,6 +424,19 @@ export const blogPosts: readonly BlogPost[] = [
           "The final identity should include the templates, rules and files people need for everyday work. Prioritise the channels customers see most, document decisions clearly and give the team examples of the system in action.",
         ],
       },
+      {
+        heading: "Carry the brand change into your website",
+        paragraphs: [
+          "A brand update should reach service pages, contact details, social previews and the customer enquiry journey. If page addresses must change, plan relevant redirects and review internal links so visitors can still find the information they need. Cyberlife Digital connects brand identity with practical website delivery for businesses in Nigeria and beyond.",
+        ],
+        links: [
+          { label: "Explore brand identity services", href: "/services" },
+          {
+            label: "Write a clearer website brief",
+            href: "/blog/how-to-write-a-better-website-brief",
+          },
+        ],
+      },
     ],
     takeaway:
       "Refresh the expression when the strategy remains sound; rebrand when the business needs to stand for something meaningfully different.",
@@ -294,6 +450,7 @@ export const blogPosts: readonly BlogPost[] = [
     readingTime: "6 min read",
     publishedDate: "18 July 2026",
     publishedAt: "2026-07-18",
+    modifiedAt: "2026-10-25",
     image: projectHospitality,
     imageAlt: "Hospitality booking experience displayed on a tablet in a refined interior",
     intro:
@@ -337,6 +494,16 @@ export const blogPosts: readonly BlogPost[] = [
         heading: "Keep learning after launch",
         paragraphs: [
           "Watch where customers pause, abandon or ask for help, then combine that evidence with direct conversation. Small improvements to wording, sequence and feedback can remove friction without rebuilding the whole product.",
+        ],
+      },
+      {
+        heading: "Choose digital partners who understand your customer journey",
+        paragraphs: [
+          "When choosing a digital agency in Lagos, Nigeria, ask how the team will test real customer tasks and maintain the experience after launch. Cyberlife Digital brings local context to web strategy and development, with attention to service information, mobile usability and clear routes to support.",
+        ],
+        links: [
+          { label: "Explore Cyberlife case studies", href: "/work" },
+          { label: "Audit the foundations of your website", href: "/audit" },
         ],
       },
     ],
