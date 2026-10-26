@@ -197,7 +197,7 @@ test("public routes expose crawlable metadata, a sitemap and real 404 responses"
   const sitemap = await request.get("/sitemap.xml");
   expect(sitemap.ok()).toBeTruthy();
   const xml = await sitemap.text();
-  const urls = [...xml.matchAll(/<loc>https:\/\/cyberlife\.digital([^<]*)<\/loc>/g)].map(
+  const urls = [...xml.matchAll(/<loc>https:\/\/www\.cyberlife\.digital([^<]*)<\/loc>/g)].map(
     (match) => match[1],
   );
   expect(urls).toContain("/website-maintenance");

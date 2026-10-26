@@ -9,6 +9,7 @@ export const getRouter = () => {
 
   const router = createRouter({
     routeTree,
+    trailingSlash: "never",
     context: { queryClient },
     ssr: nonce ? { nonce } : {},
     scrollRestoration: true,

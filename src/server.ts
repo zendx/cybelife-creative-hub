@@ -57,6 +57,7 @@ export default {
     const protect = (response: Response) => secureResponse(response, request, nonce);
     try {
       const url = new URL(request.url);
+      const canonicalUrl = new URL(url);
       if (
         [
           "cyberlife.digital",
@@ -67,9 +68,21 @@ export default {
         ].includes(url.hostname) ||
         (url.hostname === "www.cyberlife.digital" && url.protocol === "http:")
       ) {
-        url.protocol = "https:";
-        url.host = "www.cyberlife.digital";
-        return protect(Response.redirect(url, 308));
+        canonicalUrl.protocol = "https:";
+        canonicalUrl.host = "www.cyberlife.digital";
+      }
+      // Normalize page paths together with the host to avoid temporary router
+      // redirects and a second hop when an old-domain URL has a trailing slash.
+      // API endpoints and assets retain their own routing semantics.
+      if (
+        (request.method === "GET" || request.method === "HEAD") &&
+        !url.pathname.startsWith("/api/") &&
+        !url.pathname.split("/").some((segment) => segment.includes("."))
+      ) {
+        canonicalUrl.pathname = url.pathname.replace(/\/+$/, "") || "/";
+      }
+      if (canonicalUrl.href !== url.href) {
+        return protect(Response.redirect(canonicalUrl, 308));
       }
       if (url.pathname === "/api/enquiries") return protect(await handleEnquiry(request, env));
       if (url.pathname === "/api/care-checkout")

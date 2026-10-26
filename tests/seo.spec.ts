@@ -24,6 +24,30 @@ test("sitemap pages return indexable HTML with matching canonical URLs", async (
   expect(await robots.text()).toContain(`Sitemap: ${origin}/sitemap.xml`);
 });
 
+test("trailing slash variants redirect permanently in one hop", async ({ request }) => {
+  const sitemap = await request.get("/sitemap.xml", { maxRedirects: 0 });
+  const paths = [...(await sitemap.text()).matchAll(/<loc>[^<]+<\/loc>/g)]
+    .map(([entry]) => new URL(entry.slice(5, -6)).pathname)
+    .filter((path) => path !== "/");
+  for (const path of paths) {
+    for (const host of ["127.0.0.1:4173", "cyberlife.digital"]) {
+      const response = await request.get(`${path}/?source=test`, {
+        headers: { host },
+        maxRedirects: 0,
+      });
+      expect(response.status(), `${host}${path}/`).toBe(308);
+      const destination = new URL(response.headers().location);
+      expect(destination.pathname).toBe(path);
+      expect(destination.search).toBe("?source=test");
+      if (host === "cyberlife.digital") expect(destination.origin).toBe(origin);
+      const final = await request.get(destination.pathname + destination.search, {
+        maxRedirects: 0,
+      });
+      expect(final.status(), path).toBe(200);
+    }
+  }
+});
+
 test("alternate production hosts redirect directly to the canonical host", async ({ request }) => {
   for (const host of ["cyberlife.digital", "cyberlifedigital.ng", "www.cyberlifedigital.com"]) {
     const response = await request.get("/services?source=test", {
