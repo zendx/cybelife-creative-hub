@@ -69,7 +69,7 @@ const featuredProject = projects.find((project) => project.featured) ?? projects
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Cyberlife Digital — Digital Agency" },
+      { title: "Web Design Company in Lagos | Cyberlife Digital" },
       {
         name: "description",
         content:
@@ -121,8 +121,9 @@ function Home() {
               <span className="text-gradient-brand">Grow.</span>
             </h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-              We design and build websites, mobile apps, online stores and brands — then make them
-              faster, easier to find and simpler to maintain.
+              Your digital agency in Lagos for websites, mobile apps, online stores and brands.
+              We help businesses across Nigeria build a presence that is faster, easier to find
+              and simpler to maintain.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <BookingDialog

@@ -68,7 +68,7 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "Looking for a web design company in Nigeria? Explore Cyberlife Digital?s website, e-commerce, branding and SEO services, starting prices and ongoing support.",
+          "Cyberlife Digital is a web design company in Nigeria offering websites, e-commerce, branding and SEO. Explore our services, starting prices and ongoing support.",
       },
       { property: "og:title", content: "Digital services built around business growth" },
       {
