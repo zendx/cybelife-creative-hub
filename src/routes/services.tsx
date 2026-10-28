@@ -35,6 +35,11 @@ const serviceIcons: Record<string, LucideIcon> = {
 
 const serviceFaqs = [
   {
+    question: "How much does a website cost in Nigeria?",
+    answer:
+      "Website cost depends on the number of pages, content, design requirements and features such as online payments, bookings or integrations. Our website design and development service has a starting price listed above; e-commerce and mobile app projects have separate starting prices. Share your requirements for a tailored quote, and confirm what is included for your domain, hosting, content and ongoing maintenance before work begins.",
+  },
+  {
     question: "Can we start with an audit before choosing a service?",
     answer:
       "Yes. Our free technical check gives you live Lighthouse scores, and a discovery call helps us connect those signals to your business priorities before we recommend a scope.",
@@ -59,11 +64,11 @@ const serviceFaqs = [
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "Digital Agency Services | Cyberlife Digital" },
+      { title: "Web Design Company in Nigeria | Cyberlife Digital" },
       {
         name: "description",
         content:
-          "Websites, mobile apps, e-commerce, branding, Google Business Profile, SEO, page-speed and website maintenance from Cyberlife Digital.",
+          "Looking for a web design company in Nigeria? Explore Cyberlife Digital?s website, e-commerce, branding and SEO services, starting prices and ongoing support.",
       },
       { property: "og:title", content: "Digital services built around business growth" },
       {
@@ -94,8 +99,9 @@ function ServicesPage() {
           </div>
           <div>
             <p className="max-w-xl text-lg leading-8 text-muted-foreground">
-              One connected team for your brand, website, app, online store, search visibility and
-              long-term support. Start with one need or build the full system.
+              As a web design company in Nigeria, we connect your website, brand, app and online
+              store with search visibility and long-term support. Work with our Lagos team
+              on one priority or build the full system.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <BookingDialog

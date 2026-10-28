@@ -73,7 +73,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Cyberlife Digital builds websites, mobile apps, e-commerce stores and brands, then helps businesses get found with Google Maps, SEO, speed and ongoing support.",
+          "Cyberlife Digital is a web design company in Lagos, Nigeria, building websites, online stores and brands with SEO, Google Maps visibility and ongoing support.",
       },
       {
         property: "og:title",
@@ -82,7 +82,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Web, mobile, e-commerce, branding and digital growth support from a Lagos-based agency.",
+          "A digital agency in Lagos for website design, mobile apps, e-commerce, branding, SEO and ongoing website support.",
       },
       {
         name: "twitter:title",
@@ -91,7 +91,7 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content:
-          "Web, mobile, e-commerce, branding and digital growth support from a Lagos-based agency.",
+          "A digital agency in Lagos for website design, mobile apps, e-commerce, branding, SEO and ongoing website support.",
       },
     ],
   }),
