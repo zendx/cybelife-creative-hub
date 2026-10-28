@@ -19,6 +19,9 @@ test("sitemap pages return indexable HTML with matching canonical URLs", async (
     const html = await response.text();
     expect(html, url).toContain(`<link rel="canonical" href="${url}"`);
     expect(html, url).toContain(`<meta property="og:url" content="${url}"`);
+    expect(html, url).toContain(`<meta property="og:image" content="${origin}/favicon.png"`);
+    expect(html, url).toContain(`<meta property="og:image:secure_url" content="${origin}/favicon.png"`);
+    expect(html, url).toContain(`<meta name="twitter:image" content="${origin}/favicon.png"`);
   }
   const robots = await request.get("/robots.txt");
   expect(await robots.text()).toContain(`Sitemap: ${origin}/sitemap.xml`);

@@ -17,7 +17,6 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { WhatsAppAssistance } from "@/components/whatsapp-assistance";
 import { Toaster } from "@/components/ui/sonner";
-import socialImage from "@/assets/hero-studio.jpg";
 import { CurrencyProvider } from "@/components/currency-provider";
 
 function NotFoundComponent() {
@@ -97,13 +96,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Cyberlife Digital" },
       { property: "og:locale", content: "en_NG" },
-      { property: "og:image", content: `https://www.cyberlife.digital${socialImage}` },
-      { property: "og:image:secure_url", content: `https://www.cyberlife.digital${socialImage}` },
-      { property: "og:image:alt", content: "Cyberlife Digital creative studio" },
+      { property: "og:image", content: "https://www.cyberlife.digital/favicon.png" },
+      { property: "og:image:secure_url", content: "https://www.cyberlife.digital/favicon.png" },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:alt", content: "Cyberlife Digital logo" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Cyberlife Digital — Web, Mobile, E-commerce & Growth Agency" },
       { name: "twitter:description", content: "Cyberlife Digital builds websites, mobile apps, e-commerce platforms and brands, with SEO, Google Maps visibility, page-speed and maintenance support." },
-      { name: "twitter:image", content: `https://www.cyberlife.digital${socialImage}` },
+      { name: "twitter:image", content: "https://www.cyberlife.digital/favicon.png" },
+      { name: "twitter:image:alt", content: "Cyberlife Digital logo" },
       { name: "twitter:site", content: "@CyberlifeDigital" },
     ],
     scripts: [

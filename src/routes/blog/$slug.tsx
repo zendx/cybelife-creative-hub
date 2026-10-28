@@ -33,22 +33,8 @@ export const Route = createFileRoute("/blog/$slug")({
         content: loaderData?.modifiedAt ?? loaderData?.publishedAt ?? "",
       },
       { property: "article:section", content: loaderData?.category ?? "" },
-      {
-        property: "og:image",
-        content: loaderData ? `https://www.cyberlife.digital${loaderData.image}` : "",
-      },
-      {
-        property: "og:image:secure_url",
-        content: loaderData ? `https://www.cyberlife.digital${loaderData.image}` : "",
-      },
-      { property: "og:image:alt", content: loaderData?.imageAlt ?? "" },
       { name: "twitter:title", content: loaderData?.title ?? "Cyberlife Digital Insights" },
       { name: "twitter:description", content: loaderData?.excerpt ?? "" },
-      {
-        name: "twitter:image",
-        content: loaderData ? `https://www.cyberlife.digital${loaderData.image}` : "",
-      },
-      { name: "twitter:image:alt", content: loaderData?.imageAlt ?? "" },
     ],
     scripts: loaderData
       ? [
