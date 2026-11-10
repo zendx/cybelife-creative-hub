@@ -342,7 +342,7 @@ function toAuditReport(payload: PageSpeedResponse, fallbackUrl: string): AuditRe
 
   const opportunities = Object.entries(audits)
     .flatMap(([id, audit]) => {
-      if (!audit || audit.details?.type !== "opportunity") return [];
+      if (!audit || audit.details?.type !== "opportunity" || audit.score === 1) return [];
 
       const savingsMs = audit.details.overallSavingsMs ?? 0;
       const savingsBytes = audit.details.overallSavingsBytes ?? 0;
@@ -377,26 +377,19 @@ function toAuditReport(payload: PageSpeedResponse, fallbackUrl: string): AuditRe
 }
 
 async function requestPageSpeedAudit(websiteUrl: string, signal: AbortSignal) {
-  const endpoint = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
-  endpoint.searchParams.set("url", websiteUrl);
-  endpoint.searchParams.set("strategy", "mobile");
-  endpoint.searchParams.append("category", "performance");
-  endpoint.searchParams.append("category", "accessibility");
-  endpoint.searchParams.append("category", "best-practices");
-  endpoint.searchParams.append("category", "seo");
-
   let response: Response;
   try {
-    response = await fetch(endpoint, {
-      method: "GET",
-      headers: { Accept: "application/json" },
+    response = await fetch("/api/pagespeed", {
+      method: "POST",
+      headers: { Accept: "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify({ url: websiteUrl }),
       signal,
     });
   } catch (error) {
     if (error instanceof DOMException && error.name === "AbortError") throw error;
     throw new AuditRequestError(
       "We could not reach the audit service",
-      "Your browser could not connect to Google PageSpeed Insights. A network rule or browser privacy setting may be blocking the request. Try again, or book a manual review.",
+      "The speed test service could not be reached. Check your connection and try again.",
     );
   }
 
@@ -411,7 +404,7 @@ async function requestPageSpeedAudit(websiteUrl: string, signal: AbortSignal) {
     if (response.status === 429) {
       throw new AuditRequestError(
         "The audit service is busy",
-        "Google's public PageSpeed quota is temporarily busy. Please try again shortly or book a review with our team.",
+        payload?.error?.message || "The speed test service is busy. Please try again shortly.",
       );
     }
 
@@ -847,7 +840,9 @@ const scanStatusDetails: Record<
 function FoundationScanResults({
   report,
   onReset,
+  speedIssue,
 }: {
+  speedIssue: string | null;
   report: SiteScanReport;
   onReset: () => void;
 }) {
@@ -924,8 +919,21 @@ function FoundationScanResults({
         </div>
 
         <div className="border-t border-border px-6 py-5 text-xs leading-relaxed text-muted-foreground lg:px-8">
-          Google Lighthouse was unavailable, so this report uses a live read of the page HTML and
-          response headers. It does not estimate loading speed or invent a performance score.
+          <p className="font-medium text-foreground">Speed test not completed</p>
+          <p className="mt-2">{speedIssue}</p>
+          <p className="mt-2">
+            These checks inspect the returned HTML and response headers. They do not measure browser
+            loading speed, rendered accessibility, or content added by JavaScript.
+          </p>
+          <a
+            className="mt-3 inline-flex items-center gap-2 text-brand-soft underline"
+            href={`https://pagespeed.web.dev/analysis?url=${encodeURIComponent(report.requestedUrl)}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Test speed with Google PageSpeed Insights{" "}
+            <ExternalLink aria-hidden="true" className="size-3.5" />
+          </a>
         </div>
       </section>
 
@@ -948,7 +956,10 @@ function FoundationScanResults({
 
         <div className="mt-7 grid gap-4 lg:grid-cols-2">
           {scanCategories.map((category) => {
-            const checks = report.checks.filter((item) => item.category === category);
+            const priority = { fail: 0, warning: 1, pass: 2 };
+            const checks = report.checks
+              .filter((item) => item.category === category)
+              .sort((a, b) => priority[a.status] - priority[b.status]);
 
             return (
               <article
@@ -984,6 +995,11 @@ function FoundationScanResults({
                           <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                             {item.detail}
                           </p>
+                          {item.recommendation && (
+                            <p className="mt-2 text-sm leading-relaxed">
+                              <strong>Next step:</strong> {item.recommendation}
+                            </p>
+                          )}
                         </div>
                       </li>
                     );
@@ -1033,6 +1049,7 @@ export function WebsiteAudit() {
   const mountedRef = useRef(true);
   const [website, setWebsite] = useState("");
   const [fieldError, setFieldError] = useState<string | null>(null);
+  const [speedIssue, setSpeedIssue] = useState<string | null>(null);
   const [requestError, setRequestError] = useState<AuditError | null>(null);
   const [report, setReport] = useState<AuditReport | null>(null);
   const [siteScanReport, setSiteScanReport] = useState<SiteScanReport | null>(null);
@@ -1070,6 +1087,7 @@ export function WebsiteAudit() {
     setWebsite(normalizedUrl);
     setFieldError(null);
     setRequestError(null);
+    setSpeedIssue(null);
     setReport(null);
     setSiteScanReport(null);
     setLoading(true);
@@ -1100,6 +1118,7 @@ export function WebsiteAudit() {
             ? error.message
             : "Google's live Lighthouse test could not be completed.";
 
+      setSpeedIssue(lighthouseIssue);
       stageTimers.forEach(window.clearTimeout);
       window.clearTimeout(timeout);
       setLoadingMode("foundation");
@@ -1134,6 +1153,7 @@ export function WebsiteAudit() {
     setReport(null);
     setSiteScanReport(null);
     setRequestError(null);
+    setSpeedIssue(null);
     setFieldError(null);
     window.requestAnimationFrame(() => document.getElementById(inputId)?.focus());
   }
@@ -1160,7 +1180,7 @@ export function WebsiteAudit() {
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground md:text-base">
                 Enter any public page. We will try a fresh mobile Lighthouse report first, then use
-                our live foundation scan if Google's service is busy.
+                our live page checks if the speed test cannot be completed.
               </p>
 
               <form className="mt-8" onSubmit={runAudit} noValidate>
@@ -1244,7 +1264,13 @@ export function WebsiteAudit() {
       {loading && <LoadingState stage={loadingStage} mode={loadingMode} />}
       {requestError && <ErrorState error={requestError} onRetry={resetAudit} />}
       {report && <AuditResults report={report} onReset={resetAudit} />}
-      {siteScanReport && <FoundationScanResults report={siteScanReport} onReset={resetAudit} />}
+      {siteScanReport && (
+        <FoundationScanResults
+          report={siteScanReport}
+          onReset={resetAudit}
+          speedIssue={speedIssue}
+        />
+      )}
 
       {!report && !siteScanReport && (
         <div className="flex flex-col gap-4 rounded-3xl border border-border bg-surface/20 p-5 text-xs leading-relaxed text-muted-foreground sm:flex-row sm:items-center sm:justify-between">

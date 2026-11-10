@@ -1,8 +1,7 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
-  createRootRouteWithContext,
+  createRootRoute,
   useRouter,
   HeadContent,
   Scripts,
@@ -79,7 +78,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -101,8 +100,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:type", content: "image/png" },
       { property: "og:image:alt", content: "Cyberlife Digital logo" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Cyberlife Digital — Web, Mobile, E-commerce & Growth Agency" },
-      { name: "twitter:description", content: "Cyberlife Digital builds websites, mobile apps, e-commerce platforms and brands, with SEO, Google Maps visibility, page-speed and maintenance support." },
+      {
+        name: "twitter:title",
+        content: "Cyberlife Digital — Web, Mobile, E-commerce & Growth Agency",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Cyberlife Digital builds websites, mobile apps, e-commerce platforms and brands, with SEO, Google Maps visibility, page-speed and maintenance support.",
+      },
       { name: "twitter:image", content: "https://www.cyberlife.digital/favicon.png" },
       { name: "twitter:image:alt", content: "Cyberlife Digital logo" },
       { name: "twitter:site", content: "@CyberlifeDigital" },
@@ -179,28 +185,24 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
   return (
-    <QueryClientProvider client={queryClient}>
-      <CurrencyProvider>
-        <div className="flex min-h-screen flex-col">
-          <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:p-4 focus:text-primary"
-          >
-            Skip to main content
-          </a>
-          <SiteHeader />
-          <main id="main-content" className="flex-1" tabIndex={-1}>
-            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-            <Outlet />
-          </main>
-          <SiteFooter />
-        </div>
-        <Toaster />
-        <WhatsAppAssistance />
-      </CurrencyProvider>
-    </QueryClientProvider>
+    <CurrencyProvider>
+      <div className="flex min-h-screen flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:p-4 focus:text-primary"
+        >
+          Skip to main content
+        </a>
+        <SiteHeader />
+        <main id="main-content" className="flex-1" tabIndex={-1}>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </main>
+        <SiteFooter />
+      </div>
+      <Toaster />
+      <WhatsAppAssistance />
+    </CurrencyProvider>
   );
 }

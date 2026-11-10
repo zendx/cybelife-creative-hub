@@ -20,7 +20,9 @@ test("sitemap pages return indexable HTML with matching canonical URLs", async (
     expect(html, url).toContain(`<link rel="canonical" href="${url}"`);
     expect(html, url).toContain(`<meta property="og:url" content="${url}"`);
     expect(html, url).toContain(`<meta property="og:image" content="${origin}/favicon.png"`);
-    expect(html, url).toContain(`<meta property="og:image:secure_url" content="${origin}/favicon.png"`);
+    expect(html, url).toContain(
+      `<meta property="og:image:secure_url" content="${origin}/favicon.png"`,
+    );
     expect(html, url).toContain(`<meta name="twitter:image" content="${origin}/favicon.png"`);
   }
   const robots = await request.get("/robots.txt");
@@ -39,6 +41,7 @@ test("trailing slash variants redirect permanently in one hop", async ({ request
         maxRedirects: 0,
       });
       expect(response.status(), `${host}${path}/`).toBe(308);
+      expect(response.headers()["cache-control"]).toBe("public, max-age=86400");
       const destination = new URL(response.headers().location);
       expect(destination.pathname).toBe(path);
       expect(destination.search).toBe("?source=test");

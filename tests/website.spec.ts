@@ -11,10 +11,18 @@ test("homepage loads the booking form only when the dialog opens", async ({ page
   page.on("request", (request) => requests.push(request.url()));
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
-  expect(requests.filter((url) => /\/assets\/booking-form-.*\.js/.test(url))).toEqual([]);
+  expect(
+    requests.filter((url) => /\/assets\/booking-(?:form|dialog-content)-.*\.js/.test(url)),
+  ).toEqual([]);
   await page.getByRole("banner").getByRole("button", { name: "Start a project" }).click();
   await expect(page.getByRole("dialog").getByLabel("Full name")).toBeVisible();
   expect(requests.some((url) => /\/assets\/booking-form-.*\.js/.test(url))).toBe(true);
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  const trigger = page.getByRole("banner").getByRole("button", { name: "Start a project" });
+  await expect(trigger).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("dialog").getByLabel("Full name")).toBeVisible();
   expect(errors).toEqual([]);
 });
 
@@ -180,15 +188,15 @@ test("mobile navigation, project contact preferences and care cards work", async
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("www domain serves the page without redirecting back to the bare domain", async ({
+test("HTTP www redirects directly to HTTPS www without visiting the bare domain", async ({
   request,
 }) => {
   const response = await request.get("/", {
     headers: { host: "www.cyberlife.digital" },
     maxRedirects: 0,
   });
-  expect(response.status()).toBe(200);
-  expect(response.headers()["location"]).toBeUndefined();
+  expect(response.status()).toBe(308);
+  expect(response.headers()["location"]).toBe("https://www.cyberlife.digital/");
 });
 
 test("public routes expose crawlable metadata, a sitemap and real 404 responses", async ({
@@ -211,4 +219,16 @@ test("public routes expose crawlable metadata, a sitemap and real 404 responses"
     expect(html.match(/<h1\b/g)?.length, path).toBe(1);
   }
   expect((await request.get("/this-page-does-not-exist")).status()).toBe(404);
+});
+
+test("article data loads correctly during client-side navigation", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/");
+  const link = page.getByRole("link", { name: "Read article", exact: true }).first();
+  const destination = await link.getAttribute("href");
+  await link.click();
+  await expect(page).toHaveURL(`http://127.0.0.1:4173${destination}`);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  expect(errors).toEqual([]);
 });

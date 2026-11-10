@@ -10,6 +10,7 @@ export interface SiteScanCheck {
   status: SiteScanStatus;
   detail: string;
   category: SiteScanCategory;
+  recommendation?: string | undefined;
 }
 
 export interface SiteScanReport {
@@ -282,6 +283,38 @@ function readAttribute(tag: string, name: string) {
   return match ? (match[1] ?? match[2] ?? match[3] ?? "").trim() : null;
 }
 
+const recommendations: Record<string, string> = {
+  status: "Fix the reported HTTP error and ensure visitors can open this page without signing in.",
+  https: "Enable HTTPS with a valid certificate and redirect HTTP traffic to HTTPS.",
+  title:
+    "Write a unique, descriptive title for this page. Aim for roughly 10-60 characters without sacrificing clarity.",
+  description:
+    "Add a useful, unique summary of this page in the meta description. Roughly 50-160 characters is a guide, not a ranking requirement.",
+  viewport:
+    'Add <meta name="viewport" content="width=device-width, initial-scale=1"> and test the layout on a phone.',
+  language: 'Set the html lang attribute to the language of the page, such as lang="en".',
+  heading: "Use a descriptive main heading and organize subheadings into a logical hierarchy.",
+  "image-alt":
+    'Add meaningful alt text to informative images and alt="" to decorative images. Review existing alternatives for accuracy.',
+  canonical:
+    "If this page has duplicate URL versions, add a canonical link pointing to the preferred public URL.",
+  indexing:
+    "If this page should appear in search, remove its noindex directive. Keep noindex for intentionally private or excluded pages.",
+  social: "Add og:title, og:description and a suitable og:image to improve shared link previews.",
+  "structured-data":
+    "Where relevant, add valid JSON-LD for your organization, article or product and validate it with Google's Rich Results Test.",
+  "html-weight":
+    "Reduce unnecessary inline scripts, styles and markup. Measure full page performance separately before optimizing assets.",
+  charset: 'Declare UTF-8 in the Content-Type response header or add <meta charset="utf-8">.',
+  "content-security-policy":
+    "Configure a Content Security Policy for the resources your site uses; test in report-only mode before enforcing it.",
+  "strict-transport-security":
+    "After confirming HTTPS works across the intended hosts, configure Strict-Transport-Security on the server.",
+  "x-content-type-options":
+    "Set X-Content-Type-Options: nosniff and serve resources with correct Content-Type headers.",
+  "referrer-policy": "Set an appropriate Referrer-Policy, such as strict-origin-when-cross-origin.",
+};
+
 function check(
   id: string,
   label: string,
@@ -289,7 +322,14 @@ function check(
   detail: string,
   category: SiteScanCategory,
 ): SiteScanCheck {
-  return { id, label, status, detail, category };
+  return {
+    id,
+    label,
+    status,
+    detail,
+    category,
+    recommendation: status === "pass" ? undefined : recommendations[id],
+  };
 }
 
 function analyzePage(response: Response, html: string, requestedUrl: URL, finalUrl: URL) {
@@ -415,10 +455,10 @@ function analyzePage(response: Response, html: string, requestedUrl: URL, finalU
     check(
       "canonical",
       "Canonical URL",
-      canonical ? "pass" : "warning",
-      canonical
-        ? `A canonical link is present${canonicalHref ? `: ${canonicalHref}` : "."}`
-        : "No canonical link was found in the returned HTML.",
+      canonicalHref ? "pass" : "warning",
+      canonicalHref
+        ? `A canonical link is present: ${canonicalHref}`
+        : "No non-empty canonical URL was found in the returned HTML.",
       "Search",
     ),
     check(
@@ -433,7 +473,7 @@ function analyzePage(response: Response, html: string, requestedUrl: URL, finalU
     check(
       "social",
       "Social sharing metadata",
-      ogTitle && ogDescription ? "pass" : ogTitle || ogDescription ? "warning" : "warning",
+      ogTitle && ogDescription ? "pass" : "warning",
       ogTitle && ogDescription
         ? "Open Graph title and description are present."
         : "Open Graph title and description are incomplete or missing.",

@@ -2,10 +2,8 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
-import { handleEnquiry } from "./lib/enquiries.server";
 import { secureResponse } from "./lib/security.server";
 import { visitorLocation } from "./lib/visitor-location.server";
-import { handleCarePayment, handlePaystackWebhook } from "./lib/paystack.server";
 
 type ServerEntry = {
   fetch: (
@@ -82,16 +80,31 @@ export default {
         canonicalUrl.pathname = url.pathname.replace(/\/+$/, "") || "/";
       }
       if (canonicalUrl.href !== url.href) {
-        return protect(Response.redirect(canonicalUrl, 308));
+        return protect(
+          new Response(null, {
+            status: 308,
+            headers: { Location: canonicalUrl.href, "Cache-Control": "public, max-age=86400" },
+          }),
+        );
       }
-      if (url.pathname === "/api/enquiries") return protect(await handleEnquiry(request, env));
-      if (url.pathname === "/api/care-checkout")
-        return protect(await handleEnquiry(request, env, true));
-      if (url.pathname === "/api/care-payment")
-        return protect(await handleCarePayment(request, env));
-      if (url.pathname === "/api/paystack-webhook")
-        return protect(await handlePaystackWebhook(request, env));
+      if (url.pathname === "/api/enquiries" || url.pathname === "/api/care-checkout") {
+        const { handleEnquiry } = await import("./lib/enquiries.server");
+        return protect(await handleEnquiry(request, env, url.pathname === "/api/care-checkout"));
+      }
+      if (url.pathname === "/api/care-payment" || url.pathname === "/api/paystack-webhook") {
+        const { handleCarePayment, handlePaystackWebhook } = await import("./lib/paystack.server");
+        return protect(
+          await (url.pathname === "/api/care-payment" ? handleCarePayment : handlePaystackWebhook)(
+            request,
+            env,
+          ),
+        );
+      }
       if (url.pathname === "/api/visitor-location") return protect(visitorLocation(request));
+      if (url.pathname === "/api/pagespeed") {
+        const { handlePageSpeed } = await import("./lib/pagespeed.server");
+        return protect(await handlePageSpeed(request, env));
+      }
       const handler = await getServerEntry();
       const requestHeaders = new Headers(request.headers);
       requestHeaders.set("x-cyberlife-csp-nonce", nonce);
