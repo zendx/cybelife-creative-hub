@@ -13,7 +13,7 @@ const pages = readdirSync(routeRoot, { recursive: true })
   })
   .sort();
 
-const blog = readFileSync(new URL("../src/data/blog.ts", import.meta.url), "utf8");
+const blog = readFileSync(new URL("../src/data/blog-summaries.ts", import.meta.url), "utf8");
 const posts = Array.from(
   blog.matchAll(/slug: "([a-z0-9-]+)"([\s\S]*?)(?=\n    image:)/g),
   ([, slug, fields]) => ({

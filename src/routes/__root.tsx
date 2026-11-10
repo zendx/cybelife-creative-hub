@@ -15,7 +15,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { WhatsAppAssistance } from "@/components/whatsapp-assistance";
-import { Toaster } from "@/components/ui/sonner";
 import { CurrencyProvider } from "@/components/currency-provider";
 
 function NotFoundComponent() {
@@ -201,7 +200,6 @@ function RootComponent() {
         </main>
         <SiteFooter />
       </div>
-      <Toaster />
       <WhatsAppAssistance />
     </CurrencyProvider>
   );

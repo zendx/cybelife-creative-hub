@@ -222,11 +222,20 @@ test("public routes expose crawlable metadata, a sitemap and real 404 responses"
 });
 
 test("article data loads correctly during client-side navigation", async ({ page }) => {
+  const requests: string[] = [];
+  page.on("request", (request) => requests.push(request.url()));
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
   const link = page.getByRole("link", { name: "Read article", exact: true }).first();
   const destination = await link.getAttribute("href");
+  expect(
+    requests.filter((url) =>
+      /\/assets\/(?:smpis-school-|brand-refresh-|importance-of-|how-to-write-|signs-your-|what-to-prepare-|why-local-)/.test(
+        url,
+      ),
+    ),
+  ).toEqual([]);
   await link.click();
   await expect(page).toHaveURL(`http://127.0.0.1:4173${destination}`);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();

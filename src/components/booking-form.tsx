@@ -1,7 +1,6 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { format } from "date-fns";
 import { CalendarCheck2, Clock } from "lucide-react";
-import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -39,6 +38,11 @@ export function BookingForm({
   const [submitting, setSubmitting] = useState(false);
   const [methods, setMethods] = useState<string[]>(["Email"]);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState<string | null>(null);
+  const confirmationRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (success) confirmationRef.current?.focus();
+  }, [success]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,11 +54,11 @@ export function BookingForm({
     const email = String(form.get("email") ?? "").trim();
 
     if (!name || !email) {
-      toast.error("Please add your name and email.");
+      setError("Please add your name and email.");
       return;
     }
     if (!date || !time) {
-      toast.error("Pick a date and a time slot for your call.");
+      setError("Pick a date and a time slot for your call.");
       return;
     }
 
@@ -71,14 +75,11 @@ export function BookingForm({
         time,
         contactMethods: methods,
       });
-      toast.success(`Meeting requested for ${format(date, "EEEE, d MMM yyyy")} at ${time} WAT`, {
-        description: "We'll confirm by email within one business day.",
-      });
+      setSuccess(`Meeting requested for ${format(date, "EEEE, d MMM yyyy")} at ${time} WAT`);
       formElement.reset();
       setDate(undefined);
       setTime(undefined);
       setMethods(["Email"]);
-      onDone?.();
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Please try again or email cyberlifeng@gmail.com.",
@@ -86,6 +87,31 @@ export function BookingForm({
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (success) {
+    return (
+      <div
+        ref={confirmationRef}
+        role="status"
+        tabIndex={-1}
+        className="space-y-4 rounded-lg border border-primary/25 bg-primary/5 p-6 outline-none"
+      >
+        <h3 className="text-xl font-semibold">{success}</h3>
+        <p className="text-sm text-muted-foreground">
+          We'll confirm by email within one business day.
+        </p>
+        <Button
+          type="button"
+          onClick={() => {
+            setSuccess(null);
+            onDone?.();
+          }}
+        >
+          {onDone ? "Close" : "Send another enquiry"}
+        </Button>
+      </div>
+    );
   }
 
   return (

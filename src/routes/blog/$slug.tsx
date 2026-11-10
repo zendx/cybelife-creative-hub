@@ -3,12 +3,12 @@ import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 
 import { BookingDialog } from "@/components/booking-dialog";
 import { Button } from "@/components/ui/button";
-import { blogPosts } from "@/data/blog";
+import { blogSummaries as blogPosts } from "@/data/blog-summaries";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const { getBlogPost } = await import("@/data/blog");
-    const post = getBlogPost(params.slug);
+    const post = await getBlogPost(params.slug);
     if (!post) throw notFound();
     return post;
   },

@@ -3,7 +3,7 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 import { BookingDialog } from "@/components/booking-dialog";
 import { Button } from "@/components/ui/button";
-import { blogPosts } from "@/data/blog";
+import { blogSummaries as blogPosts } from "@/data/blog-summaries";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({

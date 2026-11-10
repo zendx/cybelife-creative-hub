@@ -8,7 +8,25 @@ import { defineConfig as defineLovableConfig } from "@lovable.dev/vite-tanstack-
 import { defineConfig } from "vite";
 
 const lovableConfig = defineLovableConfig({
-  vite: { resolve: { tsconfigPaths: true } },
+  vite: {
+    resolve: { tsconfigPaths: true },
+    build: {
+      rolldownOptions: {
+        output: {
+          codeSplitting: {
+            includeDependenciesRecursively: false,
+            groups: [
+              {
+                // Cache the rendering runtime independently of page/content edits.
+                name: "react-runtime",
+                test: /node_modules[\\/](?:react|react-dom|scheduler)[\\/]/,
+              },
+            ],
+          },
+        },
+      },
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

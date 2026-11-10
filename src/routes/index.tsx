@@ -21,7 +21,7 @@ import {
 import { BookingDialog } from "@/components/booking-dialog";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
-import { blogPosts } from "@/data/blog";
+import { blogSummaries as blogPosts } from "@/data/blog-summaries";
 import { process, projects, services, stats } from "@/data/site";
 
 const serviceIcons: Record<string, LucideIcon> = {
@@ -121,9 +121,9 @@ function Home() {
               <span className="text-gradient-brand">Grow.</span>
             </h1>
             <p className="mt-7 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
-              Your digital agency in Lagos for websites, mobile apps, online stores and brands.
-              We help businesses across Nigeria build a presence that is faster, easier to find
-              and simpler to maintain.
+              Your digital agency in Lagos for websites, mobile apps, online stores and brands. We
+              help businesses across Nigeria build a presence that is faster, easier to find and
+              simpler to maintain.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <BookingDialog
