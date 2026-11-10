@@ -4,10 +4,10 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "node api.js && vite dev",
+    "dev": "node init && vite dev",
     "prebuild": "node scripts/generate-sitemap.mjs",
-    "build": "node api.js && vite build",
-    "build:dev": "vite build --mode development",
+    "build": "node init && vite build",
+    "build:dev": "node init && vite build --mode development",
     "preview": "node scripts/preview.mjs",
     "test": "playwright test",
     "check:seo": "node scripts/check-seo.mjs",
