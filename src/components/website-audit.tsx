@@ -1212,12 +1212,7 @@ export function WebsiteAudit() {
                       className="h-14 w-full rounded-2xl border border-input bg-background/70 pl-12 pr-4 text-base text-foreground outline-none transition focus:border-brand-soft/70 focus:ring-2 focus:ring-brand-soft/20 aria-[invalid=true]:border-signal"
                     />
                   </div>
-                  <Button
-                    type="submit"
-                    variant="signal"
-                    size="xl"
-                    className="h-14 rounded-2xl sm:px-7"
-                  >
+                  <Button type="submit" variant="signal" size="audit">
                     Audit my website
                     <ArrowRight aria-hidden="true" />
                   </Button>

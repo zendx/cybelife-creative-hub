@@ -1,6 +1,6 @@
 import { useCurrency } from "@/hooks/use-currency";
-import { CarePlans } from "@/components/care-plans";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { lazy } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -19,10 +19,17 @@ import {
 } from "lucide-react";
 
 import { BookingDialog } from "@/components/booking-dialog";
+import { DeferredSection } from "@/components/deferred-section";
 import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
-import { blogSummaries as blogPosts } from "@/data/blog-summaries";
 import { process, projects, services, stats } from "@/data/site";
+
+const HomeCareSection = lazy(() =>
+  import("@/components/home-care-section").then((module) => ({ default: module.HomeCareSection })),
+);
+const HomeBlogSection = lazy(() =>
+  import("@/components/home-blog-section").then((module) => ({ default: module.HomeBlogSection })),
+);
 
 const serviceIcons: Record<string, LucideIcon> = {
   "website-design": MonitorSmartphone,
@@ -491,31 +498,29 @@ function Home() {
         </div>
       </section>
 
-      <section className="border-y border-border bg-[#edf1ff]">
-        <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 md:py-28">
-          <Reveal className="grid gap-7 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
-            <div>
+      <DeferredSection
+        component={HomeCareSection}
+        fallback={
+          <section className="min-h-[55rem] border-y border-border bg-[#edf1ff]">
+            <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6 md:py-28">
               <p className="eyebrow">Website care</p>
               <h2 className="mt-5 text-4xl font-bold leading-[1.05] sm:text-5xl">
                 Launch is day one.
               </h2>
-            </div>
-            <p className="max-w-xl text-lg leading-8 text-muted-foreground lg:justify-self-end">
-              Give your website dependable care with Basic, Standard or Premium support. Choose
-              monthly billing or save 15% with an annual plan.
-            </p>
-          </Reveal>
-
-          <CarePlans />
-          <Reveal className="mt-9 flex justify-center">
-            <Button size="lg" asChild>
-              <Link to="/website-maintenance">
-                Compare support options <ArrowRight />
+              <p className="mt-7 max-w-xl text-lg leading-8 text-muted-foreground">
+                Basic, Standard and Premium support keep your website dependable. Choose monthly
+                billing or save 15% with an annual plan.
+              </p>
+              <Link
+                to="/website-maintenance"
+                className="mt-8 inline-flex font-semibold text-primary underline"
+              >
+                Compare support options
               </Link>
-            </Button>
-          </Reveal>
-        </div>
-      </section>
+            </div>
+          </section>
+        }
+      />
 
       <section className="mx-auto max-w-7xl px-5 py-24 sm:px-6 md:py-32">
         <Reveal className="text-center">
@@ -542,67 +547,23 @@ function Home() {
         </div>
       </section>
 
-      <section className="border-t border-border bg-white">
-        <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6">
-          <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
+      <DeferredSection
+        component={HomeBlogSection}
+        fallback={
+          <section className="min-h-[45rem] border-t border-border bg-white">
+            <div className="mx-auto max-w-7xl px-5 py-24 sm:px-6">
               <p className="eyebrow">Useful thinking</p>
               <h2 className="mt-5 text-4xl font-bold sm:text-5xl">Learn before you build.</h2>
-            </div>
-            <Link
-              to="/blog"
-              className="inline-flex items-center gap-2 text-sm font-bold text-primary"
-            >
-              Browse insights <ArrowRight className="size-4" />
-            </Link>
-          </Reveal>
-          <div className="mt-12 grid gap-4 lg:grid-cols-3">
-            {blogPosts.slice(0, 3).map((post, index) => (
-              <Reveal
-                as="article"
-                delay={index * 70}
-                key={post.slug}
-                className="group overflow-hidden rounded-[1.5rem] border border-border bg-background"
+              <Link
+                to="/blog"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary underline"
               >
-                <Link
-                  to="/blog/$slug"
-                  params={{ slug: post.slug }}
-                  className="block overflow-hidden"
-                >
-                  <img
-                    src={post.image}
-                    alt={post.imageAlt}
-                    loading="lazy"
-                    width={1200}
-                    height={900}
-                    className="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                  />
-                </Link>
-                <div className="p-6">
-                  <p className="eyebrow">{post.category}</p>
-                  <h3 className="mt-4 text-xl font-bold leading-tight">
-                    <Link
-                      to="/blog/$slug"
-                      params={{ slug: post.slug }}
-                      className="transition-colors hover:text-primary"
-                    >
-                      {post.title}
-                    </Link>
-                  </h3>
-                  <p className="mt-4 text-sm leading-6 text-muted-foreground">{post.excerpt}</p>
-                  <Link
-                    to="/blog/$slug"
-                    params={{ slug: post.slug }}
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary"
-                  >
-                    Read article <ArrowUpRight className="size-4" />
-                  </Link>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+                Browse insights <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          </section>
+        }
+      />
 
       <section className="px-5 py-10 sm:px-6 sm:py-14">
         <Reveal className="gradient-brand relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] px-6 py-14 text-white shadow-elevated sm:px-10 md:px-16 md:py-20">
@@ -623,17 +584,12 @@ function Home() {
             <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
               <BookingDialog
                 trigger={
-                  <Button size="xl" className="bg-white text-primary hover:bg-white/90">
+                  <Button variant="light" size="xl">
                     Book a discovery call <ArrowUpRight />
                   </Button>
                 }
               />
-              <Button
-                variant="ghost"
-                size="xl"
-                className="text-white hover:bg-white/10 hover:text-white"
-                asChild
-              >
+              <Button variant="onDark" size="xl" asChild>
                 <Link to="/audit">Run a free audit</Link>
               </Button>
             </div>

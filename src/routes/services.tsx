@@ -100,8 +100,8 @@ function ServicesPage() {
           <div>
             <p className="max-w-xl text-lg leading-8 text-muted-foreground">
               As a web design company in Nigeria, we connect your website, brand, app and online
-              store with search visibility and long-term support. Work with our Lagos team
-              on one priority or build the full system.
+              store with search visibility and long-term support. Work with our Lagos team on one
+              priority or build the full system.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <BookingDialog

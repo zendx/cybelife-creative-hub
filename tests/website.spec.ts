@@ -11,6 +11,14 @@ test("homepage loads the booking form only when the dialog opens", async ({ page
   page.on("request", (request) => requests.push(request.url()));
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
+  await expect(page.getByRole("button", { name: "Book a discovery call" })).toHaveCSS(
+    "background-color",
+    "rgb(255, 255, 255)",
+  );
+  await expect(page.getByRole("link", { name: "Run a free audit" })).toHaveCSS(
+    "color",
+    "rgb(255, 255, 255)",
+  );
   expect(
     requests.filter((url) => /\/assets\/booking-(?:form|dialog-content)-.*\.js/.test(url)),
   ).toEqual([]);
@@ -24,6 +32,40 @@ test("homepage loads the booking form only when the dialog opens", async ({ page
   await page.keyboard.press("Enter");
   await expect(page.getByRole("dialog").getByLabel("Full name")).toBeVisible();
   expect(errors).toEqual([]);
+});
+
+test("homepage defers care and article scripts until those sections approach the viewport", async ({
+  page,
+}) => {
+  const requests: string[] = [];
+  page.on("request", (request) => requests.push(request.url()));
+  await page.goto("/");
+  expect(
+    requests.some((url) =>
+      /\/assets\/(?:care-plans|home-care-section|blog-summaries|home-blog-section)-.*\.js/.test(
+        url,
+      ),
+    ),
+  ).toBe(false);
+
+  await page.getByRole("heading", { name: "Launch is day one." }).scrollIntoViewIfNeeded();
+  await expect(page.getByRole("switch", { name: /Annual billing/ }).first()).toBeVisible();
+  expect(
+    requests.some((url) => /\/assets\/(?:care-plans|home-care-section)-.*\.js/.test(url)),
+  ).toBe(true);
+  expect(
+    requests.some((url) => /\/assets\/(?:blog-summaries|home-blog-section)-.*\.js/.test(url)),
+  ).toBe(false);
+
+  await page.getByRole("heading", { name: "Learn before you build." }).scrollIntoViewIfNeeded();
+  await expect(
+    page.getByRole("heading", {
+      name: "Meet SMPIS: school management software for Nigerian schools",
+    }),
+  ).toBeVisible();
+  expect(
+    requests.some((url) => /\/assets\/(?:blog-summaries|home-blog-section)-.*\.js/.test(url)),
+  ).toBe(true);
 });
 
 test("maintenance page is accessible on desktop and mobile", async ({ page }) => {
@@ -227,6 +269,7 @@ test("article data loads correctly during client-side navigation", async ({ page
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/");
+  await page.getByRole("heading", { name: "Learn before you build." }).scrollIntoViewIfNeeded();
   const link = page.getByRole("link", { name: "Read article", exact: true }).first();
   const destination = await link.getAttribute("href");
   expect(

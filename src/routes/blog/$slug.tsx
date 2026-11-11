@@ -235,9 +235,11 @@ function BlogArticlePage() {
               <p className="eyebrow">Keep reading</p>
               <h2 className="mt-4 text-3xl font-semibold">Related thinking.</h2>
             </div>
-            <Button variant="quiet" asChild className="hidden sm:inline-flex">
-              <Link to="/blog">All articles</Link>
-            </Button>
+            <span className="hidden sm:inline-flex">
+              <Button variant="quiet" asChild>
+                <Link to="/blog">All articles</Link>
+              </Button>
+            </span>
           </div>
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             {relatedPosts.map((related) => (

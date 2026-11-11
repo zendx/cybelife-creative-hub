@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-semibold cursor-pointer transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -15,16 +15,19 @@ export const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         signal:
           "bg-signal text-signal-foreground shadow-signal hover:-translate-y-0.5 hover:brightness-105",
+        light: "rounded-full bg-white text-primary shadow-sm hover:bg-white/90 hover:shadow-lg",
+        onDark: "rounded-full text-white hover:bg-white/10 hover:text-white",
         hero: "gradient-brand text-primary-foreground shadow-elevated hover:-translate-y-0.5 hover:brightness-105",
         quiet:
           "border border-border bg-white/75 text-foreground shadow-sm backdrop-blur hover:-translate-y-0.5 hover:border-brand-soft/40 hover:bg-white hover:shadow-md",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 px-3 text-xs",
-        lg: "h-11 px-7",
-        xl: "h-13 px-8 text-sm sm:text-base",
-        icon: "h-9 w-9",
+        default: "h-9 rounded-full px-4 py-2",
+        sm: "h-8 rounded-full px-3 text-xs",
+        lg: "h-11 rounded-full px-7",
+        xl: "h-13 rounded-full px-8 text-sm sm:text-base",
+        icon: "h-9 w-9 rounded-full",
+        audit: "h-14 rounded-2xl px-4 py-2 sm:px-7",
       },
     },
 
